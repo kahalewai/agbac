@@ -1,7 +1,3 @@
-# ✅ 1. **AGBAC Zero Trust Mapping**
-
-**File:** `/specs/zero-trust-mapping.md`
-
 # **AGBAC Zero Trust Architecture Mapping (NIST 800-207)**
 
 AGBAC (AI-Agent-Based Access Control) integrates cleanly with Zero Trust Architecture (ZTA) by adding explicit authorization controls for **AI agents acting on behalf of human users**.
