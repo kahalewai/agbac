@@ -1,7 +1,3 @@
-# ✅ **MITRE ATT&CK Matrix Mapping for AGBAC**
-
-**File:** `/specs/mitre-att&ck-mapping.md`
-
 # **MITRE ATT&CK Tactics & Techniques Relevant to AI Agents + AGBAC Mitigations**
 
 This mapping identifies how AGBAC mitigates common MITRE ATT&CK techniques related to identity, credential abuse, and system manipulation by or through AI agents.
