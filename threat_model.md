@@ -1,32 +1,26 @@
 # Threat Model for AGBAC
 
-Below is a **formal threat model**, suitable for a security review or appendix.
-
----
-
 ## 3.1 Assets Protected
 
-• Enterprise systems
-• Sensitive data
-• Authorization boundaries
-• Audit integrity
-• Human accountability
+* Enterprise systems
+* Sensitive data
+* Authorization boundaries
+* Audit integrity
+* Human accountability
 
----
+<br>
 
 ## 3.2 Threat Actors
 
-• Malicious users
-• Compromised AI agents
-• Over-permissioned agents
-• Insider threats
-• External attackers using prompt injection
+* Malicious users
+* Compromised AI agents
+* Over-permissioned agents
+* Insider threats
+* External attackers using prompt injection
 
----
+<br>
 
 ## 3.3 Threats and Mitigations
-
----
 
 ### Threat: AI Privilege Escalation
 
@@ -34,13 +28,13 @@ Below is a **formal threat model**, suitable for a security review or appendix.
 Agent performs actions beyond its intended authority.
 
 **Mitigation**
-• Agent identity is independent
-• Agent permissions are bounded
-• Dual-subject authorization enforced
+* Agent identity is independent
+* Agent permissions are bounded
+* Dual-subject authorization enforced
 
 Residual Risk: Low
 
----
+<br>
 
 ### Threat: Privilege Laundering via AI
 
@@ -48,13 +42,13 @@ Residual Risk: Low
 Human uses AI to bypass access restrictions.
 
 **Mitigation**
-• Human authorization required
-• No permission transfer
-• Explicit delegation required
+* Human authorization required
+* No permission transfer
+* Explicit delegation required
 
 Residual Risk: Low
 
----
+<br>
 
 ### Threat: Cross-User Impersonation
 
@@ -62,13 +56,13 @@ Residual Risk: Low
 Agent acts on behalf of another user.
 
 **Mitigation**
-• `act` claim required
-• Delegation validated
-• Audit attribution enforced
+* `act` claim required
+* Delegation validated
+* Audit attribution enforced
 
 Residual Risk: Low
 
----
+<br>
 
 ### Threat: Agent Impersonation
 
@@ -76,13 +70,13 @@ Residual Risk: Low
 Malicious actor impersonates an AI agent.
 
 **Mitigation**
-• Strong agent authentication
-• Token signing
-• Revocation support
+* Strong agent authentication
+* Token signing
+* Revocation support
 
 Residual Risk: Medium (depends on IAM hygiene)
 
----
+<br>
 
 ### Threat: Prompt Injection → Unauthorized Action
 
@@ -90,12 +84,12 @@ Residual Risk: Medium (depends on IAM hygiene)
 Injected prompt causes agent to execute forbidden actions.
 
 **Mitigation**
-• Authorization enforced independently of prompt
-• Delegation scope validated
+* Authorization enforced independently of prompt
+* Delegation scope validated
 
 Residual Risk: Medium (prompt correctness still matters)
 
----
+<br>
 
 ### Threat: Undocumented Delegation
 
@@ -103,12 +97,12 @@ Residual Risk: Medium (prompt correctness still matters)
 Agent acts without human awareness.
 
 **Mitigation**
-• Delegation metadata required
-• Audit logging enforced
+* Delegation metadata required
+* Audit logging enforced
 
 Residual Risk: Low
 
----
+<br>
 
 ### Threat: Replay or Token Abuse
 
@@ -116,21 +110,18 @@ Residual Risk: Low
 Stolen tokens reused.
 
 **Mitigation**
-• Short TTLs
-• Token binding
-• Transport security
+* Short TTLs
+* Token binding
+* Transport security
 
 Residual Risk: Medium (standard OAuth risk)
 
----
+<br>
 
-## 3.4 Non-Goals (Important for Reviewers)
+## 3.4 Out of Scope
 
 AGBAC does not prevent:
-• Malicious authorized users
-• Incorrect human instructions
-• Model hallucinations
-• Business logic flaws
-
-This honesty strengthens the spec.
-
+* Malicious authorized users
+* Incorrect human instructions
+* Model hallucinations
+* Business logic flaws
