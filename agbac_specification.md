@@ -95,10 +95,14 @@ A human user whose intent triggers AI agent execution.
 
 **Delegated Intent**
 An explicit instruction from a human principal authorizing an AI agent to execute actions on behalf of a human within explicitly defined bounds.
-Delegated intent represents authorization to execute intent - not inferred desire, unless policy explicitly permits it.
+Delegated intent represents authorization to execute intent, not inferred desire, unless policy explicitly permits it.
 
 **Dual-Subject Authorization**
 Authorization requiring approval of two independent subjects.
+
+1. The agent is permitted to perform the requested action, AND
+2. The human is permitted to perform the requested action, AND
+3. The human is permitted to instruct the agent to perform the requested action.
 
 **Delegation Token**
 A token representing both agent and human identities.
@@ -107,11 +111,11 @@ A token representing both agent and human identities.
 Policy Enforcement Point / Policy Decision Point.
 
 **Resource Server**
-A system receiving agent requests.
+A system receiving AI agent requests.
 
 ---
 
-## **4. Identity Model**
+## **4. Identity Requirements**
 
 ### **4.1 Agent Identity**
 
