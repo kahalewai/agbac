@@ -37,7 +37,7 @@ Unlike traditional access control models (RBAC, PBAC, ABAC), where the human use
 * The AI agent executes actions in a system using its own identity, and
 * Both subjects must be independently authorized to perform the action.
 
-Thus AGBAC requires dual-subject authorization:
+Thus, AGBAC requires dual-subject authorization:
 
 * An action must be authorized for BOTH the human user AND the AI agent.
 
