@@ -182,9 +182,7 @@ The AGBAC specification defines:
 
 ## Community and Collaboration
 
-AGBAC is an open initiative.
-
-The project welcomes (Fork/PR):
+AGBAC is an open initiative. The project welcomes (via Fork/PR):
 * Feedback on the specification 
 * Additional AGBAC-Min vendor profile requests
 * Reference implementations
