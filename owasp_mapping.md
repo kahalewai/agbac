@@ -2,7 +2,7 @@
 
 Below is a correlation between AGBAC controls and the OWASP LLM Top 10 risks (2023–2024).
 
----
+<br>
 
 ## LLM01: Prompt Injection
 
@@ -13,17 +13,17 @@ Attacker manipulates prompts to cause unauthorized actions.
 Partial
 
 AGBAC:
-• Prevents injected prompts from executing actions outside authorization
-• Ensures the agent cannot exceed agent + human permissions
+* Prevents injected prompts from executing actions outside authorization
+* Ensures the agent cannot exceed agent + human permissions
 
 AGBAC does **not**:
-• Detect prompt manipulation
-• Validate semantic correctness of prompts
+* Detect prompt manipulation
+* Validate semantic correctness of prompts
 
 Result:
 Prompt injection becomes **contained**, not eliminated.
 
----
+<br>
 
 ## LLM02: Insecure Output Handling
 
@@ -34,14 +34,14 @@ Model output is executed blindly by downstream systems.
 Strong
 
 AGBAC:
-• Requires authorization before execution
-• Treats execution as a privileged action
-• Prevents agent-only execution paths
+* Requires authorization before execution
+* Treats execution as a privileged action
+* Prevents agent-only execution paths
 
 Result:
 Unauthorized outputs cannot cross trust boundaries.
 
----
+<br>
 
 ## LLM03: Training Data Poisoning
 
@@ -53,7 +53,7 @@ Out of scope
 
 AGBAC correctly does not attempt to address this.
 
----
+<br>
 
 ## LLM04: Model Denial of Service
 
@@ -64,13 +64,13 @@ Resource exhaustion via agent actions.
 Indirect
 
 AGBAC:
-• Enables per-agent and per-user rate limits
-• Improves attribution for abuse detection
+* Enables per-agent and per-user rate limits
+* Improves attribution for abuse detection
 
 AGBAC does not:
-• Enforce quotas directly
+* Enforce quotas directly
 
----
+<br>
 
 ## LLM05: Supply Chain Vulnerabilities
 
@@ -81,14 +81,14 @@ Compromised models, plugins, or agents.
 Partial
 
 AGBAC:
-• Requires agent identities
-• Enables revocation of compromised agents
-• Prevents agent impersonation
+* Requires agent identities
+* Enables revocation of compromised agents
+* Prevents agent impersonation
 
 Does not:
-• Validate model integrity
+* Validate model integrity
 
----
+<br>
 
 ## LLM06: Sensitive Information Disclosure
 
@@ -99,13 +99,13 @@ Unauthorized access to sensitive data.
 Strong
 
 AGBAC:
-• Requires both human and agent authorization
-• Prevents privilege laundering
-• Improves auditability
+* Requires both human and agent authorization
+* Prevents privilege laundering
+* Improves auditability
 
 This is one of AGBAC’s strongest areas.
 
----
+<br>
 
 ## LLM07: Insecure Plugin Design
 
@@ -116,11 +116,11 @@ Plugins execute actions with excessive privileges.
 Strong
 
 AGBAC:
-• Treats plugins/agents as identities
-• Requires explicit permission assignment
-• Prevents “god-mode” plugins
+* Treats plugins/agents as identities
+* Requires explicit permission assignment
+* Prevents “god-mode” plugins
 
----
+<br>
 
 ## LLM08: Excessive Agency
 
@@ -133,12 +133,12 @@ Very strong
 This is **the primary problem AGBAC solves**.
 
 Controls:
-• Dual authorization
-• Explicit delegation
-• Time-bounded execution
-• Revocation
+* Dual authorization
+* Explicit delegation
+* Time-bounded execution
+* Revocation
 
----
+<br>
 
 ## LLM09: Overreliance on LLMs
 
@@ -149,13 +149,13 @@ Blind trust in model outputs.
 Indirect
 
 AGBAC:
-• Forces human authority checks
-• Ensures accountability
+* Forces human authority checks
+* Ensures accountability
 
 Does not:
-• Validate correctness
+* Validate correctness
 
----
+<br>
 
 ## LLM10: Improper Authorization
 
@@ -167,7 +167,7 @@ Primary mitigation
 
 AGBAC directly addresses this risk category.
 
----
+<br>
 
 ### OWASP Summary Table
 
