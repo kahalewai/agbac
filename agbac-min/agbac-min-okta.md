@@ -1,10 +1,10 @@
 # **AGBAC-Min-Okta**
 
-## **Foundational AGBAC Profile for Okta + Active Directory**
+## **Foundational AGBAC Guide for Okta + Active Directory**
 
-**Profile ID:** AGBAC-Min-Okta
+**Guide ID:** AGBAC-Min-Okta
 
-**AGBAC Version:** 1.0
+**AGBAC Version:** 1.0.0
 
 **Scope:** System-level access only
 
