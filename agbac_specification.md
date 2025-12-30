@@ -279,9 +279,9 @@ For organizations evaluating model reliability, safety or alignment.
 
 ### **6.1 Delegation Types**
 
-* **Explicit** — Human intentionally authorizes the agent (RECOMMENDED)
-* **Implicit** — Intent inferred only if explicitly permitted by policy
-* **System-Initiated** — Workflow-driven delegation
+* **Explicit** - Human intentionally authorizes the agent (RECOMMENDED)
+* **Implicit** - Intent inferred only if explicitly permitted by policy
+* **System-Initiated** - Workflow-driven delegation
 
 <br>
 
