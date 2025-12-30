@@ -16,10 +16,11 @@ Welcome to the AGBAC Open Security Specification & Reference Landing
 ## Intro
 
 
-AGBAC (Agent-Based Access Control) is an open, vendor-neutral security specification that defines how AI agents securely perform actions on behalf of human users.  AGBAC was designed to use existing Standards and Technology, extending existing IAM infrastructure (OAuth2, OIDC, RBAC, ABAC, PBAC). AGBAC introduces no new token formats, cryptographic systems, or identity providers, making AGBAC compatible with existing IAM Solutions. AGBAC addresses a rapidly emerging security challenge in enterprise systems:
+AGBAC (Agent-Based Access Control) is an open, vendor-neutral security specification that defines how AI agents securely perform actions on behalf of human users.  AGBAC was designed to use existing Standards and Technology, extending existing IAM infrastructure (OAuth2, OIDC, RBAC, ABAC, PBAC). AGBAC introduces no new token formats, cryptographic systems, or identity providers, making AGBAC compatible with existing IAM Solutions. 
 
 <br>
 
+AGBAC addresses a rapidly emerging security challenge in enterprise systems:
 > AI agents now initiate actions, but existing access control models assume a human is always the caller.
 
 <br>
@@ -32,7 +33,7 @@ AGBAC introduces a dual-subject authorization model that ensures both the human 
 
 Existing access control models assume:
 
-* *The human calls the API directly.*
+* *The human is initiating the action directly.*
 * *The system knows exactly who triggered the action.*
 
 With AI, those assumptions break.
@@ -130,164 +131,79 @@ Implement a fully functional AGBAC Solution (aka AGBAC-Full) for object/resource
 <br>
 <br>
 
+## What makes AGBAC special?
 
-
-
-
-
-## Project Status
-
-### AGBAC Specification
-
-
-
----
-
-### AGBAC-Full Implementation
-
-AGBAC-Full represents the **complete realization of the specification**, including:
-
-• Fine-grained and object-level authorization
-• Dedicated policy decision and enforcement points
-• Delegation chains and multi-agent workflows
-• Standardized AI-aware audit semantics
-• Defense-in-depth enforcement patterns
-
-Work toward AGBAC-Full reference implementations is **ongoing**.
-
----
-
-## AGBAC-Min: Foundational Implementations Available Today
-
-While AGBAC-Full is under active development, the project has released **AGBAC-Min** profiles to demonstrate that **core AGBAC security guarantees can be implemented today** using existing enterprise IAM platforms.
-
-AGBAC-Min profiles:
-• Implement a bounded subset of the AGBAC spec
-• Use native IAM configuration only
-• Require no application code changes
-• Enforce dual-subject authorization at the system boundary
-
-AGBAC-Min is designed to:
-• Enable immediate adoption
-• Build confidence in the AGBAC model
-• Provide consistent semantics across vendors
-• Create a smooth path to AGBAC-Full
-
----
-
-## Available AGBAC-Min Profiles
-
-The following foundational profiles are available today:
-
-• **AGBAC-Min-Okta**
-• **AGBAC-Min-EntraID**
-• **AGBAC-Min-Auth0**
-• **AGBAC-Min-Keycloak**
-
-Each profile is vendor-specific, self-contained, and can be implemented independently.
-
-AGBAC-Min profiles should be viewed as **foundational layers**, not the final form of AGBAC.
-
----
-
-## Core Security Principle
-
-The defining invariant of AGBAC is:
+The defining core requirement of AGBAC is:
 
 An AI agent may perform an action on behalf of a human user **only when both the agent and the human are independently authorized for that action**.
 
-This invariant applies consistently across:
-• AGBAC-Min
-• AGBAC-Full
-• All future extensions of the model
+All implementations of AGBAC accomplish this (even AGBAC-Min!). But the secret sauce is how AGBAC was built. Instead of just building something new, I did the due dilligence research to determine how existing standards and technology can be used to accomplish this. AGBAC does **not** introduce new token formats, cryptographic primitives, or identity providers.
 
----
+AGBAC is designed to:
+
+* Strengthen security without breaking existing IAM systems
+* Work with OAuth 2.0, OIDC, JWT, and enterprise IdPs
+* Preserve least-privilege principles
+* Improve auditability and accountability
+* Scale across vendors and environments
+* Support incremental adoption
+
+This means you can use AGBAC today (right now!) with your existing IAM solution, without needing to update or patch the solution. You just need to implement the vendor-specific configuration to begin your AGBAC journey (Option 2 above). And eventually, when AGBAC-Full is complete, or when your preferred vendor adopts this specification, you will be positioned to achieve Zero Trust (ZT) compliance at the AI Agent Layer. Boom!
+
+<br>
+<br>
 
 ## What the AGBAC Specification Defines
 
 The AGBAC specification defines:
 
-• AI agent identities as first-class principals
-• Human principals as the source of authority
-• Explicit delegation semantics
-• Dual-subject authorization requirements
-• Policy evaluation rules
-• Enforcement responsibilities
-• Audit and compliance requirements
-• Security and threat mitigations
-• Interoperability with existing IAM standards
+* AI agent identities as first-class principals
+* Human principals as the source of authority
+* Explicit delegation semantics
+* Dual-subject authorization requirements
+* Policy evaluation rules
+* Enforcement responsibilities
+* Audit and compliance requirements
+* Security and threat mitigations
+* Interoperability with existing IAM standards
 
-The specification does **not** introduce new token formats, cryptographic primitives, or identity providers.
+<br>
+<br>
 
----
+## How does AGBAC map to existing Security Frameworks?
 
-## Design Goals
+* A mapping of AGBAC to the AOSI Model can be found here (link)
+* A mapping of AGBAC to the OWASP Top 10 LLM Risks can be found here (link)
+* An internal (basic) Threat Model for AGBAC can be viewed here (link)
 
-AGBAC is designed to:
 
-• Strengthen security without breaking existing IAM systems
-• Work with OAuth 2.0, OIDC, JWT, and enterprise IdPs
-• Preserve least-privilege principles
-• Improve auditability and accountability
-• Scale across vendors and environments
-• Support incremental adoption
-
----
-
-## Relationship Between AGBAC-Min and AGBAC-Full
-
-AGBAC-Min and AGBAC-Full are complementary:
-
-• AGBAC-Min demonstrates what is possible today
-• AGBAC-Full defines where the industry is going
-• Both share the same core security semantics
-• AGBAC-Min implementations are forward-compatible
-
-Organizations can adopt AGBAC-Min now and evolve naturally toward AGBAC-Full as capabilities mature.
-
----
-
-## Intended Audience
-
-AGBAC is designed for:
-
-• Security architects
-• IAM engineers
-• Platform teams
-• AI infrastructure teams
-• Identity vendors
-• Open-source maintainers
-• Compliance and risk leaders
-
----
+<br>
+<br>
 
 ## Community and Collaboration
 
 AGBAC is an open initiative.
 
-The project welcomes:
-• Feedback on the specification
-• Additional AGBAC-Min vendor profiles
-• Reference implementations
-• Policy models and tooling
-• Threat analysis and security review
+The project welcomes (Fork/PR):
+* Feedback on the specification 
+* Additional AGBAC-Min vendor profile requests
+* Reference implementations
+* Policy models and tooling
+* Threat analysis and security reviews
 
-The goal is to **advance AI security collaboratively**, without vendor blame or disruption.
+The goal is to **advance AI security collaboratively** and **forward innovation in the IAM space for AI scenarios**.
 
----
+<br>
+<br>
 
 ## Licensing
 
 The AGBAC specification and all reference materials are released under the **Apache License 2.0**.
 
----
-
-## Closing Note
-
-AI agents are becoming part of the enterprise control plane.
-
-AGBAC exists to ensure that **security, accountability, and least privilege evolve alongside them**.
-
-AGBAC-Min shows what can be done today.
-AGBAC-Full defines what comes next.
+<br>
+<br>
+<br>
+<p align="center">
+▁ ▂ ▄ ▅ ▆ ▇ █   Created with Aloha by Kahalewai - 2025  █ ▇ ▆ ▅ ▄ ▂ ▁
+</p>
 
