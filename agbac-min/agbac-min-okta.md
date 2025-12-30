@@ -3,16 +3,20 @@
 ## **Foundational AGBAC Profile for Okta + Active Directory**
 
 **Profile ID:** AGBAC-Min-Okta
+
 **AGBAC Version:** 1.0
+
 **Scope:** System-level access only
+
 **Enforcement:** Okta native authorization
+
 **Code Required:** None (configuration only)
 
 ---
 
 ## **1. Purpose**
 
-AGBAC-Min-Okta is a **foundational implementation profile** of the AGBAC specification that demonstrates how **core AGBAC principles** can be realized **today** using:
+AGBAC-Min-Okta is a foundational implementation guide of the AGBAC specification that demonstrates how core AGBAC principles can be realized today using:
 
 * Okta Workforce Identity
 * Active Directory (for human identity)
@@ -20,34 +24,34 @@ AGBAC-Min-Okta is a **foundational implementation profile** of the AGBAC specifi
 * JWT custom claims
 * Okta RBAC and application assignments
 
-This profile allows organizations to **safely enable AI agents to access enterprise systems on behalf of users**, while ensuring that:
+This profile allows organizations to safely enable AI agents to access enterprise systems on behalf of users, while ensuring that:
 
 > **Both the AI agent and the human user must be independently authorized for every system access.**
 
----
+<br>
 
-## **2. What This Profile Implements (and What It Does Not)**
+## **2. What This Guide Implements (and What It Does Not)**
 
 ### **Implements**
 
-✅ Agent identities as first-class principals
-✅ Human identities from AD → Okta
-✅ Dual-subject tokens (`sub` + `act`)
-✅ Explicit delegation semantics
-✅ System-level access control
-✅ Dual-subject audit attribution
+* Agent identities as first-class principals
+* Human identities from AD → Okta
+* Dual-subject tokens (`sub` + `act`)
+* Explicit delegation semantics
+* System-level access control
+* Dual-subject audit attribution
 
 ### **Does Not Implement**
 
-❌ Object-level authorization
-❌ Policy engines (OPA/Cedar)
-❌ Multi-agent delegation chains
-❌ AI reasoning validation
-❌ Custom enforcement services
+* Object-level authorization
+* Policy engines (OPA/Cedar)
+* Multi-agent delegation chains
+* AI reasoning validation
+* Custom enforcement services
 
 These capabilities are defined in the **full AGBAC specification** and may be implemented via future AGBAC-Full profiles.
 
----
+<br>
 
 ## **3. Architecture Overview**
 
@@ -60,7 +64,7 @@ These capabilities are defined in the **full AGBAC specification** and may be im
 | Authorization | Okta Authorization Server  |
 | Target system | Okta-protected application |
 
----
+<br>
 
 ### **High-Level Flow**
 
@@ -78,7 +82,7 @@ These capabilities are defined in the **full AGBAC specification** and may be im
 7. Audit logs record both identities
 ```
 
----
+<br>
 
 ## **4. Identity Model**
 
@@ -96,7 +100,7 @@ These capabilities are defined in the **full AGBAC specification** and may be im
 | `FINANCE_APP_USERS` | Allowed to access FinanceApp |
 | `HR_APP_USERS`      | Allowed to access HRApp      |
 
----
+<br>
 
 ### **4.2 Agent Identity (Okta)**
 
@@ -115,7 +119,7 @@ Each AI agent is represented as a **distinct Okta OAuth service application**.
 | Finance AI Agent | `finance-agent-app` |
 | HR AI Agent      | `hr-agent-app`      |
 
----
+<br>
 
 ## **5. System-Level Authorization Model**
 
@@ -131,11 +135,9 @@ AND
 
 This achieves **dual-subject authorization** at the system boundary.
 
----
+<br>
 
 ## **6. Okta Configuration — Step by Step**
-
----
 
 ### **6.1 Create Okta Applications (Target Systems)**
 
@@ -150,7 +152,7 @@ For each protected system:
 * `FinanceApp`
 * `HRApp`
 
----
+<br>
 
 ### **6.2 Configure Human Access (AD → Okta)**
 
@@ -164,7 +166,7 @@ For each protected system:
 | FinanceApp  | `FINANCE_APP_USERS` |
 | HRApp       | `HR_APP_USERS`      |
 
----
+<br>
 
 ### **6.3 Create Agent OAuth Applications**
 
@@ -182,7 +184,7 @@ For each AI agent:
 | finance-agent-app | FinanceApp           |
 | hr-agent-app      | HRApp                |
 
----
+<br>
 
 ### **6.4 Authorization Server Configuration**
 
@@ -194,7 +196,7 @@ Use a **Custom Authorization Server**.
 | --------------- | --------------------- |
 | `system.access` | Generic system access |
 
----
+<br>
 
 ### **6.5 Custom Claims (Dual-Subject Token)**
 
@@ -203,7 +205,7 @@ Use a **Custom Authorization Server**.
 * Default OAuth subject
 * Automatically set to agent client ID or name
 
----
+<br>
 
 #### **Claim: `act` (Human)**
 
@@ -224,7 +226,7 @@ Create a **custom claim**:
 
 This ensures the human principal is embedded in the token.
 
----
+<br>
 
 ### **6.6 Delegation Metadata Claim**
 
@@ -241,7 +243,7 @@ Create a minimal delegation claim:
 }
 ```
 
----
+<br>
 
 ## **7. Resulting Token (Example)**
 
@@ -260,7 +262,7 @@ Create a minimal delegation claim:
 }
 ```
 
----
+<br>
 
 ## **8. Enforcement Behavior**
 
@@ -280,7 +282,7 @@ Create a minimal delegation claim:
 
 No access path exists where **only one subject** is authorized.
 
----
+<br>
 
 ## **9. Audit & Logging**
 
@@ -294,7 +296,7 @@ Okta System Logs will record:
 
 This enables **dual-subject audit trails** without additional tooling.
 
----
+<br>
 
 ## **10. Operational Guidance**
 
@@ -304,14 +306,14 @@ This enables **dual-subject audit trails** without additional tooling.
 * Remove agent assignment → access revoked
 * Disable agent OAuth app → all access revoked
 
----
+<br>
 
 ### **Least Privilege**
 
 * Agents should be assigned to **only the systems they require**
 * Humans should retain **normal RBAC discipline**
 
----
+<br>
 
 ## **11. Security Guarantees Provided**
 
@@ -323,21 +325,9 @@ AGBAC-Min-Okta guarantees:
 * Clear accountability
 * Compatibility with Zero Trust models
 
----
+<br>
 
-## **12. Extensibility**
-
-This profile is intentionally structured so that:
-
-* `AGBAC-Min-EntraID`
-* `AGBAC-Min-Auth0`
-* `AGBAC-Min-Keycloak`
-
-can be implemented using **the same semantic model**, differing only in configuration mechanics.
-
----
-
-## **13. Relationship to AGBAC-Full**
+## **12. Relationship to AGBAC-Full**
 
 AGBAC-Min-Okta implements a **bounded subset** of the AGBAC specification.
 
@@ -352,7 +342,7 @@ All future profiles remain **backward-compatible** with this foundational model.
 
 ---
 
-## **14. Philosophy**
+## **13. Philosophy**
 
 > AGBAC-Min-Okta exists to show that **stronger AI security is achievable today** using the IAM systems enterprises already trust — while providing a clear path toward more advanced enforcement models over time.
 
