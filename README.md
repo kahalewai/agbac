@@ -1,306 +1,182 @@
-# **AGBAC — AI-Agent-Based Access Control**
+# AGBAC
 
-**Open Security Specification & Reference Implementations**
-
-AGBAC is an **open, vendor-neutral access control model** designed to securely govern **AI agents acting on behalf of human users**. It extends existing IAM infrastructure (OAuth2, OIDC, RBAC, ABAC, PBAC) and introduces no new token formats, cryptographic systems, or identity providers.
-
-AGBAC solves a rapidly emerging security challenge:
-
-> **AI agents are performing actions in systems, but existing access control models assume a human is always the caller.**
-
-AGBAC ensures that **both the AI agent AND the human user are authorized** for every action.
+AI-Agent-Based Access Control
+Open Security Specification & Reference Architecture
 
 ---
 
-# 🚀 **Why AGBAC Exists**
+## Overview
 
-Existing access control models assume:
+**AGBAC (AI-Agent-Based Access Control)** is an open, vendor-neutral security specification that defines **how AI agents securely perform actions on behalf of human users** using existing identity and access management (IAM) foundations.
 
-* *The human calls the API directly.*
-* *The system knows exactly who triggered the action.*
+AGBAC addresses a fundamental shift in enterprise systems:
 
-With AI, those assumptions break.
+> AI agents now initiate actions, but existing access control models assume a human is always the caller.
 
-AI agents can:
+AGBAC introduces a **dual-subject authorization model** that ensures **both the human user and the AI agent are independently authorized for every action**.
 
-* Execute actions asynchronously
-* Perform tasks autonomously
-* Operate with long-lived sessions
-* Make calls outside the human’s direct control
-
-This creates gaps in:
-
-* Authorization
-* Audit
-* Intent verification
-* Least privilege
-* Regulatory compliance
-
-**AGBAC closes those gaps** using a **dual-subject authorization model** that works with *existing IAM tooling*.
+The AGBAC specification is publicly released and may be used, implemented, and extended by organizations, vendors, and the open-source community.
 
 ---
 
-# 🔐 **What AGBAC Provides**
+## Project Status
 
-### ✔ Dual-Subject Identity
+### AGBAC Specification
 
-Every authorized action includes:
+• The **AGBAC specification is released**
+• The specification is **open, royalty-free, and vendor-neutral**
+• The spec defines the **authoritative security model** for AGBAC
+• Organizations are encouraged to adopt, reference, and build upon it
 
-* The **agent identity** (`sub`)
-* The **human principal** (`act`)
-
-### ✔ Delegation Metadata
-
-Tokens include the **delegated intent**, timestamp, and context.
-
-### ✔ Policy Templates
-
-Reference OPA, Cedar, and Zanzibar-style rules that enforce:
-
-```
-ALLOW IFF
-  agent is authorized
-AND
-  human is authorized
-AND
-  delegation is valid
-```
-
-### ✔ Audit and Compliance
-
-Standardized audit events for:
-
-* Zero Trust
-* SOC 2
-* ISO 27001
-* NIST 800-53
-* Financial and regulated environments
-
-### ✔ Security & Threat Modeling
-
-Mitigations for:
-
-* AI privilege escalation
-* Human-overreach through AI
-* Prompt injection
-* Agent impersonation
-* Cross-user misuse
+The specification describes the **complete AGBAC model**, including identity, delegation, policy, enforcement, audit, and security considerations.
 
 ---
 
-# 📘 **AGBAC Components**
+### AGBAC-Full Implementation
 
-This repository contains:
+AGBAC-Full represents the **complete realization of the specification**, including:
 
-```
-/
-├── specs/
-│   ├── agbac-spec-v1.md            # Core specification
-│   ├── token-format.md             # Token structure & claims
-│   ├── policy-model.md             # Authorization model
-│   └── security-threat-model.md    # Threat modeling
-│
-├── architecture/
-│   ├── diagrams/                   # Sequence & architecture diagrams
-│   └── reference-architecture.md
-│
-├── ref-impl/
-│   ├── keycloak/                   # Keycloak token mapper
-│   ├── auth0/                      # Auth0 rule for dual-subject tokens
-│   ├── okta/                       # Okta/Workforce Identity example
-│   ├── cognito/                    # AWS Cognito Lambda for delegation
-│   └── agent-gateway/              # Example AI gateway (optional)
-│
-├── policy-templates/
-│   ├── opa/                        # OPA/Rego dual-subject policies
-│   ├── cedar/                      # Cedar policy examples
-│   └── zanzibar/                   # Tuple schema + example relationships
-│
-├── sdks/
-│   ├── python/
-│   ├── go/
-│   └── node/
-│
-├── tests/
-│   ├── conformance/                # Ensures compliance with the spec
-│   └── policy-tests/
-│
-└── README.md
-```
+• Fine-grained and object-level authorization
+• Dedicated policy decision and enforcement points
+• Delegation chains and multi-agent workflows
+• Standardized AI-aware audit semantics
+• Defense-in-depth enforcement patterns
+
+Work toward AGBAC-Full reference implementations is **ongoing**.
 
 ---
 
-# 🛠 **How AGBAC Works (High-Level)**
+## AGBAC-Min: Foundational Implementations Available Today
 
-### **Step 1 — Human instructs AI agent**
+While AGBAC-Full is under active development, the project has released **AGBAC-Min** profiles to demonstrate that **core AGBAC security guarantees can be implemented today** using existing enterprise IAM platforms.
 
-```
-Human → Agent: “Retrieve customer record 55239”
-```
+AGBAC-Min profiles:
+• Implement a bounded subset of the AGBAC spec
+• Use native IAM configuration only
+• Require no application code changes
+• Enforce dual-subject authorization at the system boundary
 
-### **Step 2 — Agent obtains a Delegation Token**
-
-Using OAuth2 Token Exchange (RFC 8693):
-
-* `sub` = AI agent
-* `act` = human
-* `delegation` = metadata
-* `scp` = agent scopes
-* `usr_scopes` = user scopes (optional)
-
-### **Step 3 — Agent makes the API request with the token**
-
-### **Step 4 — PEP enforces dual-subject authorization**
-
-```
-ALLOW IFF agent AND human are authorized.
-```
-
-### **Step 5 — Action is executed and audit event is generated**
+AGBAC-Min is designed to:
+• Enable immediate adoption
+• Build confidence in the AGBAC model
+• Provide consistent semantics across vendors
+• Create a smooth path to AGBAC-Full
 
 ---
 
-# ⚙️ **Compatibility With Existing IAM Systems**
+## Available AGBAC-Min Profiles
 
-AGBAC works natively with:
+The following foundational profiles are available today:
 
-* **OAuth2 / OIDC**
-* **JWT**
-* **RFC 8693 Token Exchange**
-* **RBAC / PBAC / ABAC**
-* **OPA**
-* **Cedar**
-* **Zanzibar**
-* **Keycloak**
-* **Okta / Auth0 / Azure AD**
-* **AWS IAM & Cognito**
-* **mTLS / SPIFFE identities**
+• **AGBAC-Min-Okta**
+• **AGBAC-Min-EntraID**
+• **AGBAC-Min-Auth0**
+• **AGBAC-Min-Keycloak**
 
-There are **no new token formats** and **no new cryptographic systems**.
+Each profile is vendor-specific, self-contained, and can be implemented independently.
+
+AGBAC-Min profiles should be viewed as **foundational layers**, not the final form of AGBAC.
 
 ---
 
-# 🧩 **Example Delegation Token (JWT)**
+## Core Security Principle
 
-```json
-{
-  "sub": "agent:analysis-assistant-001",
-  "act": { "sub": "user:alice@example.com" },
-  "delegation": {
-    "granted_at": "2025-12-01T15:32Z",
-    "method": "explicit",
-    "intent_summary": "Retrieve customer record 55239"
-  },
-  "scp": ["read:customers"],
-  "usr_scopes": ["read:customers"],
-  "agbac_ver": "1.0"
-}
-```
+The defining invariant of AGBAC is:
+
+An AI agent may perform an action on behalf of a human user **only when both the agent and the human are independently authorized for that action**.
+
+This invariant applies consistently across:
+• AGBAC-Min
+• AGBAC-Full
+• All future extensions of the model
 
 ---
 
-# 📜 **Specification**
+## What the AGBAC Specification Defines
 
-Full specification:
-👉 `./specs/agbac-spec-v1.md`
+The AGBAC specification defines:
 
-This document defines the authoritative behavior for:
+• AI agent identities as first-class principals
+• Human principals as the source of authority
+• Explicit delegation semantics
+• Dual-subject authorization requirements
+• Policy evaluation rules
+• Enforcement responsibilities
+• Audit and compliance requirements
+• Security and threat mitigations
+• Interoperability with existing IAM standards
 
-* Identity
-* Delegation
-* Policy
-* Enforcement
-* Security
-* Interoperability
-* Compliance
-* Conformance tests
-
----
-
-# 🧪 **Testing & Conformance**
-
-AGBAC includes:
-
-* JSON schemas for token validation
-* Policy behavior tests
-* Interop test suite
-* PEP testing examples
-
-These ensure consistent behavior across vendors and implementations.
+The specification does **not** introduce new token formats, cryptographic primitives, or identity providers.
 
 ---
 
-# 🔰 **Security & Threat Model**
+## Design Goals
 
-See:
-👉 `./specs/security-threat-model.md`
+AGBAC is designed to:
 
-The model covers:
-
-* Prompt injection risk
-* Agent/human impersonation
-* Cross-user token misuse
-* Delegation tampering
-* Replay attacks
-* Model misalignment
-* Least privilege boundaries
-* Defense-in-depth requirements
+• Strengthen security without breaking existing IAM systems
+• Work with OAuth 2.0, OIDC, JWT, and enterprise IdPs
+• Preserve least-privilege principles
+• Improve auditability and accountability
+• Scale across vendors and environments
+• Support incremental adoption
 
 ---
 
-# 🤝 **Contributing**
+## Relationship Between AGBAC-Min and AGBAC-Full
 
-AGBAC welcomes contributions from:
+AGBAC-Min and AGBAC-Full are complementary:
 
-* Security engineers
-* IAM architects
-* AI safety researchers
-* Policy engine maintainers
-* Cloud providers
-* Open-source communities
+• AGBAC-Min demonstrates what is possible today
+• AGBAC-Full defines where the industry is going
+• Both share the same core security semantics
+• AGBAC-Min implementations are forward-compatible
 
-Please read:
-👉 `CONTRIBUTING.md`
-👉 `CODE_OF_CONDUCT.md`
+Organizations can adopt AGBAC-Min now and evolve naturally toward AGBAC-Full as capabilities mature.
 
 ---
 
-# 🧭 **Roadmap**
+## Intended Audience
 
-### **v1.0**
+AGBAC is designed for:
 
-* Core specification
-* Reference implementations for major IdPs
-* OPA/Cedar policy templates
-* Initial conformance suite
-
-### **v1.1**
-
-* AI observation & reasoning audit fields
-* More language SDKs
-* Agent classification & trust levels
-
-### **v2.0**
-
-* Interop with autonomous agent networks
-* Signed delegation artifacts
-* Multi-agent delegation chains
+• Security architects
+• IAM engineers
+• Platform teams
+• AI infrastructure teams
+• Identity vendors
+• Open-source maintainers
+• Compliance and risk leaders
 
 ---
 
-# 📄 **License**
+## Community and Collaboration
 
-All AGBAC documentation, code, and specs are released under:
-**Apache License 2.0**
+AGBAC is an open initiative.
+
+The project welcomes:
+• Feedback on the specification
+• Additional AGBAC-Min vendor profiles
+• Reference implementations
+• Policy models and tooling
+• Threat analysis and security review
+
+The goal is to **advance AI security collaboratively**, without vendor blame or disruption.
 
 ---
 
-# ⭐ **Support the Project**
+## Licensing
 
-If you believe AGBAC strengthens AI security, please consider:
+The AGBAC specification and all reference materials are released under the **Apache License 2.0**.
 
-* Starring the repo ⭐
-* Sharing with your security/IAM teams
-* Submitting issues
-* Contributing implementations for other identity systems
+---
+
+## Closing Note
+
+AI agents are becoming part of the enterprise control plane.
+
+AGBAC exists to ensure that **security, accountability, and least privilege evolve alongside them**.
+
+AGBAC-Min shows what can be done today.
+AGBAC-Full defines what comes next.
 
