@@ -114,14 +114,12 @@ When implemented correctly, AGBAC-Min provides the following security posture:
 
 ## Out of Scope
 
-AGBAC-Min profiles do not:
-* Replace full AGBAC implementations
+AGBAC-Min guides do not:
+* Provide full AGBAC spec implementations
 * Provide object-level authorization
 * Introduce centralized policy engines
 * Validate AI reasoning or prompts
 * Require custom enforcement components
-
-Those capabilities are addressed in AGBAC-Full implementations.
 
 <br>
 <br>
