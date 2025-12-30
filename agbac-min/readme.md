@@ -79,19 +79,19 @@ Access is permitted only when both subjects are authorized.
 
 **AGBAC-Min-Okta**
 * Foundational AGBAC profile using Okta Workforce Identity, Active Directory, OAuth 2.0, and native application assignments.
-* GitHub: [https://github.com/your-org/agbac-min-okta](https://github.com/your-org/agbac-min-okta)
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agbac-min-okta](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-okta.md)
 
 **AGBAC-Min-EntraID**
 * Foundational AGBAC profile using Microsoft Entra ID (Azure AD), Enterprise Applications, App Registrations, and native token claims.
-* GitHub: [https://github.com/your-org/agbac-min-entra-id](https://github.com/your-org/agbac-min-entra-id)
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agbac-min-entraid](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-entraid.md)
 
 **AGBAC-Min-Auth0**
 * Foundational AGBAC profile using Auth0 Workforce or B2B Identity, Machine-to-Machine applications, RBAC, and token customization.
-* GitHub: [https://github.com/your-org/agbac-min-auth0](https://github.com/your-org/agbac-min-auth0)
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agbac-min-auth0](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-auth0.md)
 
 **AGBAC-Min-Keycloak**
 * Foundational AGBAC profile using Keycloak realms, service accounts, client roles, and protocol mappers.
-* GitHub: [https://github.com/your-org/agbac-min-keycloak](https://github.com/your-org/agbac-min-keycloak)
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agbac-min-keycloak](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-keycloak.md)
 
 <br>
 
