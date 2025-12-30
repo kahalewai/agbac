@@ -1,9 +1,9 @@
 # Threat Model for AGBAC
 
 <br>
-<br>
 
-## 3.1 Assets Protected
+
+## Assets Protected
 
 * Enterprise systems
 * Sensitive data
@@ -13,7 +13,7 @@
 
 <br>
 
-## 3.2 Threat Actors
+## Threat Actors
 
 * Malicious users
 * Compromised AI agents
@@ -23,7 +23,7 @@
 
 <br>
 
-## 3.3 Threats and Mitigations
+## Threats and Mitigations
 
 ### Threat: AI Privilege Escalation
 
@@ -121,7 +121,7 @@ Residual Risk: Medium (standard OAuth risk)
 
 <br>
 
-## 3.4 Out of Scope
+## Out of Scope
 
 AGBAC does not prevent:
 * Malicious authorized users
