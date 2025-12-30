@@ -12,7 +12,7 @@
 
 **Code Required:** None (configuration only)
 
----
+<br>
 
 ## **1. Purpose**
 
