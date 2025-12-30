@@ -109,7 +109,7 @@ Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (
 * AGBAC-Min is a bounded sub-set of the full AGBAC specification ([link](https://github.com/kahalewai/agbac/tree/main/agbac-min))
 * Works with your existing Enterprise IAM Solutions right now; No patch or update required (custom config)
 * Provides system-level access control, native IAM configuration/scope only (remember, this is Minimal)
-* Enforce dual-subject authorization at the system boundary; Supports both Agent and Human access and authorization out-of-the-box
+* Enforce dual-subject authorization at system boundary; Supports both Agent and Human access and authorization
 * Are you using Okta? Go directly to AGBAC-Min-Okta now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-okta.md))
 * Are you using EntraID? Go directly to AGBAC-Min-EntraID now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-entraid.md))
 * Are you using Auth0? Go directly to AGBAC-Min-Auth0 now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-auth0.md))
