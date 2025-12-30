@@ -124,14 +124,14 @@ Implement a fully functional AGBAC Solution (aka AGBAC-Full) for object/resource
 * Development of AGBAC-Full will begin Jan 2026, and espected to be complete Feb 2026
 * Will work with your existing Enterprise IAM Solutions; Vendor-neutral PEP will be provided
 * Provides object/resource-level access control, enhanced scope for agent-aware IAM Solutions
-* Will support delegation chains and multi-agent workflows
-* Will provide standardized AI-aware audit semantics
+* Will support delegation chains and multi-agent workflows, supporting advanced configurations
+* Will provide standardized AI-aware audit semantics, allowing your organization to fully audit agent interactions
 * Implements defense in depth patterns and positions your organization for Zero Trust compliance at the Agent Layer
 
 <br>
 <br>
 
-## What makes AGBAC special?
+## What makes AGBAC effective out-of-the-box?
 
 The defining core requirement of AGBAC is:
 
@@ -198,7 +198,7 @@ The goal is to **advance AI security collaboratively** and **forward innovation 
 
 ## Licensing
 
-The AGBAC specification and all reference materials are released under the **Apache License 2.0**.
+The AGBAC specification and all reference materials are released under the Apache License 2.0.
 
 <br>
 <br>
