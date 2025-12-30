@@ -48,7 +48,7 @@ Thus, AGBAC is designed to be implemented using existing IAM systems without req
 
 ---
 
-## **1.1 Non-Goals**
+## **1.1 Out of Scope**
 
 AGBAC does not:
 
