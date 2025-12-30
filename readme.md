@@ -93,7 +93,7 @@ ALLOW IFF agent AND human are authorized.
 
 **Option 1 - Use the Specification to Build/Create**
 
-Use the Specification to build your own Implementation (for Vendors, Product Owners, IAM Providers, etc)
+Use the Specification to build your own custom implementation (for Vendors, Product Owners, IAM Providers, etc)
 * The AGBAC specification v1.0.0 is released (link)
 * The specification is open, royalty-free, and vendor-neutral
 * The spec defines the authoritative security model for AGBAC
@@ -119,7 +119,7 @@ Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (
 
 **Option 3 - Use AGBAC Full when development is complete/released**
 
-Implement a fully functional AGBAC Solution (aka AGBAC-Full) for object/resource-level access when development is complete
+Implement a fully functional AGBAC Solution (aka AGBAC-Full) for object/resource-level access (coming soon)
 * AGBAC-Full is a vendor-neutral full implementation of the AGBAC specification
 * Development of AGBAC-Full will begin Jan 2026, and espected to be complete Feb 2026
 * Will work with your existing Enterprise IAM Solutions; Vendor-neutral PEP will be provided
@@ -137,7 +137,7 @@ The defining core requirement of AGBAC is:
 
 > An AI agent may perform an action on behalf of a human user **only when both the agent and the human are independently authorized for that action**.
 
-All implementations of AGBAC accomplish this (even AGBAC-Min!). But the secret sauce is how AGBAC was built. Instead of just building something new, I did the due dilligence research to determine how existing standards and technology can be used to accomplish this. AGBAC does **not** introduce new token formats, cryptographic primitives, or identity providers.
+All implementations of AGBAC accomplish this (even AGBAC-Min!); But the secret sauce is how AGBAC was built. Instead of building something completely new, I did the due dilligence research to determine how existing standards and technology can be used to accomplish this. AGBAC does **not** introduce new token formats, cryptographic primitives, or identity providers.
 
 AGBAC is designed to:
 
