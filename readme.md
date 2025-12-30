@@ -63,7 +63,7 @@ This creates gaps in:
 **Step 1 - Human instructs AI agent**
 
 ```
-Human → Agent: “Retrieve customer record 55239”
+Human → Agent: “Retrieve customer record xyz123”
 ```
 
 **Step 2 - Agent obtains a Delegation Token**
@@ -94,7 +94,7 @@ ALLOW IFF agent AND human are authorized.
 **Option 1 - Use the Specification to Build/Create**
 
 Use the Specification to build your own custom implementation (for Vendors, Product Owners, IAM Providers, etc)
-* The AGBAC specification v1.0.0 is released (link)
+* The AGBAC specification v1.0.0 is released ([link](https://github.com/kahalewai/agbac/blob/main/agbac_specification.md))
 * The specification is open, royalty-free, and vendor-neutral
 * The spec defines the authoritative security model for AGBAC
 * Organizations are encouraged to adopt, reference, and build upon it
@@ -106,14 +106,14 @@ The specification describes the complete AGBAC model, including identity, delega
 **Option 2 - Use AGBAC Minimal today with existing IAM Solutions**
 
 Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (**Let's GOOOOO!!!**)
-* AGBAC-Min is a bounded sub-set of the full AGBAC specification (link)
+* AGBAC-Min is a bounded sub-set of the full AGBAC specification ([link](https://github.com/kahalewai/agbac/tree/main/agbac-min))
 * Works with your existing Enterprise IAM Solutions right now; No patch or update required (custom config)
 * Provides system-level access control, native IAM configuration/scope only (remember, this is Minimal)
 * Enforce dual-subject authorization at the system boundary; Supports both Agent and Human access and authorization out-of-the-box
-* Are you using Okta? Go directly to AGBAC-Min-Okta now! (link)
-* Are you using EntraID? Go directly to AGBAC-Min-EntraID now! (link)
-* Are you using Auth0? Go directly to AGBAC-Min-Auth0 now! (link)
-* Are you using Keycloak? Go directly to AGBAC-Min-Keycloak now! (link)
+* Are you using Okta? Go directly to AGBAC-Min-Okta now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-okta.md))
+* Are you using EntraID? Go directly to AGBAC-Min-EntraID now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-entraid.md))
+* Are you using Auth0? Go directly to AGBAC-Min-Auth0 now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-auth0.md))
+* Are you using Keycloak? Go directly to AGBAC-Min-Keycloak now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-keycloak.md))
 
 <br>
 
@@ -170,11 +170,11 @@ The AGBAC specification defines:
 <br>
 <br>
 
-## How does AGBAC map to existing Security Frameworks?
+## Security and Mapping of AGBAC
 
-* A mapping of AGBAC to the AOSI Model can be found here (link)
-* A mapping of AGBAC to the OWASP Top 10 LLM Risks can be found here (link)
-* An internal (basic) Threat Model for AGBAC can be viewed here (link)
+* A mapping of AGBAC to the AOSI Model can be found here ([link](https://github.com/kahalewai/agbac/blob/main/aosi_mapping.md))
+* A mapping of AGBAC to the OWASP Top 10 LLM Risks can be found here ([link](https://github.com/kahalewai/agbac/blob/main/owasp_mapping.md))
+* A Threat Model for AGBAC can be viewed here ([link](https://github.com/kahalewai/agbac/blob/main/threat_model.md))
 
 
 <br>
