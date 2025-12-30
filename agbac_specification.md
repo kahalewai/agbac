@@ -539,6 +539,8 @@ Audit System: Log AGBAC event
 
 ## **15. Conformance**
 
+An implementation is AGBAC-conformant if…
+
 ### **REQUIRED**
 
 1. Uses dual-subject tokens including `sub` and `act` claims
@@ -554,6 +556,7 @@ Audit System: Log AGBAC event
 2. Supports OPA or Cedar policy templates
 3. Supports explicit delegation workflows
 
+Implementations that omit any REQUIRED behavior MUST NOT claim AGBAC conformance.
 
 <br>
 <br>
