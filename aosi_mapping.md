@@ -4,7 +4,7 @@ AGBAC is a **security and authorization model** designed for AI agents acting on
 
 <br>
 
-The AOSI model is a **technical stack for AI systems**, from infrastructure up to application delivery. Security is a **cross-cutting concern**, so AGBAC touches multiple layers indirectly, but some layers are more relevant than others.
+The AOSI model (link) is a **technical stack for AI systems**, from infrastructure up to application delivery. Security is a **cross-cutting concern**, so AGBAC touches multiple layers indirectly, but some layers are more relevant than others.
 
 <br>
 
