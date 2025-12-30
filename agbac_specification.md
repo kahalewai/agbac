@@ -1,8 +1,8 @@
-# **AGBAC — AI-Agent-Based Access Control**
+# **AGBAC - Agent-Based Access Control**
 
 <br>
 
-## **Open Security Specification v1.0**
+## **Begin AGBAC Specification v1.0**
 
 **Status:** Production-Ready for Public Adoption
 
@@ -74,7 +74,7 @@ AGBAC does not:
 AGBAC extends existing IAM systems by defining how they must be used together when AI agents act on behalf of humans.
 
 
-
+<br>
 <br>
 
 ## **2. Core Principles**
@@ -95,7 +95,7 @@ AGBAC extends existing IAM systems by defining how they must be used together wh
    Existing standards are reused wherever possible.
 
 
-
+<br>
 <br>
 
 ## **3. Terminology**
@@ -130,7 +130,7 @@ Policy Enforcement Point / Policy Decision Point.
 A system receiving AI agent requests.
 
 
-
+<br>
 <br>
 
 ## **4. Identity Requirements**
@@ -168,7 +168,7 @@ Examples include (non-normative):
 AGBAC does not define human authentication mechanisms.
 
 
-
+<br>
 <br>
 
 ## **5. Delegation Token Requirements**
@@ -272,7 +272,7 @@ For organizations evaluating model reliability, safety or alignment.
 **`delegation_expiry` (OPTIONAL)**
 
 
-
+<br>
 <br>
 
 ## **6. Delegation Semantics**
@@ -295,7 +295,7 @@ Delegation must be:
 * Independently auditable
 
 
-
+<br>
 <br>
 
 ## **7. Authorization Model**
@@ -344,7 +344,7 @@ Policies MUST define:
 * Which actions require explicit delegation
 
 
-
+<br>
 <br>
 
 ## **8. Delegation Requirements**
@@ -367,7 +367,7 @@ Must be explicitly permitted by policy.
 System workflows automatically assign tasks to AI agents.
 
 
-
+<br>
 <br>
 
 ## **9. Policy Requirements**
@@ -399,7 +399,7 @@ Policies may be implemented in:
 AGBAC does not mandate a specific policy engine.
 
 
-
+<br>
 <br>
 
 ## **10. Enforcement Requirements**
@@ -432,7 +432,7 @@ Alternative mechanisms are permitted only if they provide equivalent guarantees,
 * Bounded delegation
 
 
-
+<br>
 <br>
 
 ## **11. Audit and Logging Requirements**
@@ -461,7 +461,7 @@ Audit events MUST NOT contain raw prompts or confidential user content unless ex
 Raw prompts MUST NOT be logged by default.
 
 
-
+<br>
 <br>
 
 ## **12. Security Considerations**
@@ -498,7 +498,7 @@ Delegation tokens must:
 Audit logs must be sanitized of unnecessary personal data (PII).
 
 
-
+<br>
 <br>
 
 ## **13. Interoperability**
@@ -515,7 +515,7 @@ AGBAC implementations must use existing IAM standards, including:
 No new token formats or cryptographic primitives are defined by AGBAC.
 
 
-
+<br>
 <br>
 
 ## **14. Reference Flow (Non-Normative)**
@@ -534,7 +534,7 @@ Audit System: Log AGBAC event
 ```
 
 
-
+<br>
 <br>
 
 ## **15. Conformance**
@@ -555,7 +555,7 @@ Audit System: Log AGBAC event
 3. Supports explicit delegation workflows
 
 
-
+<br>
 <br>
 
 ## **16. Versioning**
@@ -569,14 +569,14 @@ MAJOR.MINOR.PATCH
 This spec is **v1.0.0**.
 
 
-
+<br>
 <br>
 
 ## **17. Licensing**
 
-This specification is licensed under the **Apache License 2.0**.
+This specification is licensed under the Apache License 2.0.
 
 
 <br>
 
-## **End of AGBAC Specification v1.0**
+## **End AGBAC Specification v1.0**
