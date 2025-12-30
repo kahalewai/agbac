@@ -4,7 +4,8 @@
 
 Welcome to the AGBAC Open Security Specification & Reference Landing
 
-![agbac6-small](https://github.com/user-attachments/assets/27872815-da23-4ef2-82f6-a2ffd8af1941)
+
+<img width="237" height="314" alt="agbac-final" src="https://github.com/user-attachments/assets/118e76e3-dab4-45e7-8147-07e0cd48c7fb" />
 
 
 
