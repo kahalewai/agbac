@@ -3,7 +3,7 @@
 AGBAC (AI-Agent-Based Access Control) integrates cleanly with Zero Trust Architecture (ZTA) by adding explicit authorization controls for **AI agents acting on behalf of human users**.
 This document maps AGBAC elements to NIST 800-207 Zero Trust Architecture components and principles.
 
----
+<br>
 
 # **1. Zero Trust Goals Addressed by AGBAC**
 
@@ -16,7 +16,7 @@ This document maps AGBAC elements to NIST 800-207 Zero Trust Architecture compon
 | **Strong identity for entities** | Agents have workload identities; users have standard enterprise identities.                         |
 | **Policy-based access**          | AGBAC mandates policy evaluation via engines (OPA, Cedar, IAM) per request.                         |
 
----
+<br>
 
 # **2. Mapping to Zero Trust Components (NIST 800-207)**
 
@@ -32,7 +32,7 @@ AGBAC-compliant PDP evaluates:
 
 AGBAC extends ZTA by requiring **dual-subject authorization**.
 
----
+<br>
 
 ## **2.2 Policy Enforcement Point (PEP)**
 
@@ -45,7 +45,7 @@ PEPs MUST:
 
 This aligns with ZTA’s requirement that enforcement is external to client systems.
 
----
+<br>
 
 ## **2.3 Identity Provider (IdP)**
 
@@ -61,7 +61,7 @@ IdPs provide:
 * Agent workload identity
 * Delegation tokens
 
----
+<br>
 
 ## **2.4 Continuous Diagnostics and Monitoring (CDM)**
 
@@ -74,7 +74,7 @@ AGBAC contributes:
 
 This enhances Zero Trust observability.
 
----
+<br>
 
 ## **2.5 Policy Engine**
 
@@ -93,7 +93,7 @@ Compatible with:
 * AWS IAM
 * Azure RBAC
 
----
+<br>
 
 ## **2.6 Threat Intelligence**
 
@@ -103,7 +103,7 @@ AGBAC audit logs enhance ZTA threat monitoring by:
 * Detecting user permission overreach
 * Highlighting compromised identities
 
----
+<br>
 
 # **3. Mapping to Zero Trust Tenets**
 
@@ -116,7 +116,7 @@ AGBAC audit logs enhance ZTA threat monitoring by:
 | **Access is dynamic and policy-driven**   | AGBAC policies account for agent, user, and context.              |
 | **Automated threat detection**            | Logs provide fine-grained attribution for detecting anomalies.    |
 
----
+<br>
 
 # **4. Zero Trust Benefits of AGBAC**
 
