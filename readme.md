@@ -180,6 +180,15 @@ The AGBAC specification defines:
 <br>
 <br>
 
+## Licensing
+
+The AGBAC specification and all reference materials are released under the Apache License 2.0.
+
+
+
+<br>
+<br>
+
 ## Community and Collaboration
 
 AGBAC is an open initiative. The project welcomes (via Fork/PR):
@@ -190,13 +199,6 @@ AGBAC is an open initiative. The project welcomes (via Fork/PR):
 * Threat analysis and security reviews
 
 The goal is to **advance AI security collaboratively** and **forward innovation in the IAM space for AI scenarios**.
-
-<br>
-<br>
-
-## Licensing
-
-The AGBAC specification and all reference materials are released under the Apache License 2.0.
 
 <br>
 <br>
