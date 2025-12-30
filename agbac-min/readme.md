@@ -1,6 +1,10 @@
+<div align="center">
+
 # AGBAC Minimal
 
 Foundational Implementation Profiles for Agent-Based Access Control
+
+</div>
 
 <br>
 
@@ -118,3 +122,10 @@ AGBAC-Min profiles do not:
 * Require custom enforcement components
 
 Those capabilities are addressed in AGBAC-Full implementations.
+
+<br>
+<br>
+<br>
+<p align="center">
+▁ ▂ ▄ ▅ ▆ ▇ █   Created with Aloha by Kahalewai - 2025  █ ▇ ▆ ▅ ▄ ▂ ▁
+</p>
