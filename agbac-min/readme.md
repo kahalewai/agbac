@@ -2,7 +2,7 @@
 
 Foundational Implementation Profiles for AI-Agent-Based Access Control
 
----
+<br>
 
 ## Overview
 
@@ -13,72 +13,72 @@ The goal of AGBAC-Min is to demonstrate that **core AGBAC security guarantees ca
 Each AGBAC-Min-<vendor> profile shows how a **bounded subset of the AGBAC specification** can be realized using **native configuration features** of a specific identity provider.
 
 AGBAC-Min is intended to:
-• Enable immediate adoption
-• Build confidence in the AGBAC model
-• Provide a consistent security story across vendors
-• Create a clean path toward future, more advanced AGBAC implementations
+* Enable immediate adoption
+* Build confidence in the AGBAC model
+* Provide a consistent security story across vendors
+* Create a clean path toward future, more advanced AGBAC implementations
 
----
+<br>
 
 ## What AGBAC-Min Is (and Is Not)
 
 ### What AGBAC-Min Is
 
 AGBAC-Min profiles:
-• Are production-realistic today
-• Use only native IAM configuration
-• Introduce AI agents as first-class identities
-• Enforce dual-subject authorization (human + agent)
-• Apply at the system / application boundary
-• Provide clear, auditable attribution
+* Are production-realistic today
+* Use only native IAM configuration
+* Introduce AI agents as first-class identities
+* Enforce dual-subject authorization (human + agent)
+* Apply at the system / application boundary
+* Provide clear, auditable attribution
 
 Each profile enforces the same core invariant:
 
 An AI agent may access a system on behalf of a human user **only if both the agent and the human are independently authorized for that system**.
 
----
+<br>
 
 ### What AGBAC-Min Is Not
 
 AGBAC-Min profiles do not:
-• Replace full AGBAC implementations
-• Provide object-level authorization
-• Introduce centralized policy engines
-• Validate AI reasoning or prompts
-• Require custom enforcement components
+* Replace full AGBAC implementations
+* Provide object-level authorization
+* Introduce centralized policy engines
+* Validate AI reasoning or prompts
+* Require custom enforcement components
 
 Those capabilities are addressed in **AGBAC-Full** implementations.
 
----
+<br>
 
 ## Why AGBAC-Min Exists
 
 Enterprises are adopting AI agents faster than IAM platforms are evolving.
 
 AGBAC-Min exists to show that:
-• Stronger AI access control does not require waiting
-• Existing IAM systems already provide key building blocks
-• AGBAC concepts can be layered safely and incrementally
-• Vendors and customers can move forward together
+* Stronger AI access control does not require waiting
+* Existing IAM systems already provide key building blocks
+* AGBAC concepts can be layered safely and incrementally
+* Vendors and customers can move forward together
 
 AGBAC-Min is intentionally **non-disruptive**, **vendor-respectful**, and **forward-looking**.
 
----
+<br>
 
 ## Core AGBAC Concepts Implemented in AGBAC-Min
 
 All AGBAC-Min profiles implement the following shared concepts:
 
-• AI agents are first-class identities
-• Humans remain the source of authority
-• Access decisions consider both identities
-• Delegation is explicit, not implicit
-• Authorization is enforced before system access
-• Audit records reflect both subjects
+* AI agents are first-class identities
+* Humans remain the source of authority
+* Access decisions consider both identities
+* Delegation is explicit, not implicit
+* Authorization is enforced before system access
+* Audit records reflect both subjects
 
 These concepts are expressed using different platform mechanisms, but the **security semantics remain identical** across vendors.
 
----
+<br>
 
 ## Available AGBAC-Min Profiles
 
@@ -90,7 +90,7 @@ Foundational AGBAC profile using Okta Workforce Identity, Active Directory, OAut
 
 GitHub: [https://github.com/your-org/agbac-min-okta](https://github.com/your-org/agbac-min-okta)
 
----
+<br>
 
 ### AGBAC-Min-EntraID
 
@@ -98,7 +98,7 @@ Foundational AGBAC profile using Microsoft Entra ID (Azure AD), Enterprise Appli
 
 GitHub: [https://github.com/your-org/agbac-min-entra-id](https://github.com/your-org/agbac-min-entra-id)
 
----
+<br>
 
 ### AGBAC-Min-Auth0
 
@@ -106,7 +106,7 @@ Foundational AGBAC profile using Auth0 Workforce or B2B Identity, Machine-to-Mac
 
 GitHub: [https://github.com/your-org/agbac-min-auth0](https://github.com/your-org/agbac-min-auth0)
 
----
+<br>
 
 ### AGBAC-Min-Keycloak
 
@@ -114,7 +114,7 @@ Foundational AGBAC profile using Keycloak realms, service accounts, client roles
 
 GitHub: [https://github.com/your-org/agbac-min-keycloak](https://github.com/your-org/agbac-min-keycloak)
 
----
+<br>
 
 ## Choosing the Right Profile
 
@@ -124,67 +124,67 @@ You do not need to read or implement other profiles to use one successfully.
 
 If your organization uses multiple IAM platforms, AGBAC-Min profiles can be implemented **in parallel** while preserving consistent security semantics.
 
----
+<br>
 
 ## Security Guarantees Provided by All AGBAC-Min Profiles
 
 All AGBAC-Min profiles guarantee:
 
-• No agent-only access
-• No human-only proxy access
-• No implicit privilege escalation through AI
-• Explicit delegation semantics
-• Clear dual-subject auditability
-• Compatibility with Zero Trust models
+* No agent-only access
+* No human-only proxy access
+* No implicit privilege escalation through AI
+* Explicit delegation semantics
+* Clear dual-subject auditability
+* Compatibility with Zero Trust models
 
----
+<br>
 
 ## Operational Characteristics
 
 AGBAC-Min profiles:
-• Require no application code changes
-• Use existing IAM operational processes
-• Support immediate revocation
-• Align with least-privilege principles
-• Scale across teams and environments
+* Require no application code changes
+* Use existing IAM operational processes
+* Support immediate revocation
+* Align with least-privilege principles
+* Scale across teams and environments
 
----
+<br>
 
 ## Relationship to the AGBAC Specification
 
 AGBAC-Min implements a **bounded subset** of the AGBAC specification.
 
 It is intentionally designed to:
-• Be backward-compatible with existing IAM practices
-• Be forward-compatible with future AGBAC-Full implementations
+* Be backward-compatible with existing IAM practices
+* Be forward-compatible with future AGBAC-Full implementations
 
 AGBAC-Min profiles should be viewed as:
 **Foundational enforcement layers**, not the final form of AGBAC.
 
----
+<br>
 
 ## Path Forward: AGBAC-Full
 
 Future AGBAC-Full implementations may include:
-• Object-level access control
-• Policy decision and enforcement points
-• Delegation chains and reasoning
-• AI-aware authorization semantics
+* Object-level access control
+* Policy decision and enforcement points
+* Delegation chains and reasoning
+* AI-aware authorization semantics
 
 AGBAC-Min provides the **starting point** for that evolution.
 
----
+<br>
 
 ## Community and Contributions
 
 AGBAC-Min is intended to:
-• Encourage collaboration across vendors
-• Support security researchers and practitioners
-• Enable consistent industry discussions
-• Avoid blame or negative framing
+* Encourage collaboration across vendors
+* Support security researchers and practitioners
+* Enable consistent industry discussions
+* Avoid blame or negative framing
 
 Contributions are welcome in the form of:
-• Additional vendor profiles
-• Validation feedback
-• Operational guidance
-• Threat modeling and analysis
+* Additional vendor profiles
+* Validation feedback
+* Operational guidance
+* Threat modeling and analysis
