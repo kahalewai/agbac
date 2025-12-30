@@ -174,6 +174,7 @@ The AGBAC specification defines:
 
 * A mapping of AGBAC to the AOSI Model can be found here ([link](https://github.com/kahalewai/agbac/blob/main/aosi_mapping.md))
 * A mapping of AGBAC to the OWASP Top 10 LLM Risks can be found here ([link](https://github.com/kahalewai/agbac/blob/main/owasp_mapping.md))
+* A mapping of AGBAC to NIST 800-207 Zero Trust can be found here (link)
 * A Threat Model for AGBAC can be viewed here ([link](https://github.com/kahalewai/agbac/blob/main/threat_model.md))
 
 
