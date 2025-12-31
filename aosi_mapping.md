@@ -1,14 +1,18 @@
-# Mapping of AGBAC to AOSI
+# Mapping of AGBAC to the AOSI Model
+
+<br>
 
 AGBAC is a **security and authorization model** designed for AI agents acting on behalf of humans. It is primarily concerned with **identity, delegation, authorization, policy enforcement, and auditing**.
 
 <br>
 
+
 The AOSI model ([link](https://github.com/kahalewai/aosi)) is a **technical stack for AI systems**, from infrastructure up to application delivery. Security is a **cross-cutting concern**, so AGBAC touches multiple layers indirectly, but some layers are more relevant than others.
 
 <br>
 
-### **AOSI Layer Analysis**
+
+### **AOSI Model Layer Analysis**
 
 | AOSI Layer                   | Relation to AGBAC | Details                                                                                                                                                                                                                                                                                                                                                  |
 | ----------------------------   | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -36,7 +40,7 @@ This shows that while AGBAC does not require changes to model training or data p
 
 <br>
 
-# Conclusion
+### Conclusion
 
 **AGBAC is primarily focused on Layers 4 and 6 of the AOSI stack**:
 
