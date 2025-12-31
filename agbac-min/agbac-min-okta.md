@@ -34,6 +34,7 @@ This profile allows organizations to safely enable AI agents to access enterpris
 
 ### **Implements**
 
+* A sub-set of AGBAC capabilities
 * Agent identities as first-class principals
 * Human identities from AD → Okta
 * Dual-subject tokens (`sub` + `act`)
@@ -43,6 +44,7 @@ This profile allows organizations to safely enable AI agents to access enterpris
 
 ### **Does Not Implement**
 
+* The full AGBAC Specification
 * Object-level authorization
 * Policy engines (OPA/Cedar)
 * Multi-agent delegation chains
