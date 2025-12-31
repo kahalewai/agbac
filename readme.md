@@ -138,7 +138,7 @@ The defining core requirement of AGBAC is:
 
 > An AI agent may perform an action on behalf of a human user **only when both the agent and the human are independently authorized for that action**.
 
-All implementations of AGBAC accomplish this (even AGBAC-Min) but the secret sauce is how AGBAC was built. Instead of building something completely new, I did the due dilligence research to determine how existing standards and technology can be used to accomplish this. AGBAC does **not** introduce new token formats, cryptographic primitives, or identity providers.
+All implementations of AGBAC accomplish this (even AGBAC-Min) but the secret sauce is how AGBAC was built. Instead of building something completely new, performed the due diligence research to determine how existing standards and technology can be used to accomplish this. AGBAC does **not** introduce new token formats, cryptographic primitives, or identity providers. This means it works with all existing IAM Solutions!
 
 AGBAC is designed to:
 
