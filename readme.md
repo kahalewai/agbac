@@ -110,9 +110,8 @@ Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (
 * AGBAC-Min is a bounded sub-set of the full AGBAC specification ([link](https://github.com/kahalewai/agbac/tree/main/agbac-min))
 * Works with your existing Enterprise IAM Solutions right now; No patch or update required (custom config)
 * Provides system/app-level access control, native IAM configuration/scope only (remember, this is Minimal)
-* Enforce dual-subject authorization at system/app boundary; access control for both human user and agent
-* Requires that your IAM Solution is configured to allow access for both human and agent (existing approval workflows)
-* Supports single or multi-agent workflows (when agents use OAuth); no changes to agent code
+* Enforce dual-subject authorization at system/app boundary; access control and logging for human and agent
+* Easy first step towards Zero Trust alignment and enforcement of agentic workflows and access
 * Are you using Okta? Go directly to AGBAC-Min-Okta now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-okta.md))
 * Are you using EntraID? Go directly to AGBAC-Min-EntraID now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-entraid.md))
 * Are you using Auth0? Go directly to AGBAC-Min-Auth0 now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-auth0.md))
@@ -122,12 +121,12 @@ Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (
 
 **Option 3 - Use AGBAC Full when development is complete/released**
 
-Implement a fully functional AGBAC Solution (aka AGBAC-Full) for object/resource-level access (coming soon)
+Implement a fully functional AGBAC Solution (aka AGBAC-Full) for object/resource-level access (coming soon; Feb '26)
 * AGBAC-Full is a vendor-neutral full implementation of the AGBAC specification
 * Development of AGBAC-Full will begin Jan 2026, and espected to be complete Feb 2026
 * Will work with your existing Enterprise IAM Solutions; Vendor-neutral PEP will be provided
 * Provides object/resource-level access control, enhanced scope for agent-aware IAM Solutions
-* Will support RFC 8693 Token Exchange and dynamic/implicit delegation on the Human Users behalf
+* Will support RFC 8693 Token Exchange and dynamic/implicit delegation on the human users behalf
 * Will support delegation chains and multi-agent workflows, supporting advanced agentic configurations
 * Will provide standardized AI-aware audit semantics, allowing your organization to fully audit agent interactions
 * Implements defense in depth patterns and positions your organization for Zero Trust compliance at the Agent Layer
