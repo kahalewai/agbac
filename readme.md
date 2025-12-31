@@ -1,10 +1,10 @@
 <div align="center">
 
-# AGBAC Agent Based Access Control
+# AGBAC AGent Based Access Control
 
 Welcome to the AGBAC Open Security Specification & Reference Landing
 
-
+<br>
 
 ![agbac11-small](https://github.com/user-attachments/assets/22c4208d-dc6e-4524-8f2a-41376649b1ad)
 
