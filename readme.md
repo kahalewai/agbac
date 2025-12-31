@@ -206,6 +206,7 @@ The goal is to **advance AI security collaboratively** and **forward innovation 
 <br>
 <br>
 <p align="center">
-▁ ▂ ▄ ▅ ▆ ▇ █   Created with Aloha by Kahalewai - 2025  █ ▇ ▆ ▅ ▄ ▂ ▁
+▁ ▂ ▂ ▃ ▃ ▄ ▄ ▅ ▅ ▆ ▆ Created with Aloha by Kahalewai - 2025 ▆ ▆ ▅ ▅ ▄ ▄ ▃ ▃ ▂ ▂ ▁
+
 </p>
 
