@@ -111,9 +111,9 @@ Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (
 * Enforce dual-subject authorization at system/app boundary; access control and logging for human and agent
 * Easy first step towards Zero Trust alignment and enforcement of agentic workflows and access
 * Are you using Okta? Go directly to AGBAC-Min-Okta now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-okta.md))
-* Are you using EntraID? Go directly to AGBAC-Min-EntraID now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-entraid.md))
-* Are you using Auth0? Go directly to AGBAC-Min-Auth0 now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-auth0.md))
-* Are you using Keycloak? Go directly to AGBAC-Min-Keycloak now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-keycloak.md))
+* Are you using EntraID? Go directly to AGBAC-Min-EntraID now! (coming soon!)
+* Are you using Auth0? Go directly to AGBAC-Min-Auth0 now! (coming soon!)
+* Are you using Keycloak? Go directly to AGBAC-Min-Keycloak now! (coming soon!)
 
 <br>
 
