@@ -150,8 +150,9 @@ AGBAC-Min guides do not:
 ## When will AGBAC-Full be available?
 
 AGBAC-Full details:
-* Will provide a full AGBAC spec implementations
-* Development starting Jan '26 (expected completion Feb '26)
+* AGBAC-Full will provide a full AGBAC spec implementation
+* AGBAC-Full will work with your existing IAM solution(s)
+* AGBAC-Full development starting Jan '26 (expected completion Feb '26)
 
 
 
