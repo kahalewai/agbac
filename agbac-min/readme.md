@@ -134,7 +134,7 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 <br>
 <br>
 
-## Out of Scope
+## Out of Scope for AGBAC-Min
 
 AGBAC-Min guides do not:
 * Provide full AGBAC spec implementations
@@ -143,6 +143,17 @@ AGBAC-Min guides do not:
 * Perform RFC 8693 token exchange
 * Support dynamic delegation
 * Provide automated implementations
+
+<br>
+<br>
+
+## When will AGBAC-Full be available?
+
+AGBAC-Full details:
+* Will provide a full AGBAC spec implementations
+* Development starting Jan '26 (expected completion Feb '26)
+
+
 
 <br>
 <br>
