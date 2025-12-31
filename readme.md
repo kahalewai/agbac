@@ -75,7 +75,7 @@ Using OAuth2 Token Exchange (RFC 8693):
 * `scp` = agent scopes
 * `usr_scopes` = user scopes (optional)
 
-**Step 3 - Agent makes the API request with the token**
+**Step 3 - Agent makes the access request with the token**
 
 **Step 4 - PEP enforces dual-subject authorization**
 
