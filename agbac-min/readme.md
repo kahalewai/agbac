@@ -2,7 +2,7 @@
 
 # AGBAC Minimal
 
-AGBAC-Min Implementation Guides
+Implementing dual-subject authorization for humans and agents at system / application layer
 
 </div>
 
@@ -45,6 +45,7 @@ The concept of AGBAC-Min focuses on system-level access control, showing that:
 * Audit records reflect both subjects
 
 <br>
+<br>
 
 **Key Characteristics**
 
@@ -57,6 +58,7 @@ The concept of AGBAC-Min focuses on system-level access control, showing that:
 | Enforcement        | Existing IAM mechanisms             |
 | Code required      | None or minimal configuration logic |
 
+<br>
 <br>
 
 **Conceptual Flow**
@@ -73,6 +75,7 @@ Human → AI Agent → Identity Platform → Target System
 
 Access is permitted only when both subjects are authorized.
 
+<br>
 <br>
 
 ## Available AGBAC-Min Guides
@@ -99,6 +102,7 @@ Guides and their resulting implementations are independent, and do not depend on
 
 
 <br>
+<br>
 
 ## Wait, so it works with my existing enterprise IAM Solution?
 
@@ -107,10 +111,8 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 * You will need to create or use existing organizational authorization approval workflows
 * You will configure your IAM solution system / application access policies once approved
 * Your existing IAM solution will now process/log requests for humans and agents (dual-subject)
-* You will be able to enforce authorization requirements for both humans and agents
 * Works with single or multi-agent systems; agents can use default OAuth clients
-
-<br>
+* You will be able to enforce authorization requirements for both humans and agents
 
 <br>
 
@@ -122,8 +124,14 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 | ✅              | ❌              | DENY   |
 | ❌              | ❌              | DENY   |
 
+<br>
 
+* This will not interfere with or impact existing authorizations for humans only (different tokens)
+* You will now be able to log agent requests on behalf of human users (security attribution)
+* Dual-subject authorizations are maintained the same way as traditional human only authorizations
+* You just majorly upgraded your IAM capabilities without needing an entire new solution
 
+<br>
 <br>
 
 ## Out of Scope
