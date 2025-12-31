@@ -2,7 +2,7 @@
 
 # AGBAC Minimal
 
-Foundational Implementation Profiles for Agent-Based Access Control
+AGBAC-Min Implementation Guides
 
 </div>
 
@@ -10,7 +10,7 @@ Foundational Implementation Profiles for Agent-Based Access Control
 
 ## Intro
 
-AGBAC Minimal (AGBAC-Min) is a collection of foundational, vendor-specific implementation guides for the Agent-Based Access Control (AGBAC) specification. The goal of AGBAC-Min is to demonstrate that a sub-set of AGBAC security capabilities can be implemented today using existing enterprise IAM platforms without custom code, external policy engines, or new infrastructure. Each AGBAC-Min-<vendor> guide shows how a bounded subset of the AGBAC specification can be implemented using native configuration features of a specific identity provider.
+AGBAC Minimal (AGBAC-Min) is a collection of foundational, vendor-specific implementation guides for the Agent-Based Access Control (AGBAC) specification. The goal of AGBAC-Min is to demonstrate that a sub-set of AGBAC security capabilities can be implemented today using existing enterprise IAM platforms without custom code, external policy engines, or new infrastructure. Each AGBAC-Min guide shows how a bounded subset of the AGBAC specification can be implemented using native configuration features of a specific identity provider.
 
 AGBAC-Min is intended to:
 * Make AGBAC concepts tangible and adoptable
@@ -97,18 +97,18 @@ Access is permitted only when both subjects are authorized.
 
 Guides and their resulting implementations are independent, and do not depend on each-other. If your organization uses multiple IAM platforms, AGBAC-Min profiles can be implemented in parallel while preserving consistent security semantics.
 
+
 <br>
 
-## What security posture does AGBAC provide?
+## Wait, so it works with my existing enterprise IAM Solution?
 
-When implemented correctly, AGBAC-Min provides the following security posture:
+That's right, AGBAC-Min was designed to work with your existing enterprise IAM solution:
+* You will need to configure your IAM solution to support AGBAC-Min (follow the guides)
+* You will need to create or use existing organizational authorization approval workflows
+* You will configure your IAM solution system / application access policies once approved
+* Your existing IAM solution will now process/log requests for humans and agents (dual-subject)
+* You will be able to enforce authorization requirements for both humans and agents
 
-* No agent-only access
-* No human-only proxy access
-* No implicit privilege escalation through AI
-* Explicit delegation semantics
-* Clear dual-subject auditability
-* Compatibility with Zero Trust models
 
 <br>
 
@@ -124,6 +124,10 @@ AGBAC-Min guides do not:
 <br>
 <br>
 <br>
+<br>
+<br>
 <p align="center">
-▁ ▂ ▄ ▅ ▆ ▇ █   Created with Aloha by Kahalewai - 2025  █ ▇ ▆ ▅ ▄ ▂ ▁
+▁ ▂ ▂ ▃ ▃ ▄ ▄ ▅ ▅ ▆ ▆ Created with Aloha by Kahalewai - 2025 ▆ ▆ ▅ ▅ ▄ ▄ ▃ ▃ ▂ ▂ ▁
+
 </p>
+
