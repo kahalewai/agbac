@@ -140,8 +140,9 @@ AGBAC-Min guides do not:
 * Provide full AGBAC spec implementations
 * Provide object-level authorization
 * Introduce centralized policy engines
-* Validate AI reasoning or prompts
-* Require custom enforcement components
+* Perform RFC 8693 token exchange
+* Support dynamic delegation
+* Provide automated implementations
 
 <br>
 <br>
