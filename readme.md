@@ -8,8 +8,6 @@ Welcome to the AGBAC Open Security Specification & Reference Landing
 
 ![agbac11-small](https://github.com/user-attachments/assets/22c4208d-dc6e-4524-8f2a-41376649b1ad)
 
-
-
 </div>
 
 <br>
@@ -106,7 +104,7 @@ The specification describes the complete AGBAC model, including identity, delega
 
 **Option 2 - Use AGBAC Minimal today with existing IAM Solutions**
 
-Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (**Let's GOOOOO!!!**)
+Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (**Let's GOOOOO!!!** 🔥 🔥 🔥)
 * AGBAC-Min is a bounded sub-set of the full AGBAC specification ([link](https://github.com/kahalewai/agbac/tree/main/agbac-min))
 * Works with your existing Enterprise IAM Solutions right now; No patch or update required (custom config)
 * Provides system/app-level access control, native IAM configuration/scope only (remember, this is Minimal)
@@ -129,7 +127,7 @@ Implement a fully functional AGBAC Solution (aka AGBAC-Full) for object/resource
 * Will support RFC 8693 Token Exchange and dynamic/implicit delegation on the human users behalf
 * Will support delegation chains and multi-agent workflows, supporting advanced agentic configurations
 * Will provide standardized AI-aware audit semantics, allowing your organization to fully audit agent interactions
-* Implements defense in depth patterns and positions your organization for Zero Trust compliance at the Agent Layer
+* Implement defense in depth patterns and position your organization for full Zero Trust compliance at agent layer
 
 <br>
 <br>
