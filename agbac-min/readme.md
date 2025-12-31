@@ -83,15 +83,15 @@ Access is permitted only when both subjects are authorized.
 
 **AGBAC-Min-EntraID**
 * Foundational AGBAC profile using Microsoft Entra ID (Azure AD), Enterprise Applications, App Registrations, and native token claims.
-* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agbac-min-entraid](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-entraid.md)
+* GitHub: (coming soon!)
 
 **AGBAC-Min-Auth0**
 * Foundational AGBAC profile using Auth0 Workforce or B2B Identity, Machine-to-Machine applications, RBAC, and token customization.
-* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agbac-min-auth0](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-auth0.md)
+* GitHub: (coming soon!)
 
 **AGBAC-Min-Keycloak**
 * Foundational AGBAC profile using Keycloak realms, service accounts, client roles, and protocol mappers.
-* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agbac-min-keycloak](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-keycloak.md)
+* GitHub: (coming soon!)
 
 <br>
 
@@ -108,6 +108,20 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 * You will configure your IAM solution system / application access policies once approved
 * Your existing IAM solution will now process/log requests for humans and agents (dual-subject)
 * You will be able to enforce authorization requirements for both humans and agents
+* Works with single or multi-agent systems; agents can use default OAuth clients
+
+<br>
+
+<br>
+
+
+| Agent Authorized | Human Authorized | Result |
+| -------------- | -------------- | ------ |
+| ✅              | ✅              | ALLOW  |
+| ❌              | ✅              | DENY   |
+| ✅              | ❌              | DENY   |
+| ❌              | ❌              | DENY   |
+
 
 
 <br>
