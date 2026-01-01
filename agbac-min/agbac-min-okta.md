@@ -516,6 +516,335 @@ In a client credentials flow, Okta cannot infer the human identity. So you must 
 
 
 
+    In AGBAC-Min, the agent does not discover, select, or assert the human identity during token issuance.
+
+    The agent already knows the human because the request is executed inside a human-bound application context, and Okta enforces authorization by requiring that both the agent and the human are independently assigned to the same application.
+
+There is no human selection step in Okta. There is no human impersonation by the agent. There is no delegation decision made at token time.
+The Core Invariant of AGBAC-Min
+
+AGBAC-Min enforces this rule:
+
+    An agent token is valid only when used inside a request path that is already bound to a human-authorized application session.
+
+This is what makes AGBAC-Min system-level access control, not object-level delegation.
+
+
+❌ The agent cannot:
+
+    Choose a human
+    Inject a human into the token
+    Request a token “for user X”
+    Act across users
+
+✅ The agent can:
+
+    Execute actions within a system that already authenticated the human
+    Rely on Okta’s application assignment enforcement
+    Produce auditable agent-human attribution
+
+
+The Human Identity Exists Outside the Token
+
+The human identity is established earlier in the flow:
+
+Human → Okta → Application → Agent → System
+
+Specifically:
+
+    The human authenticates to the application via Okta (OIDC or SAML).
+
+    Okta enforces:
+        Human is assigned to the application.
+
+    The application invokes the agent within that authenticated session.
+
+    The agent executes inside the same application trust boundary.
+
+The agent is never asked:
+
+    “Who is the human?”
+
+The agent is implicitly bound to:
+
+    “The human who owns this application session.”
+
+
+Why the Agent Still Requests an OAuth Token
+
+The agent requests an OAuth token only to prove its own identity:
+
+POST /oauth2/AGBAC-Min-AS/v1/token
+grant_type=client_credentials
+
+This token answers exactly one question:
+
+    “Is this agent allowed to operate inside this application?”
+
+Not:
+
+    Who the human is
+    What the human can do
+    What object is being accessed
+
+
+How Dual-Subject Authorization Is Enforced Without Human Selection
+Enforcement Happens at the Application Boundary
+
+AGBAC-Min relies on Okta application assignment enforcement, not per-request user binding.
+
+At runtime:
+Check 	Enforced By
+Human authorized for system 	Okta application assignment
+Agent authorized for system 	Okta application assignment
+Agent identity authenticated 	OAuth client credentials
+Human session authenticated 	OIDC / SAML
+
+If either subject is not assigned, the request path cannot exist.
+
+
+What the act Claim Represents
+
+
+    The act claim is descriptive, not authoritative.
+    It represents attribution, not delegation.
+    It does not drive authorization.
+
+The real enforcement happens via:
+
+    App assignment
+    Session context
+    Request routing
+
+This is why AGBAC-Min is safe without token exchange.
+
+Even without human selection at token time:
+
+✔ Human cannot access system without assignment ✔ Agent cannot access system without assignment ✔ Agent cannot act outside a human session ✔ Agent cannot cross users ✔ All actions are attributable
+
+This satisfies AGBAC-Min’s guarantees.
+
+In AGBAC-Min, the agent does not determine or request a human identity from Okta; the human is already authenticated and authorized at the application boundary, and Okta enforces that both the agent and the human are independently assigned to the same system.
+
+
+
+
+
+    Yes. If:
+
+        Okta has already completed an organizational approval workflow (RBAC-style),
+        Both the human and the agent are explicitly assigned to the target application,
+        Okta is acting as the Authorization Server issuing agent tokens,
+        And the application enforces access using Okta application assignments and token validation,
+
+    then AGBAC-Min works correctly and safely in production.
+
+No token exchange is required. No human selection occurs at token time. No privilege escalation is introduced.
+
+
+
+
+
+
+
+
+
+
+
+Where Authorization Is Enforced
+
+This is the part that must be understood correctly.
+Authorization is NOT enforced when the token is issued
+
+At token issuance:
+
+    Okta authenticates the agent
+    Okta checks the agent is allowed to get a token
+    Okta does not evaluate the human
+
+That is intentional.
+Authorization IS enforced when the system is accessed
+
+At runtime, the system enforces:
+Check 	Enforced By
+Human authorized 	Okta app assignment / session
+Agent authorized 	Okta app assignment
+Agent authenticated 	OAuth client credentials
+Request integrity 	Token signature + TTL
+
+If any check fails → request never reaches business logic
+
+
+
+
+
+1. Application / Platform Code (Caller)
+
+The application invoking the agent must ensure:
+
+    The human is authenticated
+    The human is authorized for the system
+    The request context remains human-bound
+
+This is not new work — it already exists in RBAC systems.
+2. Okta Configuration (IAM)
+
+All AGBAC-Min enforcement happens here:
+
+    App assignments
+    OAuth client restrictions
+    Authorization server policies
+
+
+
+
+
+
+There are two different questions that often get conflated:
+
+    How does the agent know which human it is acting for?
+    How does the human end up represented in the agent’s token (act claim)?
+
+They are related, but not the same step.
+Baseline Flow (Human → App → LLM → Agent)
+
+Let’s walk the exact workflow you described.
+Step 1 — Human logs into the application
+
+Human → Okta → Application
+
+    Human authenticates via OIDC/SAML.
+
+    Application now has a verified human identity:
+        user ID
+        session
+        claims
+
+    This is already true in your system today.
+
+Nothing new yet.
+Step 2 — Human interacts with LLM inside the application
+
+Application → LLM
+
+    The LLM is operating inside the application context.
+
+    The application still knows:
+        who the human is
+        what they are allowed to do
+
+Again, nothing new.
+Step 3 — LLM decides to invoke an agent
+
+LLM → Agent
+
+⚠️ This is the critical handoff point.
+
+At this moment:
+
+    The LLM itself does not know the human identity
+    The application / orchestration layer does
+
+So yes:
+
+    The application (or LLM wrapper / orchestrator) must pass the human identity to the agent when invoking it.
+
+This is the only place where context is transferred.
+
+Example (conceptual):
+
+{
+  "human_id": "alice@corp.example",
+  "session_id": "abc123",
+  "request_id": "req-789",
+  "intent": "generate_report"
+}
+
+This is not OAuth. This is internal context propagation.
+
+
+
+
+
+
+
+Step 4 — Agent receives the request
+
+Now the agent knows:
+
+    It is acting for Alice
+    This context came from a trusted application
+    The agent did not authenticate Alice itself
+
+This satisfies:
+
+    “How does the agent know which human it is acting on behalf of?”
+
+Answer: Because the invoking application explicitly told it.
+Step 5 — Agent requests an OAuth token from Okta
+
+Now we reach the subtle part.
+What the agent sends to Okta
+
+In AGBAC-Min:
+
+grant_type=client_credentials
+
+The agent does not send:
+
+    Alice’s token
+    Alice’s ID
+    “act=alice”
+
+So you are correct that:
+
+    The agent does not pass the human identity directly to Okta in the OAuth request.
+
+So How Does act Appear in the Token?
+
+This is the crucial point.
+
+    The act claim is contextual / attributive
+    It reflects who the agent is operating for inside the application
+    It is not used by Okta to make authorization decisions
+
+act is injected by the application
+
+    The agent token identifies only the agent (sub)
+
+    The application:
+        validates the agent token
+        already knows the human
+        logs / attributes actions as:
+
+agent = finance-agent
+acting_for = alice@corp.example
+
+Here:
+
+    act may not literally be inside the JWT
+    The association exists in the request context
+
+This is still valid AGBAC-Min.
+
+
+
+In AGBAC-Min, the human identity is not authoritative at token issuance time.
+
+Instead:
+
+    The human identity is authoritative at request execution time
+
+    The agent token proves:
+        “I am an approved agent”
+
+    The application context proves:
+        “This request belongs to Alice”
+
+Together, they form dual-subject enforcement.
+
+
+
 
 
 
