@@ -131,6 +131,32 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 * Dual-subject authorizations are maintained the same way as traditional human only authorizations
 * You just majorly upgraded your IAM capabilities without needing an entire new solution
 
+
+
+<br>
+<br>
+
+## What about Multi-Agent or Advanced Scenario's?
+
+There are a range of agent architectures already implemented across the enterprise. The goal of AGBAC is to support all agent architectures; the implementation of this goal is being done in layers. AGBAC-Min is the first layer, providing the core requirements of AGBAC across a smaller scope. AGBAC introduces a new concept of dual-subject authorization, meaning that the authorization solution is now aware of both the agent making the request, and the human user that initiated the request. This new model requires that the human user identity be available.
+
+
+AGBAC-Min supports:
+* In-session agents
+* Provide object-level authorization
+* Introduce centralized policy engines
+* Perform RFC 8693 token exchange
+* Support dynamic delegation
+* Provide automated implementations
+
+<br>
+
+
+
+
+
+
+
 <br>
 <br>
 
