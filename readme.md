@@ -119,7 +119,7 @@ Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (
 
 **Option 3 - Use AGBAC Full when development is complete/released**
 
-Implement a fully functional AGBAC Solution (aka AGBAC-Full) for object/resource-level access (coming soon; Feb '26)
+Implement a fully functional AGBAC Solution (aka AGBAC-Full) for object/resource-level access (coming soon)
 * AGBAC-Full is a vendor-neutral full implementation of the AGBAC specification
 * Development of AGBAC-Full will begin Jan 2026, and espected to be complete Feb 2026
 * Will work with your existing Enterprise IAM Solutions; Vendor-neutral PEP will be provided
