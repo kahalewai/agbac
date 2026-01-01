@@ -138,24 +138,12 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 
 ## What about Multi-Agent or Advanced Scenario's?
 
-There are a range of agent architectures already implemented across the enterprise. The goal of AGBAC is to support all agent architectures; the implementation of this goal is being done in layers. AGBAC-Min is the first layer, providing the core requirements of AGBAC across a smaller scope. AGBAC introduces a new concept of dual-subject authorization, meaning that the authorization solution is now aware of both the agent making the request, and the human user that initiated the request. This new model requires that the human user identity be available.
+AGBAC-Min can support multi-agent workfows, out-of-session agents, and async execution with an optional update to the application / orchestration code. The AGBAC-Min guide provides this optional code, which passes the human subject identity `act` to the agent for token request. Without this optional update, AGBAC-Min will natively support in-session agents only (agents that are initiatived within the same authentication session as the application)
 
-
-AGBAC-Min supports:
-* In-session agents
-* Provide object-level authorization
-* Introduce centralized policy engines
-* Perform RFC 8693 token exchange
-* Support dynamic delegation
-* Provide automated implementations
-
-<br>
-
-
-
-
-
-
+* The optional update instructions and code are provided with AGBAC-Min
+* Implement the instructions in order, core implementation, then optional update
+* Be advised that adding the optional update will add an `act` claim to the agent OAuth requests
+* AGBAC-Min does not implement RFC 8693 token exchange, nor delegations (AGBAC-Full will)
 
 <br>
 <br>
