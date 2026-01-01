@@ -146,6 +146,8 @@ AGBAC-Min can support multi-agent workfows, out-of-session agents, and async exe
 * Be advised that adding the optional update will add an `act` claim to the agent OAuth requests
 * AGBAC-Min does not implement RFC 8693 token exchange, nor delegations (app is trust authority)
 
+In AGBAC-Min, the agent does not determine or request a human identity from the IAM solution; the human is already authenticated and authorized at the system or application boundary, and IAM solution enforces that both the agent and the human are independently assigned to the same system.
+
 <br>
 <br>
 
