@@ -143,7 +143,7 @@ AGBAC-Min can support multi-agent workfows, out-of-session agents, and async exe
 * The optional update instructions and code are provided with AGBAC-Min
 * Implement the instructions in order, core implementation, then optional update
 * Be advised that adding the optional update will add an `act` claim to the agent OAuth requests
-* AGBAC-Min does not implement RFC 8693 token exchange, nor delegations (AGBAC-Full will)
+* AGBAC-Min does not implement RFC 8693 token exchange, nor delegations (app is trust authority)
 
 <br>
 <br>
