@@ -318,7 +318,8 @@ Example Auth Server Configuration
 ```json
 {
   "name": "AGBAC-Min-AS",
-  "description": "Authorization server for AGBAC-Min dual-subject access control",
+  "description": "Custom Authorization server for AGBAC-Min dual-subject access control",
+  "issuerMode": "ORG_URL",
   "audiences": ["api://default"],
   "accessTokenLifetimeMinutes": 10,
   "refreshTokenLifetimeMinutes": 0,
