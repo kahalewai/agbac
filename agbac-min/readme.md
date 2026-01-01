@@ -107,6 +107,7 @@ Guides and their resulting implementations are independent, and do not depend on
 ## Wait, so it works with my existing enterprise IAM Solution?
 
 That's right, AGBAC-Min was designed to work with your existing enterprise IAM solution:
+* Follow best-practices; implement into non-prod first to test and validate
 * You will need to configure your IAM solution to support AGBAC-Min (follow the guides)
 * You will need to create or use existing organizational authorization approval workflows
 * You will configure your IAM solution system / application access policies once approved
