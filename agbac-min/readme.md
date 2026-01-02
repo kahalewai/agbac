@@ -41,6 +41,7 @@ The concept of AGBAC-Min focuses on system-level access control, showing that:
 * Tokens can carry dual-subject identity
 * Access decisions can require independent authorization
 * Delegation is explicit, not implicit
+* Agents can become aware of the associated human user
 * Authorization is enforced before system access
 * Audit records reflect both subjects
 
@@ -49,14 +50,15 @@ The concept of AGBAC-Min focuses on system-level access control, showing that:
 
 **Key Characteristics**
 
-| Aspect             | Scope                               |
-| ------------------ | ----------------------------------- |
-| Access granularity | System / application level          |
-| Identity types     | Human + agent                       |
-| Authorization      | Role-based intersection             |
-| Delegation         | Explicit                            |
-| Enforcement        | Existing IAM mechanisms             |
-| Code required      | None or minimal configuration logic |
+| Aspect              | Scope                               |
+| ------------------  | ----------------------------------- |
+| Access granularity  | System / application level          |
+| Identity types      | Human + agent                       |
+| Authorization       | Role-based intersection             |
+| Delegation          | Explicit                            |
+| Enforcement         | Existing IAM mechanisms             |
+| IAM Code required   | None or minimal configuration logic |
+| Agent Code required | Minimal to moderate updates to code |
 
 <br>
 <br>
@@ -68,7 +70,7 @@ Human → AI Agent → Identity Platform → Target System
    |         |            |
    |         |            +-- Issues dual-subject token
    |         |
-   |         +-- Authenticates as agent
+   |         +-- Authenticates as agent + human
    |
    +-- Delegates intent
 ```
@@ -78,31 +80,54 @@ Access is permitted only when both subjects are authorized.
 <br>
 <br>
 
-## Available AGBAC-Min Guides
+## Available IAM Configuration Guides
 
-**AGBAC-Min-Okta**
+**Okta**
 * Foundational AGBAC profile using Okta Workforce Identity, Active Directory, OAuth 2.0, and native application assignments.
-* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agbac-min-okta](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-okta.md)
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/guides/okta](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/okta.md)
 
-**AGBAC-Min-EntraID**
+**EntraID**
 * Foundational AGBAC profile using Microsoft Entra ID (Azure AD), Enterprise Applications, App Registrations, and native token claims.
-* GitHub: (coming soon!)
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/guides/entraid](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/entraid.md)
 
-**AGBAC-Min-Auth0**
+**Auth0**
 * Foundational AGBAC profile using Auth0 Workforce or B2B Identity, Machine-to-Machine applications, RBAC, and token customization.
-* GitHub: (coming soon!)
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/guides/auth0](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/auth0.md)
 
-**AGBAC-Min-Keycloak**
+**Keycloak**
 * Foundational AGBAC profile using Keycloak realms, service accounts, client roles, and protocol mappers.
-* GitHub: (coming soon!)
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/guides/keycloak](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/keycloak.md)
 
 <br>
 
-Guides and their resulting implementations are independent, and do not depend on each-other. If your organization uses multiple IAM platforms, AGBAC-Min profiles can be implemented in parallel while preserving consistent security semantics.
+IAM Guides and their resulting implementations are independent, and do not depend on each-other. If your organization uses multiple IAM platforms, AGBAC-Min profiles can be implemented in parallel while preserving consistent security semantics.
 
 
 <br>
 <br>
+
+## Available Application/Agent Configuration Guides
+
+**Python**
+* Python based implementation to make in-session and out-of-session agents aware of associated human identities.
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agents/python](https://github.com/kahalewai/agbac/blob/main/agbac-min/agents/python/readme.md)
+
+**TypeScript**
+* Foundational AGBAC profile using Microsoft Entra ID (Azure AD), Enterprise Applications, App Registrations, and native token claims.
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agents/typescript](https://github.com/kahalewai/agbac/blob/main/agbac-min/agents/typescript/readme.md.md)
+
+**Java**
+* Foundational AGBAC profile using Auth0 Workforce or B2B Identity, Machine-to-Machine applications, RBAC, and token customization.
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agents/java](https://github.com/kahalewai/agbac/blob/main/agbac-min/agents/java/readme.md)
+
+<br>
+
+Agent Guides and their resulting implementations are independent, and do not depend on each-other. If your organization uses multiple languages, AGBAC-Min Application/Agent Configuration Guides maintain object/artifact formatting across languages.
+
+
+<br>
+<br>
+
 
 ## Wait, so it works with my existing enterprise IAM Solution?
 
@@ -112,7 +137,8 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 * You will need to create or use existing organizational authorization approval workflows
 * You will configure your IAM solution system / application access policies once approved
 * Your existing IAM solution will now process/log requests for humans and agents (dual-subject)
-* Works with single or multi-agent systems; agents can use default OAuth clients
+* You will then update your application and agent code to become dual-subject aware
+* Works with single or multi-agent systems for most providers; agents can use default OAuth clients
 * You will be able to enforce authorization requirements for both humans and agents
 
 <br>
@@ -139,14 +165,16 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 
 ## What about Multi-Agent or Advanced Scenario's?
 
-AGBAC-Min can support multi-agent workfows, out-of-session agents, and async execution with an optional update to the application / orchestration code. The AGBAC-Min guide provides this optional code, which passes the human subject identity `act` to the agent for token request. Without this optional update, AGBAC-Min will natively support in-session agents only (agents that are initiatived within the same authentication session as the application)
+AGBAC-Min can support multi-agent workfows, out-of-session agents, and async execution with certain providers. The AGBAC-Min agents guides provides the necessary code, which passes the human subject identity `act` to the agent for token request. Without this update, AGBAC-Min will natively support in-session agents only (agents that are initiatived within the same authentication session as the application)
 
-* The optional update instructions and code are provided with AGBAC-Min
-* Implement the instructions in order, core implementation, then optional update
-* Be advised that adding the optional update will add an `act` claim to the agent OAuth requests
+* Application and agent instructions and code are provided with AGBAC-Min agent guides
+* Implement the instructions in order, starting with the adaptersm then the sender, then the requests
+* Unit tests and helper scripts are provided to verify the code is working properly and agents are aware
+* Be advised that adding these updates will add an `act` claim to the agent OAuth requests (dual-subject)
 * AGBAC-Min does not implement RFC 8693 token exchange, nor delegations (app is trust authority)
+* EntraID does not support out-of-session agents due to EntraID design. AGBAC-Full will resolve this limitation.
 
-In AGBAC-Min, the agent does not determine or request a human identity from the IAM solution; the human is already authenticated and authorized at the system or application boundary, and IAM solution enforces that both the agent and the human are independently assigned to the same system.
+In AGBAC-Min, the agent does not determine or request a human identity from the IAM solution; the human is authenticated and authorized for the application session. The human identity data is passed to the in-session or out-of-session agent for token request. The IAM solution enforces that both the agent and the human are independently authorized to access the target system or application.
 
 <br>
 <br>
@@ -169,6 +197,7 @@ AGBAC-Min guides do not:
 AGBAC-Full details:
 * AGBAC-Full will provide a full AGBAC spec implementation
 * AGBAC-Full will work with your existing IAM solution(s)
+* AGBAC-Full will allow EntraID users to support out-of-session agentic workflows
 * AGBAC-Full development starting Jan '26 (expected completion Feb '26)
 
 
