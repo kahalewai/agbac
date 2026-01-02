@@ -20,7 +20,7 @@ After completing these steps:
 * Human pre-approval (RBAC)
 * No delegation, no impersonation, no human discovery by agents
 
----
+<br>
 
 # Architectural Mapping
 
@@ -36,7 +36,7 @@ After completing these steps:
 Keycloak **does not infer the human**.
 Your **hybrid sender provides `act` explicitly**, which is correct.
 
----
+<br>
 
 # Step 0 – Prerequisites
 
@@ -47,7 +47,7 @@ You must have:
 * Realm admin privileges
 * Hybrid sender already implemented
 
----
+<br>
 
 # Step 1 – Create a Realm
 
@@ -60,7 +60,7 @@ You must have:
    * **Realm Name:** `agbac-min`
 4. Create
 
----
+<br>
 
 ### Realm JSON (Conceptual)
 
@@ -71,7 +71,7 @@ You must have:
 }
 ```
 
----
+<br>
 
 # Step 2 – Create the API (Resource Server)
 
@@ -86,7 +86,7 @@ You must have:
    * **Authorization Enabled**
    * **Service Accounts Enabled**
 
----
+<br>
 
 ### API Client JSON
 
@@ -100,7 +100,7 @@ You must have:
 }
 ```
 
----
+<br>
 
 # Step 3 – Define Scopes
 
@@ -117,7 +117,7 @@ You must have:
 
    * Name: `system.access`
 
----
+<br>
 
 ### Scope JSON
 
@@ -127,7 +127,7 @@ You must have:
 }
 ```
 
----
+<br>
 
 # Step 4 – Create Agent Clients (Service Accounts)
 
@@ -144,7 +144,7 @@ Each agent is a **confidential client**.
    * **Client authentication**
 5. Save
 
----
+<br>
 
 ### Agent Client JSON
 
@@ -157,7 +157,7 @@ Each agent is a **confidential client**.
 }
 ```
 
----
+<br>
 
 # Step 5 – Create Roles (RBAC)
 
@@ -168,7 +168,7 @@ Each agent is a **confidential client**.
 1. **Realm Roles → Create role**
 2. Name: `FinanceUser`
 
----
+<br>
 
 ## 5.2 Agent Role
 
@@ -176,7 +176,7 @@ Each agent is a **confidential client**.
 
    * Name: `FinanceAgent`
 
----
+<br>
 
 ### Roles JSON
 
@@ -192,7 +192,7 @@ Each agent is a **confidential client**.
 }
 ```
 
----
+<br>
 
 # Step 6 – Assign Roles
 
@@ -212,9 +212,9 @@ Each agent is a **confidential client**.
 
    * `FinanceAgent`
 
-🚨 **Both assignments are mandatory**
+**Both assignments are mandatory**
 
----
+<br>
 
 # Step 7 – Configure Protocol Mapper for `act`
 
@@ -226,7 +226,7 @@ Keycloak allows **custom protocol mappers** to inject claims from:
 * Request parameters
 * Client attributes
 
----
+<br>
 
 ## 7.1 Create Protocol Mapper
 
@@ -237,7 +237,7 @@ Keycloak allows **custom protocol mappers** to inject claims from:
 3. Name: `act-scope`
 4. Assign scope to API
 
----
+<br>
 
 ## 7.2 Add Mapper
 
@@ -256,7 +256,7 @@ Keycloak allows **custom protocol mappers** to inject claims from:
 | Add to userinfo     | ❌                      |
 | Claim value         | `client_assertion.act` |
 
----
+<br>
 
 ### Mapper JSON
 
@@ -276,7 +276,7 @@ Keycloak allows **custom protocol mappers** to inject claims from:
 
 > ✔ This allows Keycloak to extract `act` from the **signed JWT assertion** provided by your hybrid sender.
 
----
+<br>
 
 # Step 8 – In-Session Flow (Phase 1)
 
@@ -291,7 +291,7 @@ Keycloak allows **custom protocol mappers** to inject claims from:
    * Includes `act`
 5. Keycloak injects `act` via mapper
 
----
+<br>
 
 ### Token Example
 
@@ -303,7 +303,7 @@ Keycloak allows **custom protocol mappers** to inject claims from:
 }
 ```
 
----
+<br>
 
 # Step 9 – Out-of-Session Flow (Phase 2)
 
@@ -321,11 +321,11 @@ Keycloak allows **custom protocol mappers** to inject claims from:
    * Requests token
 5. Mapper injects `act`
 
-✔ No session required
-✔ No impersonation
-✔ Full attribution
+   * No session required
+   * No impersonation
+   * Full attribution
 
----
+<br>
 
 # Step 10 – Authorization Policies
 
@@ -338,7 +338,7 @@ Keycloak allows **custom protocol mappers** to inject claims from:
    * `FinanceAgent`
    * `FinanceUser`
 
----
+<br>
 
 ### Policy JSON
 
@@ -354,7 +354,7 @@ Keycloak allows **custom protocol mappers** to inject claims from:
 }
 ```
 
----
+<br>
 
 # Step 11 – API Enforcement
 
@@ -372,5 +372,5 @@ Your API must:
    * human (`act`)
    * request ID
 
----
+<br>
 
