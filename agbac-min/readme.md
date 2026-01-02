@@ -165,7 +165,7 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 
 ## What about Multi-Agent or Advanced Scenario's?
 
-AGBAC-Min can support multi-agent workfows, out-of-session agents, and async execution with certain providers, after updating the application and agent code. The AGBAC-Min Agent Guides provide the necessary code for applications and agents, which passes the human subject identity `act` to the agent for IAM token request. Without this update, AGBAC-Min may natively support in-session agents only (agents that are initiatived within the same authentication session as the application). We recommend updating applications and code to become agent AND human aware!
+AGBAC-Min can support multi-agent workfows, out-of-session agents, and async execution with certain providers, after updating the application and agent code. The AGBAC-Min Agent Guides provide the necessary code for applications and agents, which passes the human subject identity `act` to the agent for IAM token request. In out-of-session scenarios, the solution uses TLS and JWT to make remote agents aware of their human counterpart. Without this update, AGBAC-Min may natively support in-session agents only (agents that are initiatived within the same authentication session as the application). We recommend updating applications and code to become agent AND human aware!
 
 * Application and agent instructions and code are provided with AGBAC-Min Agent Guides
 * Implement the instructions in order, starting with the adapters, then the sender, then the requests
