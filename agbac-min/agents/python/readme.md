@@ -28,7 +28,7 @@
    /helper
    ```
 
----
+<br>
 
 ### **Step 1: Implement Adapters**
 
@@ -52,7 +52,7 @@
 3. Ensure logging and error handling are implemented in all adapters.
 4. Use these adapters in token request files for both in-session and out-of-session.
 
----
+<br>
 
 ### **Step 2: Implement Hybrid Sender**
 
@@ -75,7 +75,7 @@
 2. Implement method to generate JWT for out-of-session agent.
 3. Provide helper methods to share `act` securely.
 
----
+<br>
 
 ### **Step 3: Implement Phase 1 – In-Session**
 
@@ -96,7 +96,7 @@
 3. Use token in API/resource calls.
 4. Include error handling and logging.
 
----
+<br>
 
 ### **Step 4: Implement Phase 2 – Out-of-Session**
 
@@ -119,7 +119,7 @@
 4. Use token in API/resource calls.
 5. Include logging and error handling.
 
----
+<br>
 
 ### **Step 5: Unit Tests**
 
@@ -146,7 +146,7 @@
 2. Verify that tokens include `act`.
 3. Verify API calls succeed and logs are generated correctly.
 
----
+<br>
 
 ### **Step 6: Helper Script – Verify Agent Awareness**
 
@@ -171,7 +171,7 @@
    ```
 4. Verify success messages indicate `act` data present.
 
----
+<br>
 
 ### **Step 7: Full Workflow Example**
 
@@ -189,7 +189,7 @@
 5. **Run unit tests** to validate.
 6. **Run helper script** to confirm agent awareness of human `act`.
 
----
+<br>
 
 ### **Step 8: Logging and Error Handling**
 
@@ -200,4 +200,4 @@
   * Errors and exceptions
 * Ensure logging is standardized across adapters, token requests, and API calls.
 
----
+<br>
