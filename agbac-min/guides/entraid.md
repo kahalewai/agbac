@@ -1,4 +1,12 @@
-# **EntraID Configuration for In-Session Agents (AGBAC-Min)**
+<div align="center">
+
+# AGBAC-Min EntraID IAM Configuration Guide
+
+Implementing dual-subject authorization for humans and agents at system / application layer
+
+</div>
+
+<br>
 
 **Goal:** Configure EntraID so that in-session agents can request tokens that include **both the agent (`sub`) and human (`act`) identities**, supporting dual-subject authorization.
 
