@@ -12,17 +12,17 @@ Implementing dual-subject authorization for humans and agents at system / applic
 
 After completing these steps:
 
-✅ Every issued access token contains:
+Every issued access token contains:
 
 * `sub` → agent identity (service account / client)
 * `act` → human identity (from hybrid sender)
 
-✅ Works for:
+Works for:
 
 * **Phase 1 – In-session agents**
 * **Phase 2 – Out-of-session agents (TLS + signed JWT)**
 
-✅ Keycloak enforces:
+Keycloak enforces:
 
 * Agent pre-approval (RBAC)
 * Human pre-approval (RBAC)
