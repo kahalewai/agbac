@@ -63,7 +63,7 @@ We want this to be **fully implementable, production-grade, and correct**.
 
 3. **Securely send `act` to the out-of-session agent:**
 
-   * Since the agent is **outside the session**, the application **wraps the `act` in a signed JWT** and optionally uses TLS for transport:
+   * Since the agent is **outside the session**, the application **wraps the `act` in a signed JWT** and must use TLS for transport:
 
      * JWT is signed by the application’s key.
      * TLS ensures transport confidentiality.
