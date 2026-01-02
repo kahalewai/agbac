@@ -137,7 +137,7 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 * You will need to create or use existing organizational authorization approval workflows
 * You will configure your IAM solution system / application access policies once approved
 * Your existing IAM solution will now process/log requests for humans and agents (dual-subject)
-* You will then update your application and agent code to become dual-subject aware
+* You will then update your application and agent code to become dual-subject aware (follow the guides)
 * Works with single or multi-agent systems for most providers; agents can use default OAuth clients
 * You will be able to enforce authorization requirements for both humans and agents
 
@@ -165,10 +165,11 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 
 ## What about Multi-Agent or Advanced Scenario's?
 
-AGBAC-Min can support multi-agent workfows, out-of-session agents, and async execution with certain providers. The AGBAC-Min agents guides provides the necessary code for application and agents, which passes the human subject identity `act` to the agent for token request. Without this update, AGBAC-Min may natively support in-session agents only (agents that are initiatived within the same authentication session as the application)
+AGBAC-Min can support multi-agent workfows, out-of-session agents, and async execution with certain providers, after updating the application and agent code. The AGBAC-Min Agent Guides provide the necessary code for applications and agents, which passes the human subject identity `act` to the agent for IAM token request. Without this update, AGBAC-Min may natively support in-session agents only (agents that are initiatived within the same authentication session as the application). We recommend updating applications and code to become agent AND human aware!
 
-* Application and agent instructions and code are provided with AGBAC-Min agent guides
+* Application and agent instructions and code are provided with AGBAC-Min Agent Guides
 * Implement the instructions in order, starting with the adapters, then the sender, then the requests
+* It is intended that the code is integrated into existing applications and agents
 * Unit tests and helper scripts are provided to verify the code is working properly and agents are aware
 * Be advised that adding these updates will add an `act` claim to the agent OAuth requests (dual-subject)
 * AGBAC-Min does not implement RFC 8693 token exchange, nor delegations (app is trust authority)
