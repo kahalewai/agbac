@@ -1,3 +1,35 @@
+## **Step-by-Step Implementation Workflow: Python**
+
+---
+
+### **Step 0: Prepare Environment**
+
+1. Install Python 3.10+.
+2. Create a virtual environment:
+
+   ```bash
+   python -m venv agbac_env
+   source agbac_env/bin/activate  # Linux/macOS
+   agbac_env\Scripts\activate     # Windows
+   ```
+3. Install required packages:
+
+   ```bash
+   pip install requests pyjwt cryptography pytest
+   ```
+4. Create a project folder with subfolders for:
+
+   ```
+   /adapters
+   /sender
+   /phase1
+   /phase2
+   /tests
+   /helper
+   ```
+
+---
+
 ### **Step 1: Implement Adapters**
 
 #### **Files**
@@ -97,7 +129,6 @@
 * `tests/test_in_session_api.py`
 * `tests/test_out_of_session_token.py`
 * `tests/test_out_of_session_api.py`
-* `tests/test_adapters.py`
 
 #### **Purpose**
 
@@ -135,8 +166,8 @@
 3. Run script:
 
    ```bash
-   python helper/helper_check_act.py in_session
-   python helper/helper_check_act.py out_of_session
+   python tests/helper_check_act.py in_session
+   python tests/helper_check_act.py out_of_session
    ```
 4. Verify success messages indicate `act` data present.
 
