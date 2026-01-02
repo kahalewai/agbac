@@ -1,5 +1,13 @@
+<div align="center">
 
----
+# AGBAC-Min Okta IAM Configuration Guide
+
+Implementing dual-subject authorization for humans and agents at system / application layer
+
+</div>
+
+
+<br>
 
 # **Step 0: Prerequisites**
 
