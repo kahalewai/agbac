@@ -19,7 +19,7 @@ com.agbac.tests
 com.agbac.helpers
 ```
 
----
+<br>
 
 ### **Step 1: Implement the Adapter Base and Vendor Adapters**
 
@@ -29,7 +29,7 @@ com.agbac.helpers
 
 **Purpose:** Standardizes token request logic across vendors while supporting `sub` (agent) and `act` (human) claims.
 
----
+<br>
 
 ### **Step 2: Implement Hybrid Sender**
 
@@ -45,7 +45,7 @@ com.agbac.helpers
    * **Hybrid:** Supports both in-session and out-of-session simultaneously.
 3. Ensure proper logging when `act` is extracted, sent, or signed.
 
----
+<br>
 
 ### **Step 3: Implement Token Request Logic**
 
@@ -60,7 +60,7 @@ com.agbac.helpers
    * JWT ensures secure transmission of human identity out-of-session.
 3. Logging should indicate both agent and human data included in request.
 
----
+<br>
 
 ### **Step 4: Implement API or Resource Call Classes**
 
@@ -75,7 +75,7 @@ com.agbac.helpers
    * Makes API/resource calls using token from out-of-session agent.
    * Logs success or failure.
 
----
+<br>
 
 ### **Step 5: Unit Tests**
 
@@ -89,7 +89,7 @@ com.agbac.helpers
 3. Ensure tests **fail if sub or act is missing**.
 4. Logging should show token payloads (without exposing secrets).
 
----
+<br>
 
 ### **Step 6: Helper Script**
 
@@ -100,7 +100,7 @@ com.agbac.helpers
    * Prints token payload for visual verification.
 2. Useful for IAM engineers and developers to confirm dual-subject awareness.
 
----
+<br>
 
 ### **Step 7: Wiring the Application**
 
@@ -127,7 +127,7 @@ com.agbac.helpers
 4. **Unit Tests:** Run `com.agbac.tests.*` to verify functionality.
 5. **Helper Script:** Run `CheckAgentAwareness` to confirm agent awareness of human identity.
 
----
+<br>
 
 ### **Step 8: Logging and Error Handling**
 
@@ -135,9 +135,9 @@ com.agbac.helpers
 * All token requests validate that `sub` and `act` are present.
 * Exceptions are caught and logged with **clear messages** to aid debugging.
 
----
+<br>
 
-### ✅ **Summary**
+### **Summary**
 
 By following this workflow:
 
@@ -148,4 +148,4 @@ By following this workflow:
 * Adapter base supports **Okta, EntraID, Auth0, Keycloak**, aligning with all instructions we created previously.
 * Logging, comments, and error handling are consistent with Python and TypeScript implementations.
 
----
+<br>
