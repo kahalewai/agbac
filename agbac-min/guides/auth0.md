@@ -20,7 +20,7 @@ After completing these steps:
 * Human pre-approval (RBAC)
 * Token issuance only for approved agent + human pairs
 
----
+<br>
 
 # Architecture Alignment
 
@@ -37,7 +37,7 @@ Auth0 plays the same role as Okta did:
 **Auth0 does NOT discover the human.**
 Your **hybrid sender** provides it explicitly — this is correct and required.
 
----
+<br>
 
 # Step 0 – Prerequisites
 
@@ -48,7 +48,7 @@ You must have:
 * Your hybrid sender already implemented
 * Auth0 adapter using **client_credentials**
 
----
+<br>
 
 # Step 1 – Create the API (Authorization Server)
 
@@ -65,7 +65,7 @@ This represents the protected system.
    * **Signing Algorithm:** RS256
 4. Save
 
----
+<br>
 
 ### Resulting API JSON (Conceptual)
 
@@ -78,7 +78,7 @@ This represents the protected system.
 }
 ```
 
----
+<br>
 
 # Step 2 – Define Scopes
 
@@ -91,7 +91,7 @@ This represents the protected system.
    * **Scope:** `system.access`
    * **Description:** `Agent system access`
 
----
+<br>
 
 ### Scope Artifact
 
@@ -102,7 +102,7 @@ This represents the protected system.
 }
 ```
 
----
+<br>
 
 # Step 3 – Create Agent Applications (Machine-to-Machine)
 
@@ -117,7 +117,7 @@ Each agent gets **its own M2M application**.
 5. Grant scope: `system.access`
 6. Save
 
----
+<br>
 
 ### Agent Application JSON (Conceptual)
 
@@ -130,7 +130,7 @@ Each agent gets **its own M2M application**.
 }
 ```
 
----
+<br>
 
 # Step 4 – Enable RBAC for Agents
 
@@ -143,13 +143,13 @@ Each agent gets **its own M2M application**.
    * ✅ Enable RBAC
    * ✅ Add Permissions in the Access Token
 
----
+<br>
 
 ### RBAC Result
 
 Auth0 will include permissions in tokens **only if assigned**.
 
----
+<br>
 
 # Step 5 – Define Roles (Human + Agent Approval)
 
@@ -174,7 +174,7 @@ We will enforce **dual pre-approval**.
 
    * `system.access`
 
----
+<br>
 
 ### Role JSON (Conceptual)
 
@@ -192,7 +192,7 @@ We will enforce **dual pre-approval**.
 }
 ```
 
----
+<br>
 
 # Step 6 – Assign Roles
 
@@ -204,10 +204,10 @@ We will enforce **dual pre-approval**.
 
 * Assign `FinanceAgent` role to agent applications
 
-🚨 **This is the RBAC gate**
+**This is the RBAC gate**
 If either is missing → token issuance or API access fails.
 
----
+<br>
 
 # Step 7 – Inject `act` Claim Using Auth0 Actions
 
@@ -215,7 +215,7 @@ Auth0 **does not automatically include custom request fields** in tokens.
 
 We must explicitly inject `act`.
 
----
+<br>
 
 ## 7.1 Create an Auth0 Action
 
@@ -226,7 +226,7 @@ We must explicitly inject `act`.
 3. Create **Custom Action**
 4. Name: `Inject act claim`
 
----
+<br>
 
 ## 7.2 Action Code (PRODUCTION-SAFE)
 
@@ -263,7 +263,7 @@ exports.onExecutePostLogin = async (event, api) => {
 };
 ```
 
----
+<br>
 
 ### Resulting Token Example
 
@@ -276,7 +276,7 @@ exports.onExecutePostLogin = async (event, api) => {
 }
 ```
 
----
+<br>
 
 # Step 8 – In-Session Flow (Phase 1)
 
@@ -293,7 +293,7 @@ exports.onExecutePostLogin = async (event, api) => {
 
 ✔ Token contains `sub + act`
 
----
+<br>
 
 # Step 9 – Out-of-Session Flow (Phase 2)
 
@@ -314,7 +314,7 @@ exports.onExecutePostLogin = async (event, api) => {
 
 ✔ Token contains `sub + act`
 
----
+<br>
 
 # Step 10 – API / Resource Validation
 
@@ -332,4 +332,4 @@ Your API must:
    * `act`
    * request ID
 
----
+<br>
