@@ -70,9 +70,9 @@ Human → AI Agent → Identity Platform → Target System
    |         |            |
    |         |            +-- Issues dual-subject token
    |         |
-   |         +-- Authenticates as agent + human
+   |         +-- Receives human identity; requests token
    |
-   +-- Delegates intent
+   +-- Authenticates to application; initiates agentic workflow
 ```
 
 Access is permitted only when both subjects are authorized.
