@@ -1,4 +1,12 @@
-# Auth0 Configuration for AGBAC-Min (Dual-Subject Authorization)
+<div align="center">
+
+# AGBAC-Min Auth0 IAM Configuration Guide
+
+Implementing dual-subject authorization for humans and agents at system / application layer
+
+</div>
+
+<br>
 
 ## Target Outcome (What This Configuration Guarantees)
 
