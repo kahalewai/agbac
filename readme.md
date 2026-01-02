@@ -105,15 +105,16 @@ The specification describes the complete AGBAC model, including identity, delega
 **Option 2 - Use AGBAC Minimal today with existing IAM Solutions**
 
 Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (**Let's GOOOOO!!!** 🔥 🔥 🔥)
-* AGBAC-Min is a bounded sub-set of the full AGBAC specification ([link](https://github.com/kahalewai/agbac/tree/main/agbac-min))
-* Works with your existing Enterprise IAM Solutions right now; No patch or update required (custom config)
+* AGBAC-Min is a bounded sub-set of the full AGBAC specification
+* Start here --> GitHub: [https://github.com/kahalewai/agbac/agbac-min](https://github.com/kahalewai/agbac/blob/main/agbac-min/readme.md.md)
+* Works with your existing Enterprise IAM Solutions right now; No patch or update required (just config)
 * Provides system/app-level access control, native IAM configuration/scope only (remember, this is Minimal)
+* Provides IAM Configuration guides for Okta, EntraID, Auth0, and Keycloak to configure the IAM side
+* Provides Agent Guides for Python, Typescript, and Java to enhance application/agent to become human user aware
 * Enforce dual-subject authorization at system/app boundary; access control and logging for human and agent
 * Easy first step towards Zero Trust alignment and enforcement of agentic workflows and access
-* Are you using Okta? Go directly to AGBAC-Min-Okta now! ([link](https://github.com/kahalewai/agbac/blob/main/agbac-min/agbac-min-okta.md))
-* Are you using EntraID? Go directly to AGBAC-Min-EntraID now! (coming soon!)
-* Are you using Auth0? Go directly to AGBAC-Min-Auth0 now! (coming soon!)
-* Are you using Keycloak? Go directly to AGBAC-Min-Keycloak now! (coming soon!)
+
+
 
 <br>
 
