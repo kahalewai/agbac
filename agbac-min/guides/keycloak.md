@@ -1,4 +1,10 @@
-# Keycloak Configuration for AGBAC-Min (Dual-Subject Authorization)
+<div align="center">
+
+# AGBAC-Min Keycloak IAM Configuration Guide
+
+Implementing dual-subject authorization for humans and agents at system / application layer
+
+</div>
 
 ## Target Outcome
 
