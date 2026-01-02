@@ -201,3 +201,22 @@
 * Ensure logging is standardized across adapters, token requests, and API calls.
 
 <br>
+
+##  **Summary**
+
+| Component                    | File                                      | Purpose                                                        |
+| ---------------------------- | ----------------------------------------- | -------------------------------------------------------------- |
+| Adapter Base                 | `baseAdapter.ts`                          | Abstract interface for IAM vendor adapters                     |
+| Okta Adapter                 | `oktaAdapter.ts`                          | Okta-specific token handling                                   |
+| EntraID Adapter              | `entraIDAdapter.ts`                       | EntraID (in-session only)                                      |
+| Auth0 Adapter                | `auth0Adapter.ts`                         | Auth0-specific token handling                                  |
+| Keycloak Adapter             | `keycloakAdapter.ts`                      | Keycloak-specific token handling                               |
+| Hybrid Sender                | `hybridSender.ts`                         | Provides human `act` to in-session and out-of-session agents   |
+| In-Session Token Request     | `inSessionTokenRequest.ts`                | Builds token request for in-session agents                     |
+| Out-of-Session Token Request | `outOfSessionTokenRequest.ts`             | Builds token request for out-of-session agents using TLS + JWT |
+| In-Session API Call          | `inSessionApiCall.ts`                     | Makes API/resource calls for in-session agents                 |
+| Out-of-Session API Call      | `outOfSessionApiCall.ts`                  | Makes API/resource calls for out-of-session agents             |
+| Unit Tests                   | `testInSession.ts`, `testOutOfSession.ts` | Verify token requests and API calls work as expected           |
+| Helper Script                | `checkAgentAct.ts`                        | Verify agent awareness of human `act` data                     |
+
+<br>
