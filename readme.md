@@ -15,7 +15,7 @@ Welcome to the AGBAC Open Security Specification & Reference Landing
 ## Intro
 
 
-AGBAC (Agent-Based Access Control) is an open, vendor-neutral security specification that defines how AI agents securely perform actions on behalf of human users.  AGBAC was designed to use existing Standards and Technology, extending existing IAM infrastructure (OAuth2, OIDC, RBAC, ABAC, PBAC). AGBAC introduces no new token formats, cryptographic systems, or identity providers, making AGBAC compatible with existing IAM Solutions. 
+AGBAC (AGent-Based Access Control) is an open, vendor-neutral security specification that defines how AI agents securely perform actions on behalf of human users.  AGBAC was designed to use existing Standards and Technology, extending existing IAM infrastructure (OAuth2, OIDC, RBAC, ABAC, PBAC). AGBAC introduces no new token formats, cryptographic systems, or identity providers, making AGBAC compatible with existing IAM Solutions. 
 
 <br>
 
