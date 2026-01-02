@@ -17,7 +17,7 @@ We will configure:
 * Client Application assignments (for agent and human)
 * Policies to enforce pre-approval
 
----
+<br>
 
 # **Step 1: Create a Custom Authorization Server**
 
@@ -47,7 +47,7 @@ We will configure:
 }
 ```
 
----
+<br>
 
 # **Step 2: Define Scopes**
 
@@ -75,7 +75,7 @@ We will configure:
 }
 ```
 
----
+<br>
 
 # **Step 3: Add Custom Claims**
 
@@ -114,9 +114,9 @@ We need two claims in the JWT issued by Okta:
 }
 ```
 
-> ⚠️ Note: For **out-of-session agents**, the `act` value must be provided in the token request. You can configure a dynamic expression or use **custom client assertion** (JWT signed by the agent) to set `act` during the token request.
+> ⚠️ Note: For **out-of-session agents**, the `act` value must be provided in the token request. The code provided accomplishes this for you.
 
----
+<br>
 
 # **Step 4: Create OAuth 2.0 Client Applications**
 
@@ -152,7 +152,7 @@ We need two claims in the JWT issued by Okta:
 
 Repeat for each agent that will request tokens.
 
----
+<br>
 
 # **Step 5: Assign Human Users and Agents to Application**
 
@@ -178,7 +178,7 @@ Repeat for each agent that will request tokens.
 
 > ⚠️ Both **sub** (agent client) and **act** (human) must be pre-approved in Okta to allow token issuance.
 
----
+<br>
 
 # **Step 6: Configure Authorization Server Policies**
 
@@ -229,7 +229,7 @@ Repeat for each agent that will request tokens.
 }
 ```
 
----
+<br>
 
 # **Step 7: Testing and Verification**
 
