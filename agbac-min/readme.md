@@ -114,7 +114,7 @@ IAM Guides and their resulting implementations are independent, and do not depen
 
 **TypeScript**
 * Typescript based implementation to make in-session and out-of-session agents aware of associated human identities.
-* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agents/typescript](https://github.com/kahalewai/agbac/blob/main/agbac-min/agents/typescript/readme.md.md)
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agents/typescript](https://github.com/kahalewai/agbac/blob/main/agbac-min/agents/typescript/readme.md)
 
 **Java**
 * Java based implementation to make in-session and out-of-session agents aware of associated human identities.
