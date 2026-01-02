@@ -106,7 +106,7 @@ The specification describes the complete AGBAC model, including identity, delega
 
 Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (**Let's GOOOOO!!!** 🔥 🔥 🔥)
 * AGBAC-Min is a bounded sub-set of the full AGBAC specification
-* Start here --> GitHub: [https://github.com/kahalewai/agbac/agbac-min](https://github.com/kahalewai/agbac/blob/main/agbac-min/readme.md.md)
+* Start here --> GitHub: [https://github.com/kahalewai/agbac/agbac-min](https://github.com/kahalewai/agbac/blob/main/agbac-min/readme.md)
 * Works with your existing Enterprise IAM Solutions right now; No patch or update required (just config)
 * Provides system/app-level access control, native IAM configuration/scope only (remember, this is Minimal)
 * Provides IAM Configuration guides for Okta, EntraID, Auth0, and Keycloak to configure the IAM side
