@@ -1,3 +1,13 @@
+<div align="center">
+
+# AGBAC-Min Java Application/Agent Configuration Guide
+
+Implementing dual-subject authorization for humans and agents at system / application layer
+
+</div>
+
+<br>
+
 # **Java Implementation Workflow for AGBAC-Min with Hybrid Sender**
 
 ### **Step 0: Project Setup**
