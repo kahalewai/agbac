@@ -1,3 +1,13 @@
+<div align="center">
+
+# AGBAC-Min Python Application/Agent Configuration Guide
+
+Implementing dual-subject authorization for humans and agents at system / application layer
+
+</div>
+
+<br>
+
 ## **Step-by-Step Implementation Workflow: Python**
 
 ---
