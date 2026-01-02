@@ -898,7 +898,7 @@ in token requests.
 
 Supports in-session and out-of-session scenarios using any supported IAM adapter.
 """
-
+```python
 import logging
 import sys
 from adapters.okta_adapter import OktaAdapter
@@ -992,7 +992,7 @@ else:
 # Output full token for inspection
 # --------------------------
 logger.info(f"Full token response: {token_response}")
-
+```
 
 
 
