@@ -1,4 +1,12 @@
-# **TypeScript AGBAC-Min Implementation Workflow**
+<div align="center">
+
+# AGBAC-Min TypeScript Application/Agent Configuration Guide
+
+Implementing dual-subject authorization for humans and agents at system / application layer
+
+</div>
+
+<br>
 
 This workflow assumes a developer has a TypeScript environment set up (`Node.js` + `tsc` or `ts-node`) and wants to implement dual-subject authorization with hybrid sender support.
 
