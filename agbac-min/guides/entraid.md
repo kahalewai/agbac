@@ -2,7 +2,7 @@
 
 **Goal:** Configure EntraID so that in-session agents can request tokens that include **both the agent (`sub`) and human (`act`) identities**, supporting dual-subject authorization.
 
----
+<br>
 
 ## **1. Create an Application Registration for the Agent**
 
@@ -27,7 +27,7 @@
 }
 ```
 
----
+<br>
 
 ## **2. Create a Client Secret for the Agent**
 
@@ -50,7 +50,7 @@
 }
 ```
 
----
+<br>
 
 ## **3. Define API / Resource Access for the Agent**
 
@@ -78,7 +78,7 @@
 }
 ```
 
----
+<br>
 
 ## **4. Configure Custom `act` Claim**
 
@@ -120,7 +120,7 @@
 }
 ```
 
----
+<br>
 
 ## **5. Assign Human Users and Agent to the Application**
 
@@ -154,7 +154,7 @@
 }
 ```
 
----
+<br>
 
 ## **6. Configure Token Lifetime & Validation**
 
@@ -175,7 +175,7 @@
 }
 ```
 
----
+<br>
 
 ## **7. Verify Token Output**
 
@@ -201,4 +201,4 @@
 * `act` → human identity
 * `scp` → system access scopes
 
----
+<br>
