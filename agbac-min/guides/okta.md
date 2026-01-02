@@ -268,3 +268,12 @@ Repeat for each agent that will request tokens.
    * Okta logs should show **agent and human identities** in each request.
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<p align="center">
+▁ ▂ ▂ ▃ ▃ ▄ ▄ ▅ ▅ ▆ ▆ Created with Aloha by Kahalewai - 2026 ▆ ▆ ▅ ▅ ▄ ▄ ▃ ▃ ▂ ▂ ▁
+
+</p>
