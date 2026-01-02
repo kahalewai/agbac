@@ -2,7 +2,7 @@
 
 This workflow assumes a developer has a TypeScript environment set up (`Node.js` + `tsc` or `ts-node`) and wants to implement dual-subject authorization with hybrid sender support.
 
----
+<br>
 
 ## **Step 0: Project Setup**
 
@@ -40,7 +40,7 @@ agbac-ts/
    └─ checkAgentAct.ts
 ```
 
----
+<br>
 
 ## **Step 1: Implement Vendor-Agnostic Base Adapter**
 
@@ -48,7 +48,7 @@ agbac-ts/
 * **Purpose:** Abstract interface for all IAM vendors, ensures consistent methods like `requestToken`, `validateToken`, etc.
 * **Workflow:** Any vendor adapter extends this base.
 
----
+<br>
 
 ## **Step 2: Implement Vendor-Specific Adapters**
 
@@ -68,7 +68,7 @@ agbac-ts/
   * Ensure dual-subject tokens include both `sub` (agent) and `act` (human).
   * Use the same dual-subject token format across all vendors.
 
----
+<br>
 
 ## **Step 3: Implement Hybrid Sender**
 
@@ -85,7 +85,7 @@ agbac-ts/
   * Creates JWT signed by application if out-of-session agent is called.
   * Ensures correct timing/directionality: in-session is direct; out-of-session is secure transport.
 
----
+<br>
 
 ## **Step 4: Implement Token Requests**
 
@@ -111,7 +111,7 @@ agbac-ts/
   3. Include JWT in token request to IAM.
   4. Return token.
 
----
+<br>
 
 ## **Step 5: Implement API / Resource Calls**
 
@@ -132,7 +132,7 @@ agbac-ts/
 * **Purpose:** Similar to in-session but uses token from `outOfSessionTokenRequest`.
 * **Logic:** Same logging/error handling standards.
 
----
+<br>
 
 ## **Step 6: Implement Unit Tests**
 
@@ -150,7 +150,7 @@ agbac-ts/
   3. Assert token parsing succeeds.
   4. Assert API calls return expected outputs.
 
----
+<br>
 
 ## **Step 7: Implement Helper Script**
 
@@ -162,7 +162,7 @@ agbac-ts/
   2. Calls `OutOfSessionTokenRequest`, decodes JWT, inspects payload.
   3. Logs results with clear success/warning messages.
 
----
+<br>
 
 ## **Step 8: Using the Code**
 
@@ -178,7 +178,7 @@ agbac-ts/
 
    * Run `checkAgentAct.ts` to ensure dual-subject awareness.
 
----
+<br>
 
 ## **Step 9: Logging & Error Handling**
 
@@ -190,9 +190,9 @@ agbac-ts/
 
 * All network calls handle retries, exceptions, and invalid token formats.
 
----
+<br>
 
-## ✅ **Summary**
+##  **Summary**
 
 | Component                    | File                                      | Purpose                                                        |
 | ---------------------------- | ----------------------------------------- | -------------------------------------------------------------- |
@@ -209,4 +209,4 @@ agbac-ts/
 | Unit Tests                   | `testInSession.ts`, `testOutOfSession.ts` | Verify token requests and API calls work as expected           |
 | Helper Script                | `checkAgentAct.ts`                        | Verify agent awareness of human `act` data                     |
 
----
+<br>
