@@ -113,11 +113,11 @@ IAM Guides and their resulting implementations are independent, and do not depen
 * GitHub: [https://github.com/kahalewai/agbac/agbac-min/agents/python](https://github.com/kahalewai/agbac/blob/main/agbac-min/agents/python/readme.md)
 
 **TypeScript**
-* Foundational AGBAC profile using Microsoft Entra ID (Azure AD), Enterprise Applications, App Registrations, and native token claims.
+* Typescript based implementation to make in-session and out-of-session agents aware of associated human identities.
 * GitHub: [https://github.com/kahalewai/agbac/agbac-min/agents/typescript](https://github.com/kahalewai/agbac/blob/main/agbac-min/agents/typescript/readme.md.md)
 
 **Java**
-* Foundational AGBAC profile using Auth0 Workforce or B2B Identity, Machine-to-Machine applications, RBAC, and token customization.
+* Java based implementation to make in-session and out-of-session agents aware of associated human identities.
 * GitHub: [https://github.com/kahalewai/agbac/agbac-min/agents/java](https://github.com/kahalewai/agbac/blob/main/agbac-min/agents/java/readme.md)
 
 <br>
@@ -165,10 +165,10 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 
 ## What about Multi-Agent or Advanced Scenario's?
 
-AGBAC-Min can support multi-agent workfows, out-of-session agents, and async execution with certain providers. The AGBAC-Min agents guides provides the necessary code, which passes the human subject identity `act` to the agent for token request. Without this update, AGBAC-Min will natively support in-session agents only (agents that are initiatived within the same authentication session as the application)
+AGBAC-Min can support multi-agent workfows, out-of-session agents, and async execution with certain providers. The AGBAC-Min agents guides provides the necessary code for application and agents, which passes the human subject identity `act` to the agent for token request. Without this update, AGBAC-Min may natively support in-session agents only (agents that are initiatived within the same authentication session as the application)
 
 * Application and agent instructions and code are provided with AGBAC-Min agent guides
-* Implement the instructions in order, starting with the adaptersm then the sender, then the requests
+* Implement the instructions in order, starting with the adapters, then the sender, then the requests
 * Unit tests and helper scripts are provided to verify the code is working properly and agents are aware
 * Be advised that adding these updates will add an `act` claim to the agent OAuth requests (dual-subject)
 * AGBAC-Min does not implement RFC 8693 token exchange, nor delegations (app is trust authority)
@@ -197,6 +197,7 @@ AGBAC-Min guides do not:
 AGBAC-Full details:
 * AGBAC-Full will provide a full AGBAC spec implementation
 * AGBAC-Full will work with your existing IAM solution(s)
+* AGBAC-Full will support object-level authorization policies
 * AGBAC-Full will allow EntraID users to support out-of-session agentic workflows
 * AGBAC-Full development starting Jan '26 (expected completion Feb '26)
 
