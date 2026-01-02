@@ -6,6 +6,8 @@ Implementing dual-subject authorization for humans and agents at system / applic
 
 </div>
 
+<br>
+
 ## Target Outcome
 
 After completing these steps:
