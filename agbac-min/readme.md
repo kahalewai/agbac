@@ -106,23 +106,23 @@ IAM Guides and their resulting implementations are independent, and do not depen
 <br>
 <br>
 
-## Available Application/Agent Configuration Guides
+## Available Application/Agent Code
 
 **Python**
 * Python based implementation to make in-session and out-of-session agents aware of associated human identities.
-* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agents/python](https://github.com/kahalewai/agbac/blob/main/agbac-min/agents/python/readme.md)
+* GitHub: [https://github.com/kahalewai/agbac/agbac-min/code/python](https://github.com/kahalewai/agbac/blob/main/agbac-min/code/python/readme.md)
 
 **TypeScript**
 * Typescript based implementation to make in-session and out-of-session agents aware of associated human identities.
-* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agents/typescript](https://github.com/kahalewai/agbac/blob/main/agbac-min/agents/typescript/readme.md)
+* GitHub: (Coming Soon)
 
 **Java**
 * Java based implementation to make in-session and out-of-session agents aware of associated human identities.
-* GitHub: [https://github.com/kahalewai/agbac/agbac-min/agents/java](https://github.com/kahalewai/agbac/blob/main/agbac-min/agents/java/readme.md)
+* GitHub: (Coming Soon)
 
 <br>
 
-Agent Guides and their resulting implementations are independent, and do not depend on each-other. If your organization uses multiple languages, AGBAC-Min Application/Agent Configuration Guides maintain object/artifact formatting across languages.
+Application and Agent implementations are independent, and do not depend on each-other. If your organization uses multiple languages, AGBAC-Min will maintain object/artifact formatting across languages.
 
 
 <br>
