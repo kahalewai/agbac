@@ -148,17 +148,13 @@ That's right, AGBAC-Min was designed to work with your existing enterprise IAM s
 <br>
 <br>
 
-## What about Multi-Agent or Advanced Scenario's?
+## What about Multi-Agent or Out-of-session Scenario's?
 
-AGBAC-Min can support multi-agent workfows, out-of-session agents, and async execution with certain providers, after updating the application and agent code. The AGBAC-Min Agent Guides provide the necessary code for applications and agents, which passes the human subject identity `act` to the agent for IAM token request. In out-of-session scenarios, the solution uses TLS and JWT to make remote agents aware of their human counterpart. Without this update, AGBAC-Min may natively support in-session agents only (agents that are initiatived within the same authentication session as the application). We recommend updating applications and code to become agent AND human aware!
+AGBAC-Min can support multi-agent workfows, out-of-session agents, and async execution with certain providers, after updating the application and agent code. The AGBAC-Min Application/Agent Code enhances applications and agents to pass the human subject identity `act` to the agent for IAM token request. In out-of-session scenarios, the solution uses TLS and JWT to make remote agents aware of their human counterpart. To make AGBAC-Min work in all agent scenarios, we recommend updating applications and code to become agent AND human aware!
 
-* Application and agent instructions and code are provided with AGBAC-Min Agent Guides
-* Implement the instructions in order, starting with the adapters, then the sender, then the requests
 * It is intended that the code is integrated into existing applications and agents
-* Unit tests and helper scripts are provided to verify the code is working properly and agents are aware
 * Be advised that adding these updates will add an `act` claim to the agent OAuth requests (dual-subject)
 * AGBAC-Min does not implement RFC 8693 token exchange, nor delegations (app is trust authority)
-* EntraID does not support out-of-session agents due to EntraID design. AGBAC-Full will resolve this limitation.
 
 In AGBAC-Min, the agent does not determine or request a human identity from the IAM solution; the human is authenticated and authorized for the application session. The human identity data is passed to the in-session or out-of-session agent for token request. The IAM solution enforces that both the agent and the human are independently authorized to access the target system or application.
 
