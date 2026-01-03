@@ -101,7 +101,7 @@ IAM Guides and their resulting implementations are independent, and do not depen
 
 Application/Agent Code enhances your Applications and Agents to become dual-subject aware and support out-of-session agents
 
-* Python: [https://github.com/kahalewai/agbac/agbac-min/code/python](https://github.com/kahalewai/agbac/blob/main/agbac-min/code/python/readme.md)
+* Python: [https://github.com/kahalewai/agbac/agbac-min/code/python](https://github.com/kahalewai/agbac/blob/main/agbac-min/code/python)
 * Typescript: (Coming Soon)
 * Java: (Coming Soon)
 
