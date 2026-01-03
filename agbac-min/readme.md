@@ -82,6 +82,8 @@ Access is permitted only when both subjects are authorized.
 
 ## Available IAM Configuration Guides
 
+IAM Configuration Guides explain how to configure a specific IAM vendor to support AGBAC-Min
+
 **Okta**
 * Foundational AGBAC profile using Okta Workforce Identity, Active Directory, OAuth 2.0, and native application assignments.
 * GitHub: [https://github.com/kahalewai/agbac/agbac-min/guides/okta](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/okta.md)
@@ -107,6 +109,8 @@ IAM Guides and their resulting implementations are independent, and do not depen
 <br>
 
 ## Available Application/Agent Code
+
+Application/Agent Code enhances your Applications and Agents to become dual-subject aware and support out-of-session agents
 
 **Python**
 * Python based implementation to make in-session and out-of-session agents aware of associated human identities.
