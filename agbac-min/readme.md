@@ -84,21 +84,10 @@ Access is permitted only when both subjects are authorized.
 
 IAM Configuration Guides explain how to configure a specific IAM vendor to support AGBAC-Min
 
-**Okta**
-* Foundational AGBAC profile using Okta Workforce Identity, Active Directory, OAuth 2.0, and native application assignments.
-* GitHub: [https://github.com/kahalewai/agbac/agbac-min/guides/okta](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/okta.md)
-
-**EntraID**
-* Foundational AGBAC profile using Microsoft Entra ID (Azure AD), Enterprise Applications, App Registrations, and native token claims.
-* GitHub: [https://github.com/kahalewai/agbac/agbac-min/guides/entraid](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/entraid.md)
-
-**Auth0**
-* Foundational AGBAC profile using Auth0 Workforce or B2B Identity, Machine-to-Machine applications, RBAC, and token customization.
-* GitHub: [https://github.com/kahalewai/agbac/agbac-min/guides/auth0](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/auth0.md)
-
-**Keycloak**
-* Foundational AGBAC profile using Keycloak realms, service accounts, client roles, and protocol mappers.
-* GitHub: [https://github.com/kahalewai/agbac/agbac-min/guides/keycloak](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/keycloak.md)
+* Okta: [https://github.com/kahalewai/agbac/agbac-min/guides/okta](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/okta.md)
+* EntraID: [https://github.com/kahalewai/agbac/agbac-min/guides/entraid](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/entraid.md)
+* Auth0: [https://github.com/kahalewai/agbac/agbac-min/guides/auth0](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/auth0.md)
+* Keycloak: [https://github.com/kahalewai/agbac/agbac-min/guides/keycloak](https://github.com/kahalewai/agbac/blob/main/agbac-min/guides/keycloak.md)
 
 <br>
 
