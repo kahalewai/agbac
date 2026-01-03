@@ -62,7 +62,7 @@ This creates gaps in:
 **Step 1 - Human instructs AI agent**
 
 ```
-Human → LLM → Agent: “Retrieve customer record xyz123”
+Human → LLM → Agent: “Access resource xyz123”
 ```
 
 **Step 2 - Agent obtains a Delegation Token**
