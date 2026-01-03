@@ -10,7 +10,7 @@ Implementing dual-subject authorization for humans and agents at system / applic
 
 ## Intro
 
-AGBAC Minimal (AGBAC-Min) is a collection of foundational, vendor-specific implementation guides for the Agent-Based Access Control (AGBAC) specification. The goal of AGBAC-Min is to demonstrate that a sub-set of AGBAC security capabilities can be implemented today using existing enterprise IAM platforms without external policy engines or new IAM infrastructure. Each AGBAC-Min guide shows how a bounded subset of the AGBAC specification can be implemented using native configuration features of a specific identity provider.
+AGBAC Minimal (AGBAC-Min) is a system / application layer scoped implementation of the Agent-Based Access Control (AGBAC) specification. The goal of AGBAC-Min is to demonstrate that a sub-set of AGBAC security capabilities can be implemented today using existing enterprise IAM platforms without external policy engines or new IAM infrastructure. Each IAM Configuration Guide shows how a bounded subset of the AGBAC specification can be implemented using native configuration features of a specific identity provider. Applications and Agents are updated to become dual-subject aware (human AND agent identities)
 
 AGBAC-Min is intended to:
 * Make AGBAC concepts tangible and adoptable
