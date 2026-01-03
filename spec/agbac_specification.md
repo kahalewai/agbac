@@ -6,7 +6,7 @@
 
 **Status:** Production-Ready for Public Adoption
 
-**Year:** 2025
+**Year:** 2026
 
 **License:** Apache License 2.0
 
