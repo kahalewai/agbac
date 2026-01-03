@@ -62,7 +62,7 @@ This creates gaps in:
 **Step 1 - Human instructs AI agent**
 
 ```
-Human → Agent: “Retrieve customer record xyz123”
+Human → LLM → Agent: “Retrieve customer record xyz123”
 ```
 
 **Step 2 - Agent obtains a Delegation Token**
@@ -75,7 +75,7 @@ Using OAuth2 Token Exchange (RFC 8693):
 * `scp` = agent scopes
 * `usr_scopes` = user scopes (optional)
 
-**Step 3 - Agent makes the access request with the token**
+**Step 3 - Agent makes the access request with the Token**
 
 **Step 4 - PEP enforces dual-subject authorization**
 
