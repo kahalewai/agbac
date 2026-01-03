@@ -180,7 +180,6 @@ AGBAC-Full details:
 * AGBAC-Full will provide a full AGBAC spec implementation
 * AGBAC-Full will work with your existing IAM solution(s)
 * AGBAC-Full will support object-level authorization policies
-* AGBAC-Full will allow EntraID users to support out-of-session agentic workflows
 * AGBAC-Full development starting Jan '26 (expected completion Feb '26)
 
 
