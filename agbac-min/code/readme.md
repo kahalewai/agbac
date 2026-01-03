@@ -6,9 +6,11 @@
 
 Change this ONE variable to switch vendors
 
+```bash
 export AGBAC_VENDOR=keycloak  # or auth0, okta, entraid
+```
 
-### Keycloak Example
+Keycloak Example
 
 ```bash
 export AGBAC_VENDOR=keycloak
@@ -17,7 +19,7 @@ export AGENT_CLIENT_ID=finance-agent
 export AGENT_CLIENT_SECRET=***
 ```
 
-### Auth0 Example
+Auth0 Example
 
 ```bash
 export AGBAC_VENDOR=auth0
@@ -27,7 +29,7 @@ export AGENT_CLIENT_ID=***
 export AGENT_CLIENT_SECRET=***
 ```
 
-### EntraID Example (Hybrid)
+EntraID Example (Hybrid)
 
 ```bash
 export AGBAC_VENDOR=entraid
