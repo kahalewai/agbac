@@ -110,7 +110,7 @@ Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (
 * Works with your existing Enterprise IAM Solutions right now; No patch or update required (just config)
 * Provides system/app-level access control, native IAM configuration/scope only (remember, this is Minimal)
 * Provides IAM Configuration guides for Okta, EntraID, Auth0, and Keycloak to configure the IAM side
-* Provides Agent Guides for Python, Typescript, and Java to enhance application/agent to become human user aware
+* Provides Application/Agent Code for Python to support dual-subject scenarios (Typescript and Java Coming Soon)
 * Enforce dual-subject authorization at system/app boundary; access control and logging for human and agent
 * Easy first step towards Zero Trust alignment and enforcement of agentic workflows and access
 
