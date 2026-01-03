@@ -1,0 +1,59 @@
+# AGBAC-Min Python Implementation - Requirements
+# Production-grade dependencies for dual-subject authorization
+
+# Core Dependencies
+# ==================
+
+# JWT encoding/decoding with cryptographic support
+# Used for: Client assertions, act JWTs, token verification
+pyjwt[crypto]>=2.8.0
+
+# HTTP client library with security features
+# Used for: Token requests, API calls
+requests>=2.31.0
+
+# Cryptographic operations
+# Used for: RSA key operations, JWT signing
+cryptography>=41.0.0
+
+# Optional Production Dependencies
+# =================================
+
+# Redis client for JTI tracking (replay protection)
+# Uncomment for production deployment
+# redis>=5.0.0
+
+# Environment variable management
+# Uncomment for development
+# python-dotenv>=1.0.0
+
+# Structured logging
+# Uncomment for production logging
+# python-json-logger>=2.0.0
+
+# AWS Secrets Manager (if using AWS)
+# Uncomment if deploying to AWS
+# boto3>=1.28.0
+
+# Azure Key Vault (if using Azure/EntraID)
+# Uncomment if deploying to Azure
+# azure-keyvault-secrets>=4.7.0
+# azure-identity>=1.14.0
+
+# Development Dependencies (Testing)
+# ===================================
+
+# Uncomment for testing and development
+# pytest>=7.4.0
+# pytest-cov>=4.1.0
+# pytest-mock>=3.11.1
+# black>=23.7.0
+# flake8>=6.1.0
+# mypy>=1.5.0
+
+# Security Scanning
+# =================
+
+# Uncomment for security scanning
+# safety>=2.3.0
+# bandit>=1.7.5
