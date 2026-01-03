@@ -1278,16 +1278,6 @@ Resource validates: Both components ✓
 Access granted: Only if both pass ✓
 ```
 
-**Comparison with Other Vendors:**
-
-| Vendor | Token Structure | Validation |
-|--------|----------------|------------|
-| Keycloak/Auth0/Okta | One token with sub + act | Validate one JWT |
-| EntraID (Hybrid) | Agent token + Act assertion | Validate two JWTs |
-
-**Security Properties:** Identical  
-**Dual-Subject Authorization:** Achieved ✅
-
 **Next Steps:**
 1. **Configure Python Application:** Follow Python Application/Agent Configuration Guide
 2. **Implement Act Assertion Creation:** Use code from Step 7
