@@ -93,7 +93,7 @@ ALLOW IFF agent AND human are authorized.
 **Option 1 - Use the Specification to Build/Create**
 
 Use the Specification to build your own custom implementation (for Vendors, Product Owners, IAM Providers, etc)
-* The AGBAC specification v1.0.0 is released ([link](https://github.com/kahalewai/agbac/blob/main/agbac_specification.md))
+* The AGBAC specification v1.0.0 is released ([link](https://github.com/kahalewai/agbac/blob/main/spec/agbac_specification.md))
 * The specification is open, royalty-free, and vendor-neutral
 * The spec defines the authoritative security model for AGBAC
 * Organizations are encouraged to adopt, reference, and build upon it
@@ -174,10 +174,10 @@ The AGBAC specification defines:
 
 ## Security and Mapping of AGBAC
 
-* A mapping of AGBAC to the OWASP Top 10 LLM Risks can be found here ([link](https://github.com/kahalewai/agbac/blob/main/owasp_mapping.md))
-* A mapping of AGBAC to NIST 800-207 Zero Trust can be found here ([link](https://github.com/kahalewai/agbac/blob/main/zt_mapping.md))
-* A mapping of AGBAC to the AOSI Model can be found here ([link](https://github.com/kahalewai/agbac/blob/main/aosi_mapping.md))
-* A Threat Model for AGBAC can be viewed here ([link](https://github.com/kahalewai/agbac/blob/main/threat_model.md))
+* A mapping of AGBAC to the OWASP Top 10 LLM Risks can be found here ([link](https://github.com/kahalewai/agbac/blob/main/security/owasp_mapping.md))
+* A mapping of AGBAC to NIST 800-207 Zero Trust can be found here ([link](https://github.com/kahalewai/agbac/blob/main/security/zt_mapping.md))
+* A mapping of AGBAC to the AOSI Model can be found here ([link](https://github.com/kahalewai/agbac/blob/main/security/aosi_mapping.md))
+* A Threat Model for AGBAC can be viewed here ([link](https://github.com/kahalewai/agbac/blob/main/security/threat_model.md))
 
 
 <br>
