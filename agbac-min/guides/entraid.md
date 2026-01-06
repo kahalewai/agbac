@@ -25,7 +25,7 @@ After completing this guide, your EntraID tenant will:
 **EntraID Edition:** Works with all tiers (Free, P1, P2)  
 **Prerequisites:** EntraID admin access, basic understanding of OAuth 2.0
 
----
+<br>
 
 ## **Table of Contents**
 
@@ -43,7 +43,7 @@ After completing this guide, your EntraID tenant will:
 12. [Troubleshooting](#troubleshooting)
 13. [Reference: Configuration Examples](#reference-configuration-examples)
 
----
+<br>
 
 ## **Prerequisites**
 
@@ -67,7 +67,7 @@ https://portal.azure.com
 2. Click **Overview**
 3. Copy **Tenant ID** (e.g., `12345678-1234-1234-1234-123456789abc`)
 
----
+<br>
 
 ## **Architecture Overview**
 
@@ -134,7 +134,7 @@ EntraID uses **two separate cryptographically-signed components**:
 
 **Both must be validated independently at the resource server.**
 
----
+<br>
 
 ## **Understanding the Hybrid Approach**
 
@@ -207,7 +207,7 @@ EntraID's client_credentials grant does NOT support:
 - ✅ Audit trail with both identities
 - ✅ No privilege escalation possible
 
----
+<br>
 
 ## **Step 1: Create Agent App Registration**
 
@@ -279,7 +279,7 @@ Example secret value: Xk8~Q2p_m5N.r7T@v9W!c3F$h6J&a1L
 }
 ```
 
----
+<br>
 
 ## **Step 2: Configure App Roles**
 
@@ -490,7 +490,7 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu1SU1LfVLPHCozMxH2Mo
 -----END PUBLIC KEY-----
 ```
 
----
+<br>
 
 ## **Step 4: Assign Roles (Pre-Approval)**
 
@@ -539,7 +539,7 @@ az rest --method POST \
   }"
 ```
 
----
+<br>
 
 ## **Step 5: Create Test User**
 
@@ -586,7 +586,93 @@ For governance tracking:
 }
 ```
 
----
+
+### 5.4 Get User Object ID
+
+After creating the user, you need to obtain the EntraID user object ID to use in the `act.oid` field.
+
+**Method 1: From User Profile Page**
+
+1. Navigate to **Microsoft Entra ID** → **Users**
+2. Click on **alice@yourdomain.onmicrosoft.com**
+3. The **Object ID** is displayed on the Overview page
+4. Format: `a1b2c3d4-e5f6-7890-1234-567890abcdef` (GUID)
+
+**Method 2: From URL**
+
+The object ID appears in the browser URL when viewing the user:
+```
+https://portal.azure.com/#view/Microsoft_AAD_UsersAndTenants/UserProfileMenuBlade/~/overview/userId/a1b2c3d4-e5f6-7890-1234-567890abcdef
+                                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                                                                                          This is the Object ID
+```
+
+**Method 3: Via Microsoft Graph API**
+
+```bash
+# Get access token for Microsoft Graph
+az login
+ACCESS_TOKEN=$(az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv)
+
+# Query user
+curl -X GET "https://graph.microsoft.com/v1.0/users/alice@yourdomain.onmicrosoft.com" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -H "Content-Type: application/json"
+```
+
+Response includes:
+```json
+{
+  "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+  "userPrincipalName": "alice@yourdomain.onmicrosoft.com",
+  "displayName": "Alice Smith",
+  ...
+}
+```
+
+**Method 4: Via Azure CLI**
+
+```bash
+az ad user show --id alice@yourdomain.onmicrosoft.com --query id -o tsv
+```
+
+Output:
+```
+a1b2c3d4-e5f6-7890-1234-567890abcdef
+```
+
+**Copy this Object ID** - you'll use it in the `act.oid` field when creating the act assertion.
+
+**Why Object ID (oid) for EntraID?**
+
+EntraID uses **two** key identifiers for act claims:
+
+1. **`sub` (Subject)**: User Principal Name (UPN) - `alice@yourdomain.onmicrosoft.com`
+   - Human-readable identifier
+   - Used for display purposes
+   - Can change if user's UPN changes
+
+2. **`oid` (Object ID)**: GUID - `a1b2c3d4-e5f6-7890-1234-567890abcdef`
+   - **Primary identifier** for logging and correlation
+   - Pseudonymous (not PII)
+   - **Never changes** - stable identifier
+   - Perfect correlation with EntraID audit logs
+   - Required for resource server validation
+
+**Best Practice:**
+- Include **both** `sub` (UPN) and `oid` (Object ID) in act claims
+- Use `oid` for logging and correlation (pseudonymous)
+- Use `sub` for human-readable display
+- Resource servers should validate using `oid`
+
+**EntraID Object ID Format:**
+- 32 hexadecimal characters with hyphens
+- Format: `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
+- Example: `a1b2c3d4-e5f6-7890-1234-567890abcdef`
+- Same format as tenant ID and application ID
+
+
+<br>
 
 ## **Step 6: Test Agent Token Request**
 
@@ -708,15 +794,48 @@ Test creating a signed act assertion representing the human identity.
 # In your application, after human authenticates
 # This would come from OIDC/SAML authentication
 
+# In your application, after human authenticates via OIDC
+# Extract these fields from the OIDC token
+
 authenticated_user = {
-    "sub": "alice@yourdomain.onmicrosoft.com",
+    "sub": "alice@yourdomain.onmicrosoft.com",  # UPN from OIDC token 'preferred_username'
+    "oid": "a1b2c3d4-e5f6-7890-1234-567890abcdef",  # From Step 5.4 - OIDC token 'oid' claim
     "email": "alice@yourdomain.onmicrosoft.com",
-    "name": "Alice Smith",
-    "oid": "user-object-id-from-entra"
+    "name": "Alice Smith"
 }
 ```
 
 ### 7.2 Create Act Assertion
+
+
+
+**Important Field Explanations:**
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| `iss` | Application identifier | Your app ID or URL |
+| `sub` | Application identifier | Same as iss |
+| `aud` | API audience | Your resource server |
+| `exp` | Current time + 300 | 5 minutes expiration |
+| `iat` | Current time | Issued at timestamp |
+| `jti` | Unique nonce | Prevents replay attacks |
+| `act.sub` | User UPN | `alice@yourdomain.onmicrosoft.com` |
+| `act.oid` | **User Object ID** | **`a1b2c3d4-e5f6-7890-1234-567890abcdef` - From Step 5.4** |
+| `act.email` | User's email | For display |
+| `act.name` | User's name | For display |
+
+**Critical: act.oid is the primary identifier for EntraID**
+
+The `act.oid` field contains the user's EntraID object ID (GUID) and is the **primary identifier** for:
+- **Logging**: Pseudonymous, not PII
+- **Correlation**: Matches EntraID audit logs perfectly
+- **Stability**: Never changes, even if UPN changes
+- **Validation**: Resource servers should validate using `oid`
+
+The `act.sub` field contains the UPN and is useful for human-readable display but should not be used as the primary identifier for logging or validation.
+
+**Both fields should be present** in the act claim for optimal functionality.
+
 
 ```python
 import jwt
@@ -769,7 +888,7 @@ Decoded Act Assertion:
     "sub": "alice@yourdomain.onmicrosoft.com",
     "email": "alice@yourdomain.onmicrosoft.com",
     "name": "Alice Smith",
-    "oid": "user-object-id-from-entra"
+    "oid": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
   }
 }
 ```
@@ -796,7 +915,7 @@ except Exception as e:
     print(f"❌ Signature verification failed: {e}")
 ```
 
----
+<br>
 
 ## **Step 8: Configure Resource Server Validation**
 
@@ -1037,7 +1156,65 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6...
 X-Act-Assertion: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ5b3VyLWFwcC1pZCIsInN1YiI6InlvdXItYXBwLWlkIiwiYXVkIjoiaHR0cHM6Ly9hcGkuZXhhbXBsZS5jb20vZmluYW5jZSIsImV4cCI6MTczNTY4NjMwMCwiaWF0IjoxNzM1Njg2MDAwLCJqdGkiOiJhY3QtMTczNTY4NjAwMCIsImFjdCI6eyJzdWIiOiJhbGljZUB5b3VyZG9tYWluLm9ubWljcm9zb2Z0LmNvbSIsImVtYWlsIjoiYWxpY2VAeW91cmRvbWFpbi5vbm1pY3Jvc29mdC5jb20iLCJuYW1lIjoiQWxpY2UgU21pdGgiLCJvaWQiOiJ1c2VyLW9iamVjdC1pZCJ9fQ...
 ```
 
----
+<br>
+
+
+### 8.2 Logging Best Practices
+
+**✅ DO: Log using Object ID (oid)**
+```python
+logger.info(
+    "API access",
+    extra={
+        "agent_id": "12345678-1234-1234-1234-123456789abc",  # Service principal OID
+        "human_id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",  # User Object ID (oid)
+        "action": "read",
+        "resource": "/api/finance/reports"
+    }
+)
+```
+
+**❌ DON'T: Log PII (UPN, email, name)**
+```python
+# BAD - This logs PII
+logger.info(f"Access by {human_upn}")    # ❌ UPN is PII
+logger.info(f"User {human_email}")       # ❌ Email is PII
+logger.info(f"Name: {human_name}")       # ❌ Name is PII
+```
+
+**Why log Object ID (oid) instead of UPN/email?**
+- **Privacy**: Object ID is pseudonymous (not PII)
+- **GDPR/CCPA compliance**: Reduces PII in logs
+- **Stability**: Never changes (UPN can change)
+- **Correlation**: Perfect match with EntraID audit logs
+- **Uniqueness**: Guaranteed unique across entire EntraID tenant
+
+**EntraID Audit Log Correlation:**
+
+EntraID Sign-in logs and Audit logs use the `userId` field which contains the Object ID:
+```json
+{
+  "userId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+  "userPrincipalName": "alice@yourdomain.onmicrosoft.com",
+  ...
+}
+```
+
+By logging the Object ID in your application, you can perfectly correlate:
+- Your application logs → EntraID audit logs
+- Security investigations → User activity
+- Compliance reporting → Access patterns
+
+**Query EntraID logs by Object ID:**
+```kusto
+// In Azure Monitor / Log Analytics
+SigninLogs
+| where UserId == "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+| project TimeGenerated, UserPrincipalName, AppDisplayName, ResultType
+```
+
+
+<br>
 
 ## **Troubleshooting**
 
@@ -1197,7 +1374,7 @@ response = requests.get(api_url, headers=headers)
     "sub": "alice@yourdomain.onmicrosoft.com",
     "email": "alice@yourdomain.onmicrosoft.com",
     "name": "Alice Smith",
-    "oid": "user-object-id"
+    "oid": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
   }
 }
 ```
@@ -1245,7 +1422,7 @@ Either Fail? → Deny Access
 Audit Log (agent ID, human ID, result)
 ```
 
----
+<br>
 
 ## **Summary**
 
@@ -1278,6 +1455,16 @@ Resource validates: Both components ✓
 Access granted: Only if both pass ✓
 ```
 
+**Comparison with Other Vendors:**
+
+| Vendor | Token Structure | Validation |
+|--------|----------------|------------|
+| Keycloak/Auth0/Okta | One token with sub + act | Validate one JWT |
+| EntraID (Hybrid) | Agent token + Act assertion | Validate two JWTs |
+
+**Security Properties:** Identical  
+**Dual-Subject Authorization:** Achieved
+
 **Next Steps:**
 1. **Configure Python Application:** Follow Python Application/Agent Configuration Guide
 2. **Implement Act Assertion Creation:** Use code from Step 7
@@ -1299,7 +1486,7 @@ Access granted: Only if both pass ✓
 - Works with all EntraID tiers (Free, P1, P2)
 - Future-proof if Microsoft adds native support
 
----
+<br>
 
 <br>
 <br>
