@@ -21,7 +21,7 @@ This guide provides step-by-step instructions for configuring Auth0 to support A
 **Auth0 Plan:** Works with Free tier; Actions available on all plans  
 **Prerequisites:** Auth0 tenant admin access, basic understanding of OAuth 2.0
 
----
+<br>
 
 ## **Table of Contents**
 
@@ -39,7 +39,7 @@ This guide provides step-by-step instructions for configuring Auth0 to support A
 12. [Troubleshooting](#troubleshooting)
 13. [Reference: Configuration Examples](#reference-configuration-examples)
 
----
+<br>
 
 ## **Prerequisites**
 
@@ -61,7 +61,7 @@ https://manage.auth0.com
 2. Look in top-left corner: `your-tenant.us.auth0.com` or `your-tenant.eu.auth0.com`
 3. Note this domain - you'll need it throughout the guide
 
----
+<br>
 
 ## **Architecture Overview**
 
@@ -118,7 +118,7 @@ Custom code that runs during M2M token requests. Extracts `act` from client asse
 **RBAC (Role-Based Access Control):**  
 Auth0's built-in authorization system. Used for pre-approval of both agents and humans.
 
----
+<br>
 
 ## **Step 1: Create API (Resource Server)**
 
@@ -175,7 +175,7 @@ RBAC ensures that:
 }
 ```
 
----
+<br>
 
 ## **Step 2: Define Permissions**
 
@@ -225,7 +225,7 @@ read:finance-data    Read access to finance system data
 }
 ```
 
----
+<br>
 
 ## **Step 3: Create Agent Application (M2M)**
 
@@ -297,7 +297,7 @@ Authorized APIs:
 }
 ```
 
----
+<br>
 
 ## **Step 4: Create Roles for Pre-Approval**
 
@@ -380,7 +380,7 @@ FinanceUser     Human users authorized for finance system access
 }
 ```
 
----
+<br>
 
 ## **Step 5: Create Credentials Exchange Action**
 
@@ -532,7 +532,7 @@ The flow should show:
 }
 ```
 
----
+<br>
 
 ## **Step 6: Assign Roles (Pre-Approval)**
 
@@ -617,7 +617,7 @@ curl --request POST \
   }'
 ```
 
----
+<br>
 
 ## **Step 7: Create Test User**
 
@@ -657,6 +657,41 @@ API: AGBAC-Min Finance API
 Permission: read:finance-data
 ```
 
+
+### 7.4 Get User ID
+
+After creating the user, you need to obtain the Auth0 user ID to use in the `act.sub` field.
+
+**Method 1: From User Details Page**
+
+1. Click on the user `alice@corp.example.com`
+2. The user ID is displayed at the top of the details page
+3. Format: `auth0|63f1234567890abcdef12345`
+
+**Method 2: From URL**
+
+The user ID appears in the browser URL:
+```
+https://manage.auth0.com/dashboard/us/your-tenant/users/auth0|63f1234567890abcdef12345
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                                                This is the User ID
+```
+
+**Copy this User ID** - you'll use it in the `act.sub` field when creating the act claim.
+
+**Why User ID instead of email?**
+- **Privacy**: User ID is pseudonymous (not PII like email)
+- **Stability**: Doesn't change if user's email changes  
+- **Correlation**: Matches Auth0's internal user ID for perfect audit log correlation
+- **Provider Identifier**: Includes auth provider prefix (e.g., `auth0|`, `google-oauth2|`)
+
+**User ID Formats by Connection:**
+- Username-Password: `auth0|63f1234567890abcdef12345`
+- Google: `google-oauth2|123456789012345678901`
+- Azure AD: `windowslive|a1b2c3d4e5f6g7h8`
+- SAML: `samlp|provider|user@example.com`
+
+
 ### Configuration Reference
 
 ```json
@@ -676,7 +711,7 @@ Permission: read:finance-data
 }
 ```
 
----
+<br>
 
 ## **Step 8: Test Configuration**
 
@@ -704,12 +739,36 @@ The agent creates this JWT. For testing, we'll create it manually.
   "iat": 1735686000,
   "jti": "test-assertion-abc123",
   "act": {
-    "sub": "alice@corp.example.com",
+    "sub": "auth0|63f1234567890abcdef12345",
     "email": "alice@corp.example.com",
     "name": "Alice Smith"
   }
 }
 ```
+
+
+
+**Important Field Explanations:**
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| `iss` | Client ID | Issuer = the agent client ID |
+| `sub` | Client ID | Subject = the agent client ID |
+| `aud` | Auth0 tenant URL | Must match exactly (with trailing `/`) |
+| `exp` | Current time + 300 | Expiration (5 minutes from now) |
+| `iat` | Current time | Issued at timestamp |
+| `jti` | Unique nonce | Prevents replay attacks |
+| `act.sub` | **Auth0 User ID** | **From Step 7.4 - format: `auth0|xxx`** |
+| `act.email` | User's email | For human-readable logging |
+| `act.name` | User's name | For human-readable logging |
+
+**Critical: act.sub must be the Auth0 User ID**
+
+The `act.sub` field should contain the user's Auth0 user ID (like `auth0|63f1234567890abcdef12345`), not their email address. This provides:
+- Better privacy (pseudonymous identifier)
+- Stability (doesn't change if email changes)
+- Perfect correlation with Auth0 audit logs
+
 
 **Important:**
 - Replace `YOUR_CLIENT_ID` with your actual client ID
@@ -725,23 +784,31 @@ The agent creates this JWT. For testing, we'll create it manually.
 import jwt
 import time
 
+import jwt
+import time
+
+# Replace these with your actual values
+CLIENT_ID = "your-client-id-here"
+CLIENT_SECRET = "your-client-secret-here"
+AUTH0_DOMAIN = "https://your-tenant.us.auth0.com/"
+USER_ID = "auth0|63f1234567890abcdef12345"  # From Step 7.4
+
 payload = {
-    "iss": "YOUR_CLIENT_ID",
-    "sub": "YOUR_CLIENT_ID",
-    "aud": "https://your-tenant.us.auth0.com/",
+    "iss": CLIENT_ID,
+    "sub": CLIENT_ID,
+    "aud": AUTH0_DOMAIN,
     "exp": int(time.time()) + 300,
     "iat": int(time.time()),
-    "jti": "test-assertion-abc123",
+    "jti": f"test-{int(time.time())}",
     "act": {
-        "sub": "alice@corp.example.com",
+        "sub": USER_ID,  # Auth0 user ID (not email!)
         "email": "alice@corp.example.com",
         "name": "Alice Smith"
     }
 }
 
-client_secret = "YOUR_CLIENT_SECRET"
-
-client_assertion = jwt.encode(payload, client_secret, algorithm="HS256")
+client_assertion = jwt.encode(payload, CLIENT_SECRET, algorithm="HS256")
+print("Client Assertion JWT:")
 print(client_assertion)
 ```
 
@@ -794,7 +861,7 @@ Copy the `access_token` and decode at https://jwt.io
     "read:finance-data"
   ],
   "act": {
-    "sub": "alice@corp.example.com",
+    "sub": "auth0|63f1234567890abcdef12345",
     "email": "alice@corp.example.com",
     "name": "Alice Smith"
   }
@@ -811,9 +878,10 @@ Copy the `access_token` and decode at https://jwt.io
 
 2. **Human Identity:**
    - `act`: Object containing human data
-   - `act.sub`: `alice@corp.example.com`
+   - `act.sub`: `auth0|63f1234567890abcdef12345` **(Auth0 User ID)**
    - `act.email`: `alice@corp.example.com`
    - `act.name`: `Alice Smith`
+
 
 3. **Permissions:**
    - `permissions`: Array containing `read:finance-data`
@@ -862,7 +930,7 @@ AGBAC-Min: Act claim successfully injected into access token
 - "Add Permissions in the Access Token" not enabled
 - Re-check Step 1.3
 
----
+<br>
 
 ## **Step 9: Configure Resource Server Validation**
 
@@ -888,7 +956,7 @@ def validate_dual_subject_token(token, resource):
     if not act_claim:
         raise Unauthorized("Token missing human identity (act)")
     
-    human_id = act_claim['sub']  # alice@corp.example.com
+    human_id = act_claim['sub']  # auth0|63f1234567890abcdef12345
     
     # 4. Validate agent permissions
     agent_permissions = decoded.get('permissions', [])
@@ -1092,7 +1160,39 @@ def audit_log(agent_id, human_id, resource, result, reason=None):
 }
 ```
 
----
+<br>
+
+
+### 9.2 Logging Best Practices
+
+**✅ DO: Log IAM identifiers**
+```python
+logger.info(
+    "API access",
+    extra={
+        "agent_id": "abcd1234@clients",
+        "human_id": "auth0|63f1234567890abcdef12345",  # Auth0 user ID
+        "action": "read",
+        "resource": "/api/finance/reports"
+    }
+)
+```
+
+**❌ DON'T: Log PII (email, name)**
+```python
+# BAD - This logs PII
+logger.info(f"Access by {human_email}")  # ❌ Email is PII
+logger.info(f"User {human_name}")        # ❌ Name is PII
+```
+
+**Why log user ID instead of email?**
+- **Privacy**: User ID is pseudonymous (not PII)
+- **GDPR/CCPA compliance**: Reduces PII in logs
+- **Correlation**: Can correlate with Auth0 audit logs using user ID
+- **Stability**: Doesn't change if user's email changes
+
+
+<br>
 
 ## **Troubleshooting**
 
@@ -1226,7 +1326,7 @@ def user_has_finance_access(email):
     return check_user_permissions(email, 'read:finance-data')
 ```
 
----
+<br>
 
 ## **Reference: Configuration Examples**
 
@@ -1306,7 +1406,7 @@ def user_has_finance_access(email):
   "iat": 1735686000,
   "jti": "unique-assertion-id-123",
   "act": {
-    "sub": "alice@corp.example.com",
+    "sub": "auth0|63f1234567890abcdef12345",
     "email": "alice@corp.example.com",
     "name": "Alice Smith"
   }
@@ -1329,14 +1429,14 @@ def user_has_finance_access(email):
     "read:finance-data"
   ],
   "act": {
-    "sub": "alice@corp.example.com",
+    "sub": "auth0|63f1234567890abcdef12345",
     "email": "alice@corp.example.com",
     "name": "Alice Smith"
   }
 }
 ```
 
----
+<br>
 
 ## **Summary**
 
@@ -1379,7 +1479,7 @@ You've successfully configured Auth0 for AGBAC-Min dual-subject authorization!
 - Logs are retained for 2 days (free tier) or longer (paid tiers)
 - Management API useful for programmatic configuration
 
----
+
 
 <br>
 <br>
