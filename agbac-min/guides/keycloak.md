@@ -21,7 +21,7 @@ This guide provides step-by-step instructions for configuring Keycloak to suppor
 **Keycloak Version:** 23.0 or higher recommended  
 **Prerequisites:** Keycloak admin access, basic understanding of OAuth 2.0
 
----
+<br>
 
 ## **Table of Contents**
 
@@ -38,7 +38,7 @@ This guide provides step-by-step instructions for configuring Keycloak to suppor
 11. [Troubleshooting](#troubleshooting)
 12. [Reference: Configuration JSON](#reference-configuration-json)
 
----
+<br>
 
 ## **Prerequisites**
 
@@ -59,7 +59,7 @@ https://your-keycloak-domain/admin
 - Username: `admin`
 - Password: Set during Keycloak installation
 
----
+<br>
 
 ## **Architecture Overview**
 
@@ -102,428 +102,341 @@ https://your-keycloak-domain/admin
 
 ### Key Concepts
 
-**Dual-Subject Authorization:**  
-Both the agent (`sub`) and human (`act`) must be independently authorized.
+**Agent Identity (`sub`)**: The AI agent's service account (e.g., `service-account-finance-agent`)  
+**Human Identity (`act`)**: The human user's IAM identifier (e.g., Keycloak user ID: `f1234567-89ab-cdef-0123-456789abcdef`)  
+**Client Assertion**: Signed JWT from agent containing the `act` claim  
+**Protocol Mapper**: Keycloak configuration to extract `act` from client assertion into token  
+**Pre-Approval**: Role assignments required for both agent and human before token issuance
 
-**Pre-Approval:**  
-Both subjects are configured in Keycloak before any token requests occur.
+**Important - IAM Identifier in act.sub:**
+The `act.sub` field should contain the user's Keycloak user ID (UUID), not their email. This provides:
+- **Privacy**: Pseudonymous identifier instead of PII (email)
+- **Stability**: User ID doesn't change if email changes
+- **Correlation**: Perfect correlation with Keycloak's internal user ID for audit logs
 
-**Client Assertion:**  
-A JWT created by the agent containing both identities, signed with agent credentials.
-
-**Protocol Mapper:**  
-Keycloak extracts `act` from the client assertion and includes it in the issued token.
-
----
+<br>
 
 ## **Step 1: Create Realm**
 
-A realm in Keycloak is an isolated namespace for managing users, clients, and policies.
+### 1.1 Access Admin Console
 
-### 1.1 Navigate to Realm Creation
+1. Navigate to Keycloak Admin Console
+2. Log in with admin credentials
 
-1. Log in to Keycloak Admin Console
-2. Click the realm dropdown (top-left, currently shows "master")
-3. Click **"Create Realm"**
+### 1.2 Create New Realm
 
-### 1.2 Configure Realm
+1. Click dropdown in top-left (says "Master" by default)
+2. Click **"Create Realm"**
+3. Configure realm:
 
-**Realm Name:** `agbac-min`
+| Field | Value | Notes |
+|-------|-------|-------|
+| Realm name | `agbac-min` | Use lowercase, no spaces |
+| Enabled | ✅ ON | Realm must be enabled |
 
-**Settings:**
-- Display name: `AGBAC-Min Realm`
-- Enabled: `ON`
-- User registration: `OFF` (we'll create users manually)
-- Forgot password: `OFF` (optional, can enable later)
-- Remember me: `OFF` (optional)
+4. Click **"Create"**
 
-Click **"Create"**
+### 1.3 Configure Realm Settings
 
-### 1.3 Verify Realm Created
+Navigate to: **Realm Settings** → **General**
 
-You should now see `agbac-min` in the realm dropdown.
+| Setting | Value | Notes |
+|---------|-------|-------|
+| User-managed access | ✅ ON | Allows fine-grained permissions |
+| Endpoints | Note the OpenID Endpoint Configuration URL | You'll need this later |
 
-**Expected Result:**
+**OpenID Configuration URL** (bookmark this):
 ```
-Current realm: agbac-min
-```
-
-### Configuration Reference (JSON)
-
-```json
-{
-  "realm": "agbac-min",
-  "displayName": "AGBAC-Min Realm",
-  "enabled": true,
-  "registrationAllowed": false,
-  "resetPasswordAllowed": false,
-  "rememberMe": false,
-  "sslRequired": "external"
-}
+https://your-keycloak-domain/realms/agbac-min/.well-known/openid-configuration
 ```
 
----
-
-## **Step 2: Create Roles for Pre-Approval**
-
-Roles represent permissions in Keycloak. We'll create separate roles for agents and humans.
-
-### 2.1 Create Human Role
-
-1. Navigate to **Realm Roles** (left sidebar)
-2. Click **"Create Role"**
-
-**Configuration:**
-- Role name: `FinanceUser`
-- Description: `Human users authorized for finance system access`
-
-Click **"Save"**
-
-### 2.2 Create Agent Role
-
-1. Click **"Create Role"** again
-
-**Configuration:**
-- Role name: `FinanceAgent`
-- Description: `AI agents authorized for finance system access`
-
-Click **"Save"**
-
-### 2.3 Verify Roles Created
-
-Navigate to **Realm Roles** and verify both roles appear:
-- ✅ `FinanceAgent`
-- ✅ `FinanceUser`
-
-### Configuration Reference (JSON)
-
-```json
-{
-  "roles": {
-    "realm": [
-      {
-        "name": "FinanceAgent",
-        "description": "AI agents authorized for finance system access",
-        "composite": false,
-        "clientRole": false
-      },
-      {
-        "name": "FinanceUser",
-        "description": "Human users authorized for finance system access",
-        "composite": false,
-        "clientRole": false
-      }
-    ]
-  }
-}
-```
-
-**Note:** These roles represent the pre-approval for accessing resources. Both the agent and human must have their respective roles assigned.
-
----
-
-## **Step 3: Create Agent Client**
-
-The agent client represents the AI agent's identity in Keycloak.
-
-### 3.1 Navigate to Clients
-
-1. Click **"Clients"** in left sidebar
-2. Click **"Create client"**
-
-### 3.2 Configure Client - General Settings
-
-**Client type:** `OpenID Connect`  
-**Client ID:** `finance-agent`
-
-Click **"Next"**
-
-### 3.3 Configure Client - Capability Config
-
-**Client authentication:** `ON` ✅  
-**Authorization:** `OFF`  
-**Authentication flow:**
-- ✅ Standard flow: `OFF`
-- ✅ Direct access grants: `OFF`
-- ✅ Implicit flow: `OFF`
-- ✅ Service accounts roles: `ON` ✅
-- ✅ OAuth 2.0 Device Authorization Grant: `OFF`
-- ✅ OIDC CIAM Grant: `OFF`
-
-Click **"Next"**
-
-### 3.4 Configure Client - Login Settings
-
-**Root URL:** Leave empty  
-**Valid redirect URIs:** Leave empty (not needed for service accounts)  
-**Web origins:** Leave empty
-
-Click **"Save"**
-
-### 3.5 Configure Client Credentials
-
-1. Navigate to **"Credentials"** tab
-2. **Client Authenticator:** `Client Id and Secret` (default)
-3. Copy the **Client secret** - you'll need this for agent configuration
-
-**Save this secret securely!**
-
-```
-Example client secret: 8xKd9P2mNqR5vTbY3wZcF7jL6hS4gA1e
-```
-
-### 3.6 Enable Service Account
-
-1. Navigate to **"Service account roles"** tab
-2. Verify service account is enabled
-3. Note the service account username (e.g., `service-account-finance-agent`)
-
-### Configuration Reference (JSON)
-
-```json
-{
-  "clientId": "finance-agent",
-  "name": "Finance Agent",
-  "description": "AI agent for finance system operations",
-  "enabled": true,
-  "protocol": "openid-connect",
-  "publicClient": false,
-  "serviceAccountsEnabled": true,
-  "standardFlowEnabled": false,
-  "implicitFlowEnabled": false,
-  "directAccessGrantsEnabled": false,
-  "authorizationServicesEnabled": false,
-  "attributes": {
-    "client.secret.creation.time": "1735686000",
-    "oauth2.device.authorization.grant.enabled": "false",
-    "oidc.ciba.grant.enabled": "false"
-  }
-}
-```
-
----
-
-## **Step 4: Configure Protocol Mapper for Act Claim**
-
-This is the **most critical step**. The protocol mapper extracts the `act` claim from the client assertion JWT and includes it in the access token.
-
-### 4.1 Navigate to Client Mappers
-
-1. Go to **Clients** → `finance-agent`
-2. Click **"Client scopes"** tab
-3. Click on `finance-agent-dedicated` (the dedicated scope for this client)
-4. Click **"Mappers"** tab
-5. Click **"Add mapper"** → **"By configuration"**
-
-### 4.2 Select Mapper Type
-
-Select: **"Script Mapper"**
-
-### 4.3 Configure Script Mapper
-
-**Name:** `act-claim-mapper`  
-**Token Claim Name:** `act`  
-**Claim JSON Type:** `JSON`  
-**Add to ID token:** `OFF`  
-**Add to access token:** `ON` ✅  
-**Add to userinfo:** `OFF`  
-**Add to token introspection:** `ON` ✅ (optional but recommended)
-
-**Script:**
-
-```javascript
-/**
- * AGBAC-Min Protocol Mapper
- * Extracts 'act' claim from client assertion JWT
- */
-
-// Get the client assertion from the authentication session
-var clientAssertion = context.getClientAssertion();
-
-// Check if client assertion exists
-if (clientAssertion !== null) {
-    // Extract the 'act' claim from client assertion's other claims
-    var act = clientAssertion.getOtherClaims().get('act');
-    
-    // If act claim exists, return it to be added to the access token
-    if (act !== null) {
-        // Log for debugging (optional - remove in production if logging is sensitive)
-        LOG.info('AGBAC-Min: Act claim extracted from client assertion: ' + act);
-        
-        // Return the act claim to be included in the token
-        exports = act;
-    } else {
-        LOG.warn('AGBAC-Min: Client assertion present but missing act claim');
-    }
-} else {
-    LOG.warn('AGBAC-Min: No client assertion provided in token request');
-}
-```
-
-**Multivalued:** `OFF`
-
-Click **"Save"**
-
-### 4.4 Verify Mapper Created
-
-Navigate back to **Mappers** tab and verify:
-- ✅ `act-claim-mapper` appears in the list
-- ✅ Type: `Script Mapper`
-- ✅ Token Claim Name: `act`
-
-### Important Notes
-
-⚠️ **Script Mapper Security:** Keycloak script mappers execute JavaScript. Ensure your Keycloak instance is properly secured.
-
-⚠️ **Performance:** Script mappers run on every token request. This script is lightweight and should not impact performance.
-
-✅ **Logging:** The script includes logging statements. Check Keycloak logs (`/opt/keycloak/data/log/keycloak.log`) if tokens don't contain `act`.
-
-### Configuration Reference (JSON)
-
-```json
-{
-  "name": "act-claim-mapper",
-  "protocol": "openid-connect",
-  "protocolMapper": "oidc-script-mapper",
-  "consentRequired": false,
-  "config": {
-    "script": "var clientAssertion = context.getClientAssertion();\nif (clientAssertion !== null) {\n    var act = clientAssertion.getOtherClaims().get('act');\n    if (act !== null) {\n        LOG.info('AGBAC-Min: Act claim extracted: ' + act);\n        exports = act;\n    } else {\n        LOG.warn('AGBAC-Min: Missing act claim in assertion');\n    }\n} else {\n    LOG.warn('AGBAC-Min: No client assertion provided');\n}",
-    "claim.name": "act",
-    "jsonType.label": "JSON",
-    "id.token.claim": "false",
-    "access.token.claim": "true",
-    "userinfo.token.claim": "false",
-    "introspection.token.claim": "true",
-    "multivalued": "false"
-  }
-}
-```
-
----
-
-## **Step 5: Assign Roles (Pre-Approval)**
-
-Assigning roles represents the organizational pre-approval process. Both the agent and human must have their respective roles.
-
-### 5.1 Assign Agent Role
-
-1. Navigate to **Clients** → `finance-agent`
-2. Click **"Service account roles"** tab
-3. Click **"Assign role"**
-4. **Filter by realm roles** (toggle if needed)
-5. Select `FinanceAgent` role
-6. Click **"Assign"**
-
-**Verify:**
-```
-Assigned roles:
-- FinanceAgent
-```
-
-### 5.2 Why This Matters
-
-This role assignment represents organizational approval that the `finance-agent` is authorized to access finance system resources.
-
-In a real deployment:
-- Security team reviews agent capabilities
-- Business approves agent use case
-- Admin assigns role in Keycloak
-- Agent can now request tokens
-
----
-
-## **Step 6: Create Test User**
-
-Create a test user to represent the human principal in dual-subject authorization.
-
-### 6.1 Create User
-
-1. Navigate to **Users** in left sidebar
-2. Click **"Add user"**
-
-**Configuration:**
-- Username: `alice`
-- Email: `alice@corp.example.com`
-- First name: `Alice`
-- Last name: `Smith`
-- Email verified: `ON` ✅
-- Enabled: `ON` ✅
-
-Click **"Create"**
-
-### 6.2 Set User Password
-
-1. Click **"Credentials"** tab
-2. Click **"Set password"**
-3. Password: `Test123!` (use a secure password in production)
-4. Temporary: `OFF`
-5. Click **"Save"**
-6. Confirm in dialog
-
-### 6.3 Assign Role to User
-
-1. Click **"Role mapping"** tab
-2. Click **"Assign role"**
-3. **Filter by realm roles**
-4. Select `FinanceUser`
-5. Click **"Assign"**
-
-**Verify:**
-```
-Assigned roles:
-- FinanceUser
-- default-roles-agbac-min (automatically assigned)
-```
-
-### Configuration Reference (JSON)
-
-```json
-{
-  "username": "alice",
-  "email": "alice@corp.example.com",
-  "firstName": "Alice",
-  "lastName": "Smith",
-  "emailVerified": true,
-  "enabled": true,
-  "credentials": [
-    {
-      "type": "password",
-      "value": "Test123!",
-      "temporary": false
-    }
-  ],
-  "realmRoles": [
-    "FinanceUser"
-  ]
-}
-```
-
-### 6.4 Why This Matters
-
-This role assignment represents organizational approval that `alice@corp.example.com` is authorized to access finance system resources.
-
-When the agent includes Alice's identity in the `act` claim, Keycloak will verify she has the `FinanceUser` role before issuing the token.
-
----
-
-## **Step 7: Test Configuration**
-
-Now we'll test that the configuration works by manually requesting a token with a client assertion containing the `act` claim.
-
-### 7.1 Gather Required Information
-
-**Keycloak Token Endpoint:**
+**Token Endpoint** (you'll use this for token requests):
 ```
 https://your-keycloak-domain/realms/agbac-min/protocol/openid-connect/token
 ```
 
-**Client ID:** `finance-agent`  
-**Client Secret:** (from Step 3.5)
+<br>
+
+## **Step 2: Create Roles for Pre-Approval**
+
+Pre-approval roles ensure that both the agent AND the human are explicitly authorized before Keycloak issues a token.
+
+### 2.1 Create Agent Role
+
+Navigate to: **Realm Roles** → **Create Role**
+
+| Field | Value |
+|-------|-------|
+| Role name | `FinanceAgent` |
+| Description | `Pre-approved agent for finance operations` |
+
+Click **"Save"**
+
+### 2.2 Create Human Role
+
+Navigate to: **Realm Roles** → **Create Role**
+
+| Field | Value |
+|-------|-------|
+| Role name | `FinanceUser` |
+| Description | `Pre-approved human for finance operations` |
+
+Click **"Save"**
+
+**Why Two Roles?**
+- `FinanceAgent` = Agent pre-approved to ACT
+- `FinanceUser` = Human pre-approved to AUTHORIZE the agent to act on their behalf
+- Both must be present for token issuance (enforced by resource server)
+
+<br>
+
+## **Step 3: Create Agent Client**
+
+The agent client represents the AI agent service account in Keycloak.
+
+### 3.1 Create Client
+
+Navigate to: **Clients** → **Create Client**
+
+**General Settings:**
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| Client type | `OpenID Connect` | Standard OAuth/OIDC |
+| Client ID | `finance-agent` | Unique identifier for the agent |
+
+Click **"Next"**
+
+### 3.2 Capability Config
+
+| Setting | Value | Notes |
+|---------|-------|-------|
+| Client authentication | ✅ ON | Required for confidential clients |
+| Authorization | ❌ OFF | Not needed for AGBAC |
+| Authentication flow | |
+| - Standard flow | ❌ OFF | Agent uses client_credentials |
+| - Direct access grants | ❌ OFF | Agent uses client_credentials |
+| - Service accounts roles | ✅ ON | **CRITICAL - Required for client_credentials** |
+
+Click **"Next"**
+
+### 3.3 Login Settings
+
+Leave all fields empty (not used for service accounts)
+
+Click **"Save"**
+
+### 3.4 Configure Client Details
+
+After creation, configure these settings:
+
+Navigate to: **Clients** → **finance-agent** → **Settings**
+
+**Access settings:**
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| Root URL | (empty) | Not needed for service accounts |
+| Home URL | (empty) | Not needed |
+| Valid redirect URIs | (empty) | Not needed for client_credentials |
+| Valid post logout redirect URIs | (empty) | Not needed |
+| Web origins | (empty) | Not needed |
+
+**Capability config:**
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| Client authentication | ✅ ON | Must be enabled |
+| Service accounts roles | ✅ ON | **Must be enabled** |
+
+**Advanced:**
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| Access Token Lifespan | `300` seconds (5 min) | Security: Short-lived tokens |
+
+Click **"Save"**
+
+### 3.5 Get Client Secret
+
+Navigate to: **Clients** → **finance-agent** → **Credentials**
+
+| Field | Value |
+|-------|-------|
+| Client Authenticator | `Client Id and Secret` |
+
+**Copy the Client Secret** - you'll need this for agent configuration and testing.
+
+**Security Note:** Store this securely (use AWS Secrets Manager, Azure Key Vault, etc. in production)
+
+<br>
+
+## **Step 4: Configure Protocol Mapper for Act Claim**
+
+This is the **most critical configuration** - it extracts the `act` claim from the client assertion and includes it in the access token.
+
+### 4.1 Create Protocol Mapper
+
+Navigate to: **Clients** → **finance-agent** → **Client scopes** → **finance-agent-dedicated** → **Add mapper** → **By configuration**
+
+Select: **"User Attribute"**
+
+**IMPORTANT:** Despite the name "User Attribute", this mapper works for extracting claims from client assertions. This is the correct mapper type to use.
+
+### 4.2 Configure Mapper
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| Name | `act-claim-mapper` | Descriptive name |
+| User Attribute | `act` | **EXACT** - This extracts `act` from client assertion |
+| Token Claim Name | `act` | Name of claim in access token |
+| Claim JSON Type | `JSON` | **CRITICAL** - Preserves act structure |
+| Add to ID token | ✅ ON | Include in ID token |
+| Add to access token | ✅ ON | **CRITICAL** - Must be enabled |
+| Add to userinfo | ❌ OFF | Not needed |
+| Multivalued | ❌ OFF | Act is a single object |
+| Aggregate attribute values | ❌ OFF | Not needed |
+
+Click **"Save"**
+
+### 4.3 Verify Mapper Configuration
+
+Navigate back to: **Clients** → **finance-agent** → **Client scopes** → **finance-agent-dedicated** → **Mappers**
+
+You should see **"act-claim-mapper"** in the list.
+
+**How It Works:**
+1. Agent sends client assertion JWT with `act` claim
+2. Keycloak receives token request
+3. Protocol mapper extracts `act` from client assertion
+4. Keycloak includes `act` in issued access token
+5. Resource server receives token with both `sub` (agent) and `act` (human)
+
+<br>
+
+## **Step 5: Assign Roles (Pre-Approval)**
+
+Both the agent service account and the human user must have their respective roles assigned.
+
+### 5.1 Assign Role to Agent Service Account
+
+Navigate to: **Users** → Search for `service-account-finance-agent`
+
+**Why this name?** Keycloak automatically creates a service account user with the prefix `service-account-` when you enable "Service accounts roles" for a client.
+
+Click on **service-account-finance-agent**
+
+Navigate to: **Role mapping** → **Assign role**
+
+| Field | Action |
+|-------|--------|
+| Filter by realm roles | Select filter |
+| Search | (leave empty to see all) |
+| Select | ✅ `FinanceAgent` |
+
+Click **"Assign"**
+
+**Verify:**
+The "Assigned roles" section should now show:
+- `FinanceAgent` ✅
+- `default-roles-agbac-min`
+
+### 5.2 Assign Role to Human User
+
+This will be done in Step 6 when we create the test user.
+
+<br>
+
+## **Step 6: Create Test User**
+
+Create a test user to represent a human who will be included in the `act` claim.
+
+### 6.1 Create User
+
+Navigate to: **Users** → **Add user**
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| Username | `alice` | Unique username |
+| Email | `alice@corp.example.com` | User's email |
+| Email verified | ✅ ON | Skip email verification |
+| First name | `Alice` | User's first name |
+| Last name | `Smith` | User's last name |
+| Enabled | ✅ ON | User account active |
+
+Click **"Create"**
+
+### 6.2 Get User ID
+
+After creating the user, you'll be on the user details page.
+
+**Copy the User ID** from the URL or from the user details:
+```
+URL: https://keycloak/admin/master/console/#/agbac-min/users/f1234567-89ab-cdef-0123-456789abcdef
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                                                 This is the User ID (UUID)
+```
+
+**This User ID will be used in the `act.sub` field** when the application creates the act claim.
+
+**Why User ID instead of email?**
+- **Privacy**: User ID is pseudonymous (not PII like email)
+- **Stability**: Doesn't change if user's email changes
+- **Correlation**: Matches Keycloak's internal user ID for perfect audit log correlation
+
+### 6.3 Set Password (Optional - for testing login flows)
+
+Navigate to: **Users** → **alice** → **Credentials** → **Set password**
+
+| Field | Value |
+|-------|-------|
+| Password | `test123` |
+| Temporary | ❌ OFF |
+
+Click **"Set password"** → **Confirm**
+
+### 6.4 Assign Role to User
+
+Navigate to: **Users** → **alice** → **Role mapping** → **Assign role**
+
+| Field | Action |
+|-------|--------|
+| Filter by realm roles | Select filter |
+| Select | ✅ `FinanceUser` |
+
+Click **"Assign"**
+
+**Verify:**
+The "Assigned roles" section should show:
+- `FinanceUser` ✅
+- `default-roles-agbac-min`
+
+<br>
+
+## **Step 7: Test Configuration**
+
+Now we'll test the complete flow by requesting a dual-subject token.
+
+### 7.1 Gather Required Information
+
+You'll need:
+
+**Keycloak Configuration:**
+- Token URL: `https://your-keycloak-domain/realms/agbac-min/protocol/openid-connect/token`
+- Realm: `agbac-min`
+
+**Agent Client:**
+- Client ID: `finance-agent`  
+- Client Secret: (from Step 3.5)
+
+**Test User:**
+- User ID: `f1234567-89ab-cdef-0123-456789abcdef` (from Step 6.2)
+- Email: `alice@corp.example.com`
+- Name: `Alice Smith`
 
 ### 7.2 Create Client Assertion JWT
 
-The agent will create this JWT. For testing, we'll create it manually.
+The agent creates this JWT to prove its identity and include the human's identity in the `act` claim.
 
 **Client Assertion Payload:**
 ```json
@@ -533,20 +446,35 @@ The agent will create this JWT. For testing, we'll create it manually.
   "aud": "https://your-keycloak-domain/realms/agbac-min",
   "exp": 1735686300,
   "iat": 1735686000,
-  "jti": "test-assertion-123",
+  "jti": "unique-nonce-abc123",
   "act": {
-    "sub": "alice@corp.example.com",
+    "sub": "f1234567-89ab-cdef-0123-456789abcdef",
     "email": "alice@corp.example.com",
     "name": "Alice Smith"
   }
 }
 ```
 
-**Important:** 
-- Replace `exp` with current timestamp + 300 seconds
-- Replace `iat` with current timestamp
-- Replace `aud` with your actual Keycloak domain
-- Replace `jti` with a unique ID (can be any unique string)
+**Important Field Explanations:**
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| `iss` | `finance-agent` | Issuer = the agent client ID |
+| `sub` | `finance-agent` | Subject = the agent client ID |
+| `aud` | Keycloak realm URL | Must match exactly |
+| `exp` | Current time + 300 | Expiration (5 minutes from now) |
+| `iat` | Current time | Issued at timestamp |
+| `jti` | Unique nonce | Prevents replay attacks |
+| `act.sub` | **User ID (UUID)** | **Keycloak user ID from Step 6.2** |
+| `act.email` | User's email | For human-readable logging |
+| `act.name` | User's name | For human-readable logging |
+
+**Critical: act.sub must be the Keycloak User ID**
+
+The `act.sub` field should contain the user's Keycloak user ID (UUID like `f1234567-89ab-cdef-0123-456789abcdef`), not their email address. This provides:
+- Better privacy (pseudonymous identifier)
+- Stability (doesn't change if email changes)
+- Perfect correlation with Keycloak audit logs
 
 **Sign this JWT** with the client secret using HS256 algorithm.
 
@@ -555,44 +483,85 @@ The agent will create this JWT. For testing, we'll create it manually.
 import jwt
 import time
 
+# Replace these with your actual values
+CLIENT_ID = "finance-agent"
+CLIENT_SECRET = "your-client-secret-here"
+KEYCLOAK_REALM_URL = "https://your-keycloak-domain/realms/agbac-min"
+USER_ID = "f1234567-89ab-cdef-0123-456789abcdef"  # From Step 6.2
+
 payload = {
-    "iss": "finance-agent",
-    "sub": "finance-agent",
-    "aud": "https://your-keycloak-domain/realms/agbac-min",
+    "iss": CLIENT_ID,
+    "sub": CLIENT_ID,
+    "aud": KEYCLOAK_REALM_URL,
     "exp": int(time.time()) + 300,
     "iat": int(time.time()),
-    "jti": "test-assertion-123",
+    "jti": f"test-{int(time.time())}",
     "act": {
-        "sub": "alice@corp.example.com",
+        "sub": USER_ID,  # Keycloak user ID (UUID)
         "email": "alice@corp.example.com",
         "name": "Alice Smith"
     }
 }
 
-client_secret = "YOUR_CLIENT_SECRET_HERE"
-
-client_assertion = jwt.encode(payload, client_secret, algorithm="HS256")
+client_assertion = jwt.encode(payload, CLIENT_SECRET, algorithm="HS256")
+print("Client Assertion JWT:")
 print(client_assertion)
 ```
 
 **Using https://jwt.io:**
 1. Go to https://jwt.io
-2. Paste the payload above
+2. Paste the payload above (with your actual values)
 3. In "Verify Signature" section, paste your client secret
 4. Select algorithm: HS256
-5. Copy the encoded JWT
+5. Copy the encoded JWT from the "Encoded" section
 
 ### 7.3 Request Token
 
 **Using curl:**
 ```bash
-curl -X POST https://your-keycloak-domain/realms/agbac-min/protocol/openid-connect/token \
+# Replace these values
+KEYCLOAK_URL="https://your-keycloak-domain"
+CLIENT_ID="finance-agent"
+CLIENT_ASSERTION="eyJhbGc..." # Your signed JWT from step 7.2
+
+curl -X POST "${KEYCLOAK_URL}/realms/agbac-min/protocol/openid-connect/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=client_credentials" \
-  -d "client_id=finance-agent" \
+  -d "client_id=${CLIENT_ID}" \
   -d "scope=openid" \
   -d "client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer" \
-  -d "client_assertion=YOUR_SIGNED_JWT_HERE"
+  -d "client_assertion=${CLIENT_ASSERTION}"
+```
+
+**Using Python:**
+```python
+import requests
+
+# Configuration
+KEYCLOAK_URL = "https://your-keycloak-domain"
+CLIENT_ID = "finance-agent"
+CLIENT_ASSERTION = "eyJhbGc..."  # From step 7.2
+
+# Request token
+response = requests.post(
+    f"{KEYCLOAK_URL}/realms/agbac-min/protocol/openid-connect/token",
+    data={
+        "grant_type": "client_credentials",
+        "client_id": CLIENT_ID,
+        "scope": "openid",
+        "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+        "client_assertion": CLIENT_ASSERTION
+    }
+)
+
+if response.status_code == 200:
+    token_data = response.json()
+    print("✅ Token obtained successfully!")
+    print(f"Access Token: {token_data['access_token'][:50]}...")
+    print(f"Expires in: {token_data['expires_in']} seconds")
+else:
+    print(f"❌ Error: {response.status_code}")
+    print(response.text)
 ```
 
 **Expected Response:**
@@ -622,7 +591,7 @@ Copy the `access_token` value and decode it at https://jwt.io
   "typ": "Bearer",
   "azp": "finance-agent",
   "act": {
-    "sub": "alice@corp.example.com",
+    "sub": "f1234567-89ab-cdef-0123-456789abcdef",
     "email": "alice@corp.example.com",
     "name": "Alice Smith"
   },
@@ -643,114 +612,40 @@ Copy the `access_token` value and decode it at https://jwt.io
   },
   "clientId": "finance-agent",
   "email_verified": false,
-  "preferred_username": "service-account-finance-agent",
-  "clientHost": "192.168.1.100",
-  "clientAddress": "192.168.1.100"
+  "preferred_username": "service-account-finance-agent"
 }
 ```
 
-### 7.5 Verify Critical Claims
+### 7.5 Verify Key Fields
 
-**✅ Required Claims Present:**
-- `sub`: `service-account-finance-agent` (agent identity)
-- `act`: Object containing human identity
-  - `act.sub`: `alice@corp.example.com`
-  - `act.email`: `alice@corp.example.com`
-  - `act.name`: `Alice Smith`
-- `realm_access.roles`: Contains `FinanceAgent`
+✅ **Check these fields in the decoded token:**
 
-**✅ Success Criteria:**
-1. Token request succeeded (HTTP 200)
-2. Token contains `sub` (agent)
-3. Token contains `act` (human)
-4. Token contains `realm_access.roles` with `FinanceAgent`
+| Field | Expected Value | Status |
+|-------|---------------|--------|
+| `sub` | `service-account-finance-agent` | Agent identity ✅ |
+| `act.sub` | `f1234567-89ab-cdef-0123-456789abcdef` | **User ID (UUID)** ✅ |
+| `act.email` | `alice@corp.example.com` | User email ✅ |
+| `act.name` | `Alice Smith` | User name ✅ |
+| `realm_access.roles` | Contains `FinanceAgent` | Agent pre-approved ✅ |
+| `azp` | `finance-agent` | Authorized party ✅ |
 
-### 7.6 Troubleshooting Token Request
+**Critical Verification:**
+- The `act` claim is present ✅
+- The `act.sub` contains the Keycloak user ID (UUID), not email ✅
+- The `sub` is the agent's service account ✅
+- The `FinanceAgent` role is in `realm_access.roles` ✅
 
-**If token request fails:**
+**If any of these are missing**, review Steps 4-6.
 
-**HTTP 401 Unauthorized:**
-- Check client secret is correct
-- Verify client assertion signature
-- Ensure `aud` in client assertion matches Keycloak realm URL exactly
-
-**HTTP 400 Bad Request:**
-- Check client assertion is valid JWT
-- Verify `exp` is in the future
-- Ensure `iat` is not in the future
-- Check `client_assertion_type` is correct
-
-**Token issued but missing `act` claim:**
-- Verify protocol mapper is configured correctly
-- Check Keycloak logs: `/opt/keycloak/data/log/keycloak.log`
-- Look for: `AGBAC-Min: Act claim extracted` or warning messages
-- Verify client assertion contains `act` claim
-- Ensure mapper is assigned to `finance-agent-dedicated` scope
-
----
+<br>
 
 ## **Step 8: Configure Resource Server Validation**
 
-The resource server (your API) must validate that BOTH the agent and human are authorized.
+Your resource server (API) must validate BOTH the agent and human identities.
 
-### 8.1 Token Validation Logic
+### 8.1 Validation Logic
 
-**Pseudocode:**
-```python
-def validate_dual_subject_token(token, resource):
-    # 1. Verify token signature
-    decoded = verify_jwt_signature(token, keycloak_public_key)
-    
-    # 2. Validate standard claims
-    validate_expiry(decoded['exp'])
-    validate_issuer(decoded['iss'], expected_issuer)
-    
-    # 3. Extract subjects
-    agent_id = decoded['sub']  # service-account-finance-agent
-    act_claim = decoded.get('act')
-    
-    if not act_claim:
-        raise Unauthorized("Token missing human identity (act)")
-    
-    human_id = act_claim['sub']  # alice@corp.example.com
-    
-    # 4. Validate agent authorization
-    agent_roles = decoded['realm_access']['roles']
-    if 'FinanceAgent' not in agent_roles:
-        raise Forbidden("Agent not authorized for finance system")
-    
-    # 5. Validate human authorization (check against your user database)
-    if not user_has_role(human_id, 'FinanceUser'):
-        raise Forbidden("Human not authorized for finance system")
-    
-    # 6. Validate resource-specific permissions (optional)
-    if not can_access_resource(agent_id, resource):
-        raise Forbidden("Agent not authorized for this resource")
-    
-    if not can_access_resource(human_id, resource):
-        raise Forbidden("Human not authorized for this resource")
-    
-    # 7. Log for audit
-    audit_log(agent_id, human_id, resource, "ALLOWED")
-    
-    return True
-```
-
-### 8.2 Get Keycloak Public Key
-
-**Method 1: JWKS Endpoint**
-```
-https://your-keycloak-domain/realms/agbac-min/protocol/openid-connect/certs
-```
-
-This returns a JSON Web Key Set (JWKS) containing public keys.
-
-**Method 2: Admin Console**
-1. Navigate to **Realm Settings** → **Keys** tab
-2. Click **"Public key"** next to the active RS256 key
-3. Copy the public key
-
-### 8.3 Example Python Validation
+**Token Validation Flow:**
 
 ```python
 import jwt
@@ -758,373 +653,480 @@ import requests
 from functools import lru_cache
 
 @lru_cache()
-def get_keycloak_public_key():
-    """Fetch and cache Keycloak public key."""
-    jwks_url = "https://your-keycloak-domain/realms/agbac-min/protocol/openid-connect/certs"
-    response = requests.get(jwks_url)
+def get_keycloak_public_key(keycloak_url: str, realm: str) -> str:
+    """Fetch Keycloak's public key for token validation."""
+    url = f"{keycloak_url}/realms/{realm}/protocol/openid-connect/certs"
+    response = requests.get(url)
     jwks = response.json()
-    
-    # Get first RS256 key
-    for key in jwks['keys']:
-        if key['alg'] == 'RS256':
-            return jwt.algorithms.RSAAlgorithm.from_jwk(key)
-    
-    raise ValueError("No RS256 key found in JWKS")
+    # Extract public key from JWKS (simplified - use python-jose in production)
+    return jwks['keys'][0]
 
-def validate_agbac_token(token, resource):
-    """Validate AGBAC dual-subject token."""
+def validate_dual_subject_token(token: str, keycloak_url: str, realm: str) -> dict:
+    """
+    Validate dual-subject token and return decoded claims.
+    
+    Validates:
+    1. Token signature (using Keycloak's public key)
+    2. Token not expired
+    3. Agent identity (sub) is authorized
+    4. Human identity (act.sub) is authorized
+    
+    Returns decoded token if valid, raises exception otherwise.
+    """
+    # Get public key
+    public_key = get_keycloak_public_key(keycloak_url, realm)
+    
+    # Decode and validate token
     try:
-        # Decode and verify
-        public_key = get_keycloak_public_key()
         decoded = jwt.decode(
             token,
             public_key,
-            algorithms=['RS256'],
-            audience=None,  # Or specify expected audience
-            issuer='https://your-keycloak-domain/realms/agbac-min'
+            algorithms=["RS256"],
+            audience="account",  # Or your API audience
+            options={"verify_exp": True}
         )
-        
-        # Extract subjects
-        agent_id = decoded['sub']
-        act = decoded.get('act')
-        
-        if not act or 'sub' not in act:
-            return {
-                'authorized': False,
-                'reason': 'Missing human identity (act)'
-            }
-        
-        human_id = act['sub']
-        
-        # Check agent role
-        agent_roles = decoded.get('realm_access', {}).get('roles', [])
-        if 'FinanceAgent' not in agent_roles:
-            return {
-                'authorized': False,
-                'reason': f'Agent {agent_id} not authorized'
-            }
-        
-        # Check human role (query your user database)
-        if not user_has_finance_access(human_id):
-            return {
-                'authorized': False,
-                'reason': f'Human {human_id} not authorized'
-            }
-        
-        # Success - both authorized
-        return {
-            'authorized': True,
-            'agent': agent_id,
-            'human': human_id
-        }
-        
     except jwt.ExpiredSignatureError:
-        return {'authorized': False, 'reason': 'Token expired'}
+        raise ValueError("Token has expired")
     except jwt.InvalidTokenError as e:
-        return {'authorized': False, 'reason': f'Invalid token: {e}'}
+        raise ValueError(f"Invalid token: {e}")
+    
+    # Validate agent identity (sub)
+    agent_sub = decoded.get('sub')
+    if not agent_sub:
+        raise ValueError("Missing agent identity (sub)")
+    
+    if not agent_sub.startswith('service-account-'):
+        raise ValueError(f"Invalid agent identity: {agent_sub}")
+    
+    # Validate agent has required role
+    agent_roles = decoded.get('realm_access', {}).get('roles', [])
+    if 'FinanceAgent' not in agent_roles:
+        raise ValueError("Agent not authorized (missing FinanceAgent role)")
+    
+    # Validate human identity (act)
+    act = decoded.get('act')
+    if not act:
+        raise ValueError("Missing human identity (act)")
+    
+    human_id = act.get('sub')
+    if not human_id:
+        raise ValueError("Missing human identifier (act.sub)")
+    
+    # Validate human has required role (check with Keycloak)
+    # This requires additional API call to Keycloak to check user's roles
+    # For production, implement caching to avoid repeated API calls
+    if not check_user_has_role(keycloak_url, realm, human_id, 'FinanceUser'):
+        raise ValueError("Human not authorized (missing FinanceUser role)")
+    
+    return decoded
+
+def check_user_has_role(keycloak_url: str, realm: str, user_id: str, role_name: str) -> bool:
+    """
+    Check if user has specific role in Keycloak.
+    
+    Note: Requires Keycloak admin credentials or service account with user query permissions.
+    In production, implement caching to reduce API calls.
+    """
+    # This is a simplified example - implement proper admin token management
+    admin_token = get_admin_token(keycloak_url, realm)
+    
+    url = f"{keycloak_url}/admin/realms/{realm}/users/{user_id}/role-mappings/realm"
+    response = requests.get(
+        url,
+        headers={"Authorization": f"Bearer {admin_token}"}
+    )
+    
+    if response.status_code != 200:
+        return False
+    
+    roles = response.json()
+    return any(role['name'] == role_name for role in roles)
+
+# Example usage in API endpoint
+from fastapi import HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
+security = HTTPBearer()
+
+def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> dict:
+    """FastAPI dependency for token validation."""
+    token = credentials.credentials
+    
+    try:
+        decoded = validate_dual_subject_token(
+            token,
+            keycloak_url="https://your-keycloak-domain",
+            realm="agbac-min"
+        )
+        return decoded
+    except ValueError as e:
+        raise HTTPException(status_code=403, detail=str(e))
+
+# Use in endpoint
+@app.get("/api/finance/reports")
+def get_finance_reports(token_claims: dict = Depends(verify_token)):
+    """
+    Protected endpoint that validates dual-subject authorization.
+    """
+    agent_id = token_claims['sub']
+    human_id = token_claims['act']['sub']
+    human_email = token_claims['act'].get('email')
+    human_name = token_claims['act'].get('name')
+    
+    # Log access (using IAM identifier, not PII)
+    logger.info(
+        "Finance report access",
+        extra={
+            "agent_id": agent_id,
+            "human_id": human_id,  # Keycloak user ID (pseudonymous)
+            "action": "view_reports"
+        }
+    )
+    
+    # Business logic here
+    return {"reports": [...]}
 ```
 
-### 8.4 Audit Logging
+### 8.2 Logging Best Practices
 
-**Every access should be logged with both identities:**
+**✅ DO: Log IAM identifiers**
+```python
+logger.info(
+    "API access",
+    extra={
+        "agent_id": "service-account-finance-agent",
+        "human_id": "f1234567-89ab-cdef-0123-456789abcdef",  # Keycloak user ID
+        "action": "read",
+        "resource": "/api/finance/reports"
+    }
+)
+```
+
+**❌ DON'T: Log PII (email, name)**
+```python
+# BAD - This logs PII
+logger.info(f"Access by {human_email}")  # ❌ Email is PII
+logger.info(f"User {human_name}")        # ❌ Name is PII
+```
+
+**Why log user ID instead of email?**
+- **Privacy**: User ID is pseudonymous (not PII)
+- **GDPR/CCPA compliance**: Reduces PII in logs
+- **Correlation**: Can correlate with Keycloak audit logs using user ID
+- **Stability**: Doesn't change if user's email changes
+
+### 8.3 Authorization Policy Example
 
 ```python
-def audit_log(agent_id, human_id, resource, action, result):
-    """Log dual-subject access for audit trail."""
-    log_entry = {
-        'timestamp': datetime.utcnow().isoformat(),
-        'agent_identity': agent_id,
-        'human_identity': human_id,
-        'resource': resource,
-        'action': action,
-        'result': result,  # ALLOWED or DENIED
-        'reason': result.get('reason') if result == 'DENIED' else None
-    }
+def check_authorization(token_claims: dict, action: str, resource: str) -> bool:
+    """
+    Check if both agent and human are authorized for the action.
     
-    # Send to your logging system
-    logger.info(json.dumps(log_entry))
+    Args:
+        token_claims: Decoded JWT token claims
+        action: Action being attempted (e.g., 'read', 'write')
+        resource: Resource being accessed (e.g., '/finance/reports')
+    
+    Returns:
+        True if authorized, raises HTTPException otherwise
+    """
+    agent_id = token_claims['sub']
+    human_id = token_claims['act']['sub']
+    
+    # Check agent authorization
+    agent_roles = token_claims.get('realm_access', {}).get('roles', [])
+    if 'FinanceAgent' not in agent_roles:
+        raise HTTPException(403, "Agent not authorized")
+    
+    # Check human authorization (from Keycloak or your policy store)
+    if not is_human_authorized(human_id, action, resource):
+        raise HTTPException(403, "Human not authorized")
+    
+    # Check combined policy (optional - additional restrictions)
+    if not is_combination_allowed(agent_id, human_id, action, resource):
+        raise HTTPException(403, "Agent-human combination not authorized")
+    
+    return True
 ```
 
-**Example Log Entry:**
-```json
-{
-  "timestamp": "2026-01-02T15:30:45.123Z",
-  "agent_identity": "service-account-finance-agent",
-  "human_identity": "alice@corp.example.com",
-  "resource": "/api/finance/reports/Q4-2025",
-  "action": "GET",
-  "result": "ALLOWED",
-  "reason": null
-}
-```
-
----
+<br>
 
 ## **Troubleshooting**
 
-### Issue: Token Request Returns 401 Unauthorized
+### Problem: Token doesn't contain `act` claim
 
-**Possible Causes:**
-1. Client secret incorrect
-2. Client assertion signature invalid
-3. Client assertion `aud` doesn't match realm URL
-
-**Solutions:**
-```bash
-# Verify client secret
-# Go to Clients → finance-agent → Credentials → Regenerate secret
-
-# Check client assertion audience
-# Should be: https://your-keycloak-domain/realms/agbac-min
-# Common mistake: missing /realms/agbac-min
-
-# Verify JWT signature
-# Use https://jwt.io to decode and verify client assertion
-```
-
-### Issue: Token Issued But Missing `act` Claim
-
-**Possible Causes:**
-1. Protocol mapper not configured correctly
-2. Client assertion doesn't contain `act`
-3. Mapper not assigned to client scope
+**Symptoms:**
+- Decoded token has `sub` but no `act`
+- Client assertion is correct
 
 **Solutions:**
-```bash
-# Check Keycloak logs
-tail -f /opt/keycloak/data/log/keycloak.log | grep AGBAC
+1. **Verify Protocol Mapper:**
+   - Navigate to: Clients → finance-agent → Client scopes → finance-agent-dedicated → Mappers
+   - Ensure "act-claim-mapper" exists
+   - Check that "Add to access token" is ✅ ON
+   - Check that "Claim JSON Type" is `JSON` (not String)
 
-# Should see: "AGBAC-Min: Act claim extracted: ..."
-# If you see warning: "Missing act claim in assertion"
-#   → Client assertion doesn't have act claim
+2. **Verify Client Assertion:**
+   - Decode your client assertion at https://jwt.io
+   - Ensure it contains the `act` claim as a JSON object
+   - Verify signature is valid
 
-# Verify mapper configuration
-# Clients → finance-agent → Client scopes → finance-agent-dedicated → Mappers
-# Ensure act-claim-mapper is present and enabled
+3. **Check Keycloak Logs:**
+   ```bash
+   # If using Docker
+   docker logs keycloak-container-name
+   
+   # Look for errors related to protocol mappers or client assertions
+   ```
 
-# Test client assertion
-# Decode your client assertion JWT at https://jwt.io
-# Verify it contains the "act" claim
+### Problem: "Invalid client credentials" error
+
+**Symptoms:**
+```json
+{
+  "error": "invalid_client",
+  "error_description": "Invalid client credentials"
+}
 ```
-
-### Issue: Token Validation Fails at Resource Server
-
-**Possible Causes:**
-1. Public key mismatch
-2. Token expired
-3. Signature verification failed
 
 **Solutions:**
-```python
-# Verify public key matches
-# Get from: https://your-keycloak-domain/realms/agbac-min/protocol/openid-connect/certs
+1. **Verify Client Secret:**
+   - Clients → finance-agent → Credentials
+   - Regenerate if needed
+   - Update your client assertion signature
 
-# Check token expiry
-decoded = jwt.decode(token, options={"verify_signature": False})
-print(f"Token expires at: {decoded['exp']}")
-print(f"Current time: {int(time.time())}")
+2. **Verify Client Authentication:**
+   - Clients → finance-agent → Settings
+   - Ensure "Client authentication" is ✅ ON
 
-# Test signature verification
-try:
-    jwt.decode(token, public_key, algorithms=['RS256'])
-    print("Signature valid")
-except jwt.InvalidSignatureError:
-    print("Signature invalid - check public key")
+3. **Verify Client Assertion:**
+   - Check JWT signature uses correct client secret
+   - Check `iss` and `sub` match client ID exactly
+   - Check `aud` matches Keycloak realm URL exactly
+
+### Problem: "Invalid grant" error
+
+**Symptoms:**
+```json
+{
+  "error": "invalid_grant",
+  "error_description": "..."
+}
 ```
-
-### Issue: Agent Role Not Appearing in Token
-
-**Possible Causes:**
-1. Role not assigned to service account
-2. Service account not enabled
 
 **Solutions:**
-```bash
-# Verify role assignment
-# Clients → finance-agent → Service account roles
-# Should show: FinanceAgent
+1. **Check Token Request:**
+   - Verify `grant_type=client_credentials`
+   - Verify `client_assertion_type` is exactly: `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`
 
-# Verify service account enabled
-# Clients → finance-agent → Settings
-# Service accounts roles: ON
-```
+2. **Check Client Assertion Expiration:**
+   - Decode assertion at https://jwt.io
+   - Verify `exp` is in the future
+   - Verify `iat` is not in the future
 
-### Issue: Human Authorization Check Fails
+3. **Check Service Account:**
+   - Users → search for `service-account-finance-agent`
+   - Verify it exists and is enabled
+   - Verify it has `FinanceAgent` role assigned
 
-**This is expected!** The human role check happens at your resource server, not in Keycloak.
+### Problem: act.sub contains email instead of user ID
 
-**Implementation:**
-```python
-def user_has_finance_access(human_email):
-    """
-    Check if human has FinanceUser role.
-    This queries YOUR user database, not Keycloak.
-    """
-    # Option 1: Query your database
-    user = db.query(User).filter_by(email=human_email).first()
-    return 'FinanceUser' in user.roles
-    
-    # Option 2: Query Keycloak Admin API
-    # (Only if you manage users in Keycloak)
-    response = requests.get(
-        f"https://keycloak/admin/realms/agbac-min/users",
-        params={"email": human_email},
-        headers={"Authorization": f"Bearer {admin_token}"}
-    )
-    users = response.json()
-    if users:
-        user_id = users[0]['id']
-        roles_response = requests.get(
-            f"https://keycloak/admin/realms/agbac-min/users/{user_id}/role-mappings/realm",
-            headers={"Authorization": f"Bearer {admin_token}"}
-        )
-        roles = roles_response.json()
-        return any(role['name'] == 'FinanceUser' for role in roles)
-    
-    return False
-```
+**Symptoms:**
+- Token's `act.sub` contains email (e.g., `alice@corp.example.com`)
+- Should contain Keycloak user ID (e.g., `f1234567-89ab-cdef-0123-456789abcdef`)
 
----
+**Solutions:**
+1. **Update Application Code:**
+   - Application must extract user ID from OIDC token's `sub` claim
+   - Use user ID (not email) when creating act claim
+   - Example:
+   ```python
+   # ✅ Correct
+   user_id = oidc_token['sub']  # Keycloak user ID (UUID)
+   act = {"sub": user_id, "email": user_email, "name": user_name}
+   
+   # ❌ Wrong
+   act = {"sub": user_email, ...}  # Don't use email
+   ```
+
+2. **Verify User ID in Keycloak:**
+   - Users → alice → Details
+   - Copy the user ID from URL or user details
+   - This is the value that should be in `act.sub`
+
+### Problem: User roles not showing in token
+
+**Symptoms:**
+- Human user roles not visible in access token
+- Can't verify human authorization
+
+**Solutions:**
+This is expected behavior - human roles are NOT in the access token. The access token contains:
+- Agent's service account roles
+- Human's identity in `act` claim
+
+To verify human roles:
+1. **Query Keycloak API** to check user's roles (see Step 8.1)
+2. **Cache role information** to avoid repeated API calls
+3. **Use Keycloak Admin API** with proper service account credentials
+
+### Problem: Cannot correlate logs with Keycloak audit
+
+**Symptoms:**
+- Logs show email/name but can't correlate with Keycloak user
+- Need to identify which Keycloak user performed action
+
+**Solutions:**
+1. **Use user ID in logs:**
+   ```python
+   # ✅ Correct - logs user ID
+   human_id = token_claims['act']['sub']  # User ID (UUID)
+   logger.info("Access", extra={"human_id": human_id})
+   
+   # ❌ Wrong - logs email
+   logger.info("Access", extra={"email": email})  # Can't correlate
+   ```
+
+2. **Correlate with Keycloak:**
+   - Keycloak audit logs use user ID
+   - Your application logs should use the same user ID
+   - Perfect correlation for security investigations
+
+<br>
 
 ## **Reference: Configuration JSON**
 
-### Complete Realm Export
+### Realm Configuration Export
 
-This JSON represents the complete Keycloak realm configuration for AGBAC-Min.
+For automated deployment, export your realm configuration:
+
+**Admin Console:** Realm Settings → Partial Export
+
+**Or via Keycloak Admin API:**
+```bash
+# Export realm configuration
+curl -X GET "https://keycloak/admin/realms/agbac-min" \
+  -H "Authorization: Bearer ${ADMIN_TOKEN}" \
+  > agbac-min-realm-config.json
+```
+
+### Protocol Mapper Configuration (JSON)
 
 ```json
 {
-  "realm": "agbac-min",
+  "name": "act-claim-mapper",
+  "protocol": "openid-connect",
+  "protocolMapper": "oidc-usermodel-attribute-mapper",
+  "consentRequired": false,
+  "config": {
+    "userAttribute": "act",
+    "claim.name": "act",
+    "jsonType.label": "JSON",
+    "id.token.claim": "true",
+    "access.token.claim": "true",
+    "userinfo.token.claim": "false",
+    "multivalued": "false",
+    "aggregate.attrs": "false"
+  }
+}
+```
+
+### Client Configuration (JSON)
+
+```json
+{
+  "clientId": "finance-agent",
+  "name": "Finance Agent",
+  "description": "AI agent for finance operations",
   "enabled": true,
-  "sslRequired": "external",
-  "roles": {
-    "realm": [
-      {
-        "name": "FinanceAgent",
-        "description": "AI agents authorized for finance system access"
-      },
-      {
-        "name": "FinanceUser",
-        "description": "Human users authorized for finance system access"
-      }
-    ]
+  "clientAuthenticatorType": "client-secret",
+  "secret": "YOUR_CLIENT_SECRET",
+  "publicClient": false,
+  "serviceAccountsEnabled": true,
+  "standardFlowEnabled": false,
+  "implicitFlowEnabled": false,
+  "directAccessGrantsEnabled": false,
+  "protocol": "openid-connect",
+  "attributes": {
+    "access.token.lifespan": "300"
   },
-  "clients": [
+  "protocolMappers": [
     {
-      "clientId": "finance-agent",
-      "enabled": true,
+      "name": "act-claim-mapper",
       "protocol": "openid-connect",
-      "publicClient": false,
-      "serviceAccountsEnabled": true,
-      "standardFlowEnabled": false,
-      "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": false,
-      "protocolMappers": [
-        {
-          "name": "act-claim-mapper",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-script-mapper",
-          "config": {
-            "script": "var clientAssertion = context.getClientAssertion();\nif (clientAssertion !== null) {\n    var act = clientAssertion.getOtherClaims().get('act');\n    if (act !== null) {\n        LOG.info('AGBAC-Min: Act claim extracted: ' + act);\n        exports = act;\n    }\n}",
-            "claim.name": "act",
-            "jsonType.label": "JSON",
-            "access.token.claim": "true",
-            "id.token.claim": "false"
-          }
-        }
-      ]
-    }
-  ],
-  "users": [
-    {
-      "username": "alice",
-      "email": "alice@corp.example.com",
-      "firstName": "Alice",
-      "lastName": "Smith",
-      "enabled": true,
-      "emailVerified": true,
-      "realmRoles": ["FinanceUser"]
+      "protocolMapper": "oidc-usermodel-attribute-mapper",
+      "config": {
+        "userAttribute": "act",
+        "claim.name": "act",
+        "jsonType.label": "JSON",
+        "id.token.claim": "true",
+        "access.token.claim": "true"
+      }
     }
   ]
 }
 ```
 
-### Client Assertion JWT Example
+<br>
 
-```json
-{
-  "iss": "finance-agent",
-  "sub": "finance-agent",
-  "aud": "https://keycloak.example.com/realms/agbac-min",
-  "exp": 1735686300,
-  "iat": 1735686000,
-  "jti": "unique-nonce-abc123",
-  "act": {
-    "sub": "alice@corp.example.com",
-    "email": "alice@corp.example.com",
-    "name": "Alice Smith"
-  }
-}
-```
+## **Next Steps**
 
-### Expected Access Token Example
+After completing Keycloak configuration:
 
-```json
-{
-  "exp": 1735686300,
-  "iat": 1735686000,
-  "jti": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "iss": "https://keycloak.example.com/realms/agbac-min",
-  "sub": "service-account-finance-agent",
-  "typ": "Bearer",
-  "azp": "finance-agent",
-  "act": {
-    "sub": "alice@corp.example.com",
-    "email": "alice@corp.example.com",
-    "name": "Alice Smith"
-  },
-  "scope": "openid email profile",
-  "realm_access": {
-    "roles": [
-      "FinanceAgent",
-      "default-roles-agbac-min"
-    ]
-  },
-  "email_verified": false,
-  "preferred_username": "service-account-finance-agent"
-}
-```
+1. ✅ **Configure your application** to extract user identity and create act claims
+   - See: [Application Agent Implementation Guide](APPLICATION_AGENT_GUIDE.md)
 
----
+2. ✅ **Implement resource server validation** (Step 8)
+   - Validate both agent and human identities
+   - Enforce authorization policies
+   - Log using IAM identifiers (user IDs)
 
-## **Summary**
+3. ✅ **Deploy to production**
+   - Use HTTPS everywhere
+   - Store client secrets in secure vault (AWS Secrets Manager, Azure Key Vault)
+   - Configure short token lifespans (5 minutes recommended)
+   - Enable Keycloak audit logging
+   - Monitor token requests and failures
 
-You've successfully configured Keycloak for AGBAC-Min dual-subject authorization!
+4. ✅ **Test thoroughly**
+   - Test with different users
+   - Test authorization denial scenarios
+   - Test token expiration handling
+   - Test with multiple agents
 
-**What You Configured:**
-✅ Realm for AGBAC-Min  
-✅ Roles representing pre-approval (FinanceAgent, FinanceUser)  
-✅ Agent client with service account  
-✅ Protocol mapper to extract `act` from client assertion  
-✅ Role assignments for agent and test user  
-✅ Tested token issuance with dual subjects  
+<br>
 
-**Next Steps:**
-1. **Configure Python Application:** Follow the Python Application/Agent Configuration Guide
-2. **Implement Resource Server Validation:** Use code examples from Step 8
-3. **Test End-to-End:** Run complete workflow with real agent
-4. **Add More Agents/Users:** Repeat client and user creation as needed
-5. **Production Hardening:** Enable TLS, secure secrets, implement monitoring
+## **Security Checklist**
 
-**Security Reminders:**
-- 🔒 Use TLS/HTTPS in production
-- 🔒 Rotate client secrets regularly
-- 🔒 Monitor Keycloak logs for anomalies
-- 🔒 Implement rate limiting on token endpoint
-- 🔒 Audit all dual-subject access attempts
+Before deploying to production, verify:
 
----
+- [ ] HTTPS enabled on Keycloak
+- [ ] Client secrets stored in secure vault (not environment variables or config files)
+- [ ] Token lifespan set to 5 minutes or less
+- [ ] Service account has only required roles (principle of least privilege)
+- [ ] Human users have appropriate role assignments
+- [ ] Resource server validates both `sub` and `act`
+- [ ] Resource server validates token signature
+- [ ] Resource server validates token expiration
+- [ ] Logging uses IAM identifiers (user IDs), not PII
+- [ ] Client assertion JTI validated to prevent replay attacks
+- [ ] Keycloak audit logging enabled
+- [ ] Regular security updates applied to Keycloak
 
+<br>
+
+## **Additional Resources**
+
+**Keycloak Documentation:**
+- [Service Accounts](https://www.keycloak.org/docs/latest/server_admin/#_service_accounts)
+- [Protocol Mappers](https://www.keycloak.org/docs/latest/server_admin/#_protocol-mappers)
+- [Client Authentication](https://www.keycloak.org/docs/latest/server_admin/#_client-credentials)
+
+**OAuth 2.0 Specifications:**
+- [RFC 8693 - Token Exchange](https://datatracker.ietf.org/doc/html/rfc8693)
+- [RFC 7523 - JWT Profile for OAuth 2.0](https://datatracker.ietf.org/doc/html/rfc7523)
+
+<br>
 <br>
 <br>
 <br>
