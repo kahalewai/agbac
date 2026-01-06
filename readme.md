@@ -95,23 +95,15 @@ ALLOW IFF agent AND human are authorized.
 Use the Specification to build your own custom implementation (for Vendors, Product Owners, IAM Providers, etc)
 * The AGBAC specification v1.0.0 is released ([link](https://github.com/kahalewai/agbac/blob/main/spec/agbac_specification.md))
 * The specification is open, royalty-free, and vendor-neutral
-* The spec defines the authoritative security model for AGBAC
 * Organizations are encouraged to adopt, reference, and build upon it
-
-The specification describes the complete AGBAC model, including identity, delegation, policy, enforcement, audit, and security considerations.
 
 <br>
 
 **Option 2 - Use AGBAC Minimal today with existing IAM Solutions**
 
-Implement a sub-set of AGBAC (aka AGBAC-Min) for system-level access right now (**Let's GOOOOO!!!** 🔥 🔥 🔥)
-* AGBAC-Min is a bounded sub-set of the full AGBAC specification
+Implement a Minimal version of AGBAC (AGBAC-Min) for system-level access right now (**Let's GOOOOO!!!** 🔥 🔥 🔥)
 * Start here --> GitHub: [https://github.com/kahalewai/agbac/agbac-min](https://github.com/kahalewai/agbac/blob/main/agbac-min/readme.md)
-* Works with your existing Enterprise IAM Solutions right now; No patch or update required (just config)
-* Provides system/app-level access control, native IAM configuration/scope only (remember, this is Minimal)
-* Provides IAM Configuration guides for Okta, EntraID, Auth0, and Keycloak to configure the IAM side
-* Provides Application/Agent Code for Python to support dual-subject scenarios (Typescript and Java Coming Soon)
-* Enforce dual-subject authorization at system/app boundary; access control and logging for human and agent
+* Works with your existing Enterprise IAM Solutions right now; Okta, EntraID, Auth0, Keycloak
 * Easy first step towards Zero Trust alignment and enforcement of agentic workflows and access
 
 
@@ -124,11 +116,6 @@ Implement a fully functional AGBAC Solution (aka AGBAC-Full) for object/resource
 * AGBAC-Full is a vendor-neutral full implementation of the AGBAC specification
 * Development of AGBAC-Full will begin Jan 2026, and espected to be complete Feb 2026
 * Will work with your existing Enterprise IAM Solutions; Vendor-neutral PEP will be provided
-* Provides object/resource-level access control, enhanced scope for agent-aware IAM Solutions
-* Will support RFC 8693 Token Exchange and dynamic/implicit delegation on the human users behalf
-* Will support delegation chains and multi-agent workflows, supporting advanced agentic configurations
-* Will provide standardized AI-aware audit semantics, allowing your organization to fully audit agent interactions
-* Implement defense in depth patterns and position your organization for full Zero Trust compliance at agent layer
 
 <br>
 <br>
