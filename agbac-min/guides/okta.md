@@ -21,7 +21,7 @@ This guide provides step-by-step instructions for configuring Okta to support AG
 **Okta Edition:** Workforce Identity (requires Custom Authorization Server feature)  
 **Prerequisites:** Okta admin access, basic understanding of OAuth 2.0
 
----
+<br>
 
 ## **Table of Contents**
 
@@ -39,7 +39,7 @@ This guide provides step-by-step instructions for configuring Okta to support AG
 12. [Troubleshooting](#troubleshooting)
 13. [Reference: Configuration Examples](#reference-configuration-examples)
 
----
+<br>
 
 ## **Prerequisites**
 
@@ -65,7 +65,7 @@ https://your-okta-domain/admin
 
 **Note:** The default authorization server (`default`) can be used for testing but custom authorization servers are recommended for production.
 
----
+<br>
 
 ## **Architecture Overview**
 
@@ -120,7 +120,7 @@ Okta expression that extracts `act` from the client assertion and adds it to the
 **Access Policy:**  
 Rules determining which clients can get tokens and under what conditions.
 
----
+<br>
 
 ## **Step 1: Create Custom Authorization Server**
 
@@ -174,7 +174,7 @@ You'll need this for token requests.
 }
 ```
 
----
+<br>
 
 ## **Step 2: Define Scopes**
 
@@ -226,7 +226,7 @@ finance.read    Read Finance Data    Not required
 }
 ```
 
----
+<br>
 
 ## **Step 3: Create Agent Application**
 
@@ -308,7 +308,7 @@ You'll see:
 }
 ```
 
----
+<br>
 
 ## **Step 4: Configure Custom Claim for Act**
 
@@ -391,7 +391,7 @@ act     Expression    clientAssertion.claims.act    Access Token
 - Validate `act` presence at resource server
 - Log when `act` is missing for debugging
 
----
+<br>
 
 ## **Step 5: Configure Access Policy**
 
@@ -482,7 +482,7 @@ Rules: Allow Client Credentials with Act
 }
 ```
 
----
+<br>
 
 ## **Step 6: Assign Applications and Users**
 
@@ -522,7 +522,7 @@ While not required for token issuance, you can assign human users to the applica
 
 **Note:** This assignment is for governance only. The human's authorization is validated at the resource server, not by Okta during token issuance.
 
----
+<br>
 
 ## **Step 7: Create Test User**
 
@@ -583,7 +583,62 @@ For governance tracking:
 }
 ```
 
----
+
+### 7.5 Get User ID
+
+After creating the user, you need to obtain the Okta user ID to use in the `act.sub` field.
+
+**Method 1: From User Profile Page**
+
+1. Navigate to **Directory → People**
+2. Click on `alice@corp.example.com`
+3. The user ID is displayed in the URL and can be found in the user profile
+4. Format: `00u123abc456xyz` (starts with `00u`)
+
+**Method 2: From URL**
+
+The user ID appears in the browser URL when viewing the user:
+```
+https://your-okta-domain/admin/user/profile/view/00u123abc456xyz
+                                                   ^^^^^^^^^^^^^^^
+                                                   This is the User ID
+```
+
+**Method 3: Via Okta API**
+
+```bash
+curl -X GET "https://your-okta-domain/api/v1/users/alice@corp.example.com" \
+  -H "Authorization: SSWS YOUR_API_TOKEN" \
+  -H "Accept: application/json"
+```
+
+Response will include:
+```json
+{
+  "id": "00u123abc456xyz",
+  "profile": {
+    "email": "alice@corp.example.com",
+    ...
+  }
+}
+```
+
+**Copy this User ID** - you'll use it in the `act.sub` field when creating the act claim.
+
+**Why User ID instead of email?**
+- **Privacy**: User ID is pseudonymous (not PII like email)
+- **Stability**: Doesn't change if user's email changes
+- **Correlation**: Matches Okta's internal user ID for perfect audit log correlation
+- **Uniqueness**: Guaranteed unique across all Okta organizations
+
+**Okta User ID Format:**
+- Always starts with `00u` for users
+- Followed by 15-17 alphanumeric characters
+- Example: `00u123abc456xyz`
+- Different from group IDs (`00g`) or application IDs (`0oa`)
+
+
+<br>
 
 ## **Step 8: Test Configuration**
 
@@ -610,7 +665,7 @@ Test the complete flow by requesting a token with client assertion.
   "iat": 1735686000,
   "jti": "test-assertion-unique-123",
   "act": {
-    "sub": "alice@corp.example.com",
+    "sub": "00u123abc456xyz",
     "email": "alice@corp.example.com",
     "name": "Alice Smith"
   }
@@ -626,6 +681,31 @@ Test the complete flow by requesting a token with client assertion.
 - `jti`: Unique identifier (prevent replay)
 - `act`: Human identity object
 
+
+
+**Important Field Explanations:**
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| `iss` | Client ID | Issuer = the agent client ID |
+| `sub` | Client ID | Subject = the agent client ID |
+| `aud` | Authorization Server URL | **Not the token endpoint** - just the auth server base URL |
+| `exp` | Current time + 300 | Expiration (5 minutes from now) |
+| `iat` | Current time | Issued at timestamp |
+| `jti` | Unique nonce | Prevents replay attacks |
+| `act.sub` | **Okta User ID** | **From Step 7.5 - format: `00u123abc456xyz`** |
+| `act.email` | User's email | For human-readable logging |
+| `act.name` | User's name | For human-readable logging |
+
+**Critical: act.sub must be the Okta User ID**
+
+The `act.sub` field should contain the user's Okta user ID (like `00u123abc456xyz`), not their email address. This provides:
+- Better privacy (pseudonymous identifier)
+- Stability (doesn't change if email changes)
+- Perfect correlation with Okta audit logs
+- Guaranteed uniqueness across all users
+
+
 **Sign with Client Secret (HS256):**
 
 **Using Python:**
@@ -633,27 +713,31 @@ Test the complete flow by requesting a token with client assertion.
 import jwt
 import time
 
+import jwt
+import time
+
 # Replace with your actual values
-client_id = "0oa123abc456xyz"
-client_secret = "YOUR_CLIENT_SECRET"
-auth_server_id = "aus123abc456"
-okta_domain = "https://dev-123456.okta.com"
+CLIENT_ID = "0oa123abc456xyz"
+CLIENT_SECRET = "your-client-secret-here"
+AUTH_SERVER_ID = "aus123abc456"
+OKTA_DOMAIN = "https://dev-123456.okta.com"
+USER_ID = "00u123abc456xyz"  # From Step 7.5
 
 payload = {
-    "iss": client_id,
-    "sub": client_id,
-    "aud": f"{okta_domain}/oauth2/{auth_server_id}",
+    "iss": CLIENT_ID,
+    "sub": CLIENT_ID,
+    "aud": f"{OKTA_DOMAIN}/oauth2/{AUTH_SERVER_ID}",
     "exp": int(time.time()) + 300,
     "iat": int(time.time()),
     "jti": f"assertion-{int(time.time())}",
     "act": {
-        "sub": "alice@corp.example.com",
+        "sub": USER_ID,  # Okta user ID (not email!)
         "email": "alice@corp.example.com",
         "name": "Alice Smith"
     }
 }
 
-client_assertion = jwt.encode(payload, client_secret, algorithm="HS256")
+client_assertion = jwt.encode(payload, CLIENT_SECRET, algorithm="HS256")
 print(f"Client Assertion:\n{client_assertion}")
 ```
 
@@ -712,7 +796,7 @@ Copy the `access_token` and decode at https://jwt.io
   ],
   "sub": "0oa123abc456xyz",
   "act": {
-    "sub": "alice@corp.example.com",
+    "sub": "00u123abc456xyz",
     "email": "alice@corp.example.com",
     "name": "Alice Smith"
   }
@@ -786,7 +870,7 @@ Solutions:
 - Decode client assertion at jwt.io - verify it has act claim
 ```
 
----
+<br>
 
 ## **Step 9: Configure Resource Server Validation**
 
@@ -812,7 +896,7 @@ def validate_dual_subject_token(token, resource):
     if not act_claim:
         raise Unauthorized("Token missing human identity (act)")
     
-    human_id = act_claim['sub']  # alice@corp.example.com
+    human_id = act_claim['sub']  # 00u123abc456xyz (Okta user ID)
     
     # 4. Validate agent authorization
     agent_scopes = decoded.get('scp', [])
@@ -1018,14 +1102,47 @@ def audit_log(agent_id, human_id, resource, result, reason=None):
   "timestamp": "2026-01-02T15:30:45.123Z",
   "event_type": "AGBAC_ACCESS",
   "agent_identity": "0oa123abc456xyz",
-  "human_identity": "alice@corp.example.com",
+  "human_identity": "00u123abc456xyz",
   "resource": "/api/finance/reports/Q4-2025",
   "result": "ALLOWED",
   "reason": null
 }
 ```
 
----
+<br>
+
+
+### 9.2 Logging Best Practices
+
+**✅ DO: Log IAM identifiers**
+```python
+logger.info(
+    "API access",
+    extra={
+        "agent_id": "0oa123abc456xyz",
+        "human_id": "00u123abc456xyz",  # Okta user ID
+        "action": "read",
+        "resource": "/api/finance/reports"
+    }
+)
+```
+
+**❌ DON'T: Log PII (email, name)**
+```python
+# BAD - This logs PII
+# logger.info(f"Access by {human_email}")  # ❌ Email is PII
+# logger.info(f"User {human_name}")        # ❌ Name is PII
+```
+
+**Why log user ID instead of email?**
+- **Privacy**: User ID is pseudonymous (not PII)
+- **GDPR/CCPA compliance**: Reduces PII in logs
+- **Correlation**: Can correlate with Okta System Log using user ID
+- **Stability**: Doesn't change if user's email changes
+- **Uniqueness**: Guaranteed unique across all Okta orgs
+
+
+<br>
 
 ## **Troubleshooting**
 
@@ -1161,7 +1278,7 @@ print(f"Issuer: {decoded['iss']}")
 # Should be: https://your-okta-domain/oauth2/aus123abc456
 ```
 
----
+<br>
 
 ## **Reference: Configuration Examples**
 
@@ -1254,7 +1371,7 @@ print(f"Issuer: {decoded['iss']}")
   "iat": 1735686000,
   "jti": "unique-assertion-id-abc123",
   "act": {
-    "sub": "alice@corp.example.com",
+    "sub": "00u123abc456xyz",
     "email": "alice@corp.example.com",
     "name": "Alice Smith"
   }
@@ -1277,14 +1394,14 @@ print(f"Issuer: {decoded['iss']}")
   ],
   "sub": "0oa123abc456xyz",
   "act": {
-    "sub": "alice@corp.example.com",
+    "sub": "00u123abc456xyz",
     "email": "alice@corp.example.com",
     "name": "Alice Smith"
   }
 }
 ```
 
----
+<br>
 
 ## **Summary**
 
@@ -1328,7 +1445,6 @@ You've successfully configured Okta for AGBAC-Min dual-subject authorization!
 - Okta API enables programmatic user/group management
 - Consider Okta Workflows for complex orchestration
 
----
 
 <br>
 <br>
