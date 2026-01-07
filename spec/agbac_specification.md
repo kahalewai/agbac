@@ -2,11 +2,13 @@
 
 <br>
 
-## **Begin AGBAC Specification v1.0**
+## Begin AGBAC Specification
 
 **Status:** Production-Ready for Public Adoption
 
-**Year:** 2026
+**Date:** 12/20/2025
+
+**Version:** v1.0.0
 
 **License:** Apache License 2.0
 
@@ -579,7 +581,6 @@ This spec is **v1.0.0**.
 
 This specification is licensed under the Apache License 2.0.
 
-
 <br>
 
-## **End AGBAC Specification v1.0**
+## **End AGBAC Specification**
