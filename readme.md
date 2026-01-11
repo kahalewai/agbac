@@ -191,12 +191,5 @@ AGBAC is an open initiative. If the specification can be ehnanced and strengthen
 The goal is to **advance AI security collaboratively** and **forward innovation in the IAM space for AI scenarios**.
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<p align="center">
-▁ ▂ ▂ ▃ ▃ ▄ ▄ ▅ ▅ ▆ ▆ Created with Aloha by Kahalewai - 2026 ▆ ▆ ▅ ▅ ▄ ▄ ▃ ▃ ▂ ▂ ▁
 
-</p>
 
