@@ -2648,10 +2648,4 @@ After completing this guide, you should:
 - **Changelog:** See `CHANGELOG.md` for update and change log details
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<p align="center">
-▁ ▂ ▂ ▃ ▃ ▄ ▄ ▅ ▅ ▆ ▆ Created with Aloha by Kahalewai - 2026 ▆ ▆ ▅ ▅ ▄ ▄ ▃ ▃ ▂ ▂ ▁
-</p>
+
