@@ -6,7 +6,8 @@ Welcome to the AGBAC Open Security Specification & Reference Landing
 
 <br>
 
-![agbac11-small](https://github.com/user-attachments/assets/22c4208d-dc6e-4524-8f2a-41376649b1ad)
+![agbac-standard](https://github.com/user-attachments/assets/1d629957-5fd9-414f-a55b-27941fbf381b)
+
 
 </div>
 
@@ -99,25 +100,13 @@ Use the Specification to build your own custom implementation (for Vendors, Prod
 
 <br>
 
-**Option 2 - Use AGBAC Minimal today with existing IAM Solutions**
+**Option 2 - Use the Dual Auth Library today with existing IAM Solutions**
 
-Implement a Minimal version of AGBAC (AGBAC-Min) for system-level access right now (**Let's GOOOOO!!!** 🔥 🔥 🔥)
-* Start here --> GitHub: [https://github.com/kahalewai/agbac/agbac-min](https://github.com/kahalewai/agbac/blob/main/agbac-min/readme.md)
+Implement a sub-set of AGBAC (Dual Auth) for system-level access right now (**Let's GOOOOO!!!** 🔥 🔥 🔥)
+* Start here --> GitHub: [https://github.com/kahalewai/dual-auth](https://github.com/kahalewai/dual-auth)
 * Works with your existing Enterprise IAM Solutions right now; Okta, EntraID, Auth0, Keycloak
 * Easy first step towards Zero Trust alignment and enforcement of agentic workflows and access
 
-
-
-<br>
-
-**Option 3 - Use AGBAC Full when development is complete/released**
-
-Implement a fully functional AGBAC Solution (aka AGBAC-Full) for object/resource-level access (coming soon)
-* AGBAC-Full is a vendor-neutral full implementation of the AGBAC specification
-* Development of AGBAC-Full will begin Jan 2026, and espected to be complete Feb 2026
-* Will work with your existing Enterprise IAM Solutions; Vendor-neutral PEP will be provided
-
-<br>
 <br>
 
 ## What makes AGBAC effective out-of-the-box?
