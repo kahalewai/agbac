@@ -126,7 +126,7 @@ AGBAC is designed to:
 * Scale across vendors and environments
 * Support incremental adoption
 
-This means you can use AGBAC today (right now!) with your existing IAM solution, without needing to update or patch the solution. An easy first step is to implement the vendor-specific configuration guide for AGBAC-Min to begin your AGBAC journey (Option 2 above). And eventually, when AGBAC-Full is complete, or if/when your preferred vendor adopts this specification natively, you will be positioned to achieve Zero Trust (ZT) compliance at the AI Agent Layer. Boom! 💥 💥 💥
+This means you can use AGBAC today (right now!) with your existing IAM solution, without needing to update or patch the solution. An easy first step is to implement the vendor-specific configuration guide for Dual-Auth to begin your AGBAC journey (Option 2 above). You will be better positioned to achieve Zero Trust (ZT) compliance at the AI Agent Layer. Boom! 💥 💥 💥
 
 <br>
 <br>
