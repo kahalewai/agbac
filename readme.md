@@ -172,7 +172,7 @@ The AGBAC specification and all reference materials are released under the Apach
 
 AGBAC is an open initiative. If the specification can be ehnanced and strengthened, we support this. The project welcomes:
 * Feedback on the specification (enhance, reiterate)
-* Additional AGBAC-Min vendor profile requests (just ask)
+* Additional Dual Auth vendor profile requests (just ask)
 * Reference implementations (please share)
 * Policy models and tooling (let's collaborate)
 * Threat analysis and security reviews (please share)
