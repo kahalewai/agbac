@@ -115,7 +115,7 @@ The defining core requirement of AGBAC is:
 
 > An AI agent may perform an action on behalf of a human user **only when both the agent and the human are independently authorized for that action**.
 
-All implementations of AGBAC accomplish this (even AGBAC-Min) but the secret sauce is how AGBAC was built. Instead of building something completely new, performed the due diligence research to determine how existing standards and technology can be used to accomplish this. AGBAC does **not** introduce new token formats, cryptographic primitives, or identity providers. This means it works with all existing IAM solutions that use common standards!
+All implementations of AGBAC accomplish this (even Dual Auth) but the secret sauce is how AGBAC was built. Instead of building something completely new, performed the due diligence research to determine how existing standards and technology can be used to accomplish this. AGBAC does **not** introduce new token formats, cryptographic primitives, or identity providers. This means it works with all existing IAM solutions that use common standards!
 
 AGBAC is designed to:
 
@@ -126,7 +126,7 @@ AGBAC is designed to:
 * Scale across vendors and environments
 * Support incremental adoption
 
-This means you can use AGBAC today (right now!) with your existing IAM solution, without needing to update or patch the solution. An easy first step is to implement the vendor-specific configuration guide for Dual-Auth to begin your AGBAC journey (Option 2 above). You will be better positioned to achieve Zero Trust (ZT) compliance at the AI Agent Layer. Boom! 💥 💥 💥
+This means you can use AGBAC today (right now!) with your existing IAM solution, without needing to update or patch the solution. An easy first step is to implement the vendor-specific configuration guide for Dual Auth to begin your AGBAC journey (Option 2 above). You will be better positioned to achieve Zero Trust (ZT) compliance at the AI Agent Layer. Boom! 💥 💥 💥
 
 <br>
 <br>
