@@ -70,8 +70,8 @@ Human → LLM → Agent: “Access resource xyz123”
 
 Using OAuth2 Token Exchange (RFC 8693):
 
-* `sub` = AI agent
-* `act` = human
+* `sub` = Human Principle
+* `act` = AI Actor
 * `delegation` = metadata
 * `scp` = agent scopes
 * `usr_scopes` = user scopes (optional)
@@ -91,21 +91,12 @@ ALLOW IFF agent AND human are authorized.
 
 ## How do I use AGBAC?
 
-**Option 1 - Use the Specification to Build/Create**
+**Use the Specification to Build/Create**
 
 Use the Specification to build your own custom implementation (for Vendors, Product Owners, IAM Providers, etc)
 * The AGBAC specification v1.0.0 is released ([link](https://github.com/kahalewai/agbac/blob/main/spec/agbac_specification.md))
 * The specification is open, royalty-free, and vendor-neutral
 * Organizations are encouraged to adopt, reference, and build upon it
-
-<br>
-
-**Option 2 - Use the Dual Auth Library today with existing IAM Solutions**
-
-Implement a sub-set of AGBAC (Dual Auth) for system-level access right now (**Let's GOOOOO!!!** 🔥 🔥 🔥)
-* Start here --> GitHub: [https://github.com/kahalewai/dual-auth](https://github.com/kahalewai/dual-auth)
-* Works with your existing Enterprise IAM Solutions right now; Okta, EntraID, Auth0, Keycloak
-* Easy first step towards Zero Trust alignment and enforcement of agentic workflows and access
 
 <br>
 
@@ -125,8 +116,6 @@ AGBAC is designed to:
 * Improve auditability and accountability
 * Scale across vendors and environments
 * Support incremental adoption
-
-This means you can use AGBAC today (right now!) with your existing IAM solution, without needing to update or patch the solution. An easy first step is to implement the vendor-specific configuration guide for Dual Auth to begin your AGBAC journey (Option 2 above). You will be better positioned to achieve Zero Trust (ZT) compliance at the AI Agent Layer. Boom! 💥 💥 💥
 
 <br>
 <br>
